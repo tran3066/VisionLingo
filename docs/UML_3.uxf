@@ -1,0 +1,101 @@
+<diagram program="umletino" version="15.1"><zoom_level>20</zoom_level><element><id>UMLClass</id><coordinates><x>160</x><y>160</y><w>500</w><h>480</h></coordinates><panel_attributes>Word
+--
+-mWid : int
+-mcEnglishWord : String
+-mcTranslatedWord : String
+-mcDefinition : String
+-mcLexical : String
+-mcLanguage : String
+--
++Word(String, String, String, String, String)
++getEnglish() : String
++getTranslated() : String
++isTranslated(String) : Boolean
++getLexical : String
++getDefinition : String
++setTranslation(String) :
++getLanguage() : String</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>800</x><y>120</y><w>580</w><h>380</h></coordinates><panel_attributes>Dictionary
+--
+-mcWordDictionary : HashMap &lt;String, Word&gt;
+-mcLanguage : String
+--
++Dictionary()
++insertWord(String, Word)
++getWord(String) : Word
++getAllWords() ArrayList&lt;Word&gt;
++getLanguage() : String
++SetLanguage(String) </panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>20</x><y>680</y><w>480</w><h>220</h></coordinates><panel_attributes>/IDictionaryReader/
+--
+-mcInputStream : InputStream
+-mLanguage : String
+--
++DictionaryReader(InputStream, String)
++Read(Dictionary) = 0 : Boolean
+#getInputStream()</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>0</x><y>1080</y><w>620</w><h>180</h></coordinates><panel_attributes>/TXTDictionaryReader/
+--
+--
++TXTDictionaryReader(InputStream, String)
++Read(Dictionary) : Boolean
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>360</x><y>880</y><w>60</w><h>240</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;100</additional_attributes></element><element><id>UMLClass</id><coordinates><x>740</x><y>1000</y><w>580</w><h>420</h></coordinates><panel_attributes>User
+--
+-mUid : int
+-mcUsername : String
+-mcPassword : String
+-mcUserPreference : UserPreference
+-mcVocabList : ArrayList&lt;Vocab&gt;
+--
++User(String, String)
++getUsername() : String
++checkPassword() : Boolean
++getColor() : String
++getLanguage() : String
++setColor(String)
++setLanguage(String)
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>800</x><y>540</y><w>580</w><h>280</h></coordinates><panel_attributes>Vocab
+--
+-Word mcWord 
+-ByteArray mcImage
+--
++getWordEnglish() : String
++getWordTranslated() : String
++getImage() : ByteArray
++getLexical () : String
++getLanguage() : String</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1540</x><y>20</y><w>580</w><h>220</h></coordinates><panel_attributes>&lt;&lt;DictionaryDAO&gt;&gt;
+--
+--
++getAll() : ArrayList&lt;User&gt;
++getWord(int) : Word
++insert(Word) 
++delete(Word)
++getSize() : int</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1540</x><y>480</y><w>580</w><h>220</h></coordinates><panel_attributes>&lt;&lt;UserDAO&gt;&gt;
+--
+--
++getAll() : ArrayList&lt;User&gt;
++getUser(int) : User
++insertUser) 
++delete(User)
++getSize() : int</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1500</x><y>1000</y><w>580</w><h>420</h></coordinates><panel_attributes>UserPreference
+--
+-mcColor : String
+-mcLanguage : String
+--
++getColor() : String
++getLanguage() : String
++setColor(String)
++setLanguage(String)
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1540</x><y>260</y><w>580</w><h>120</h></coordinates><panel_attributes>UserDB
+--
+--
++UserDAO() : UserDAO
+
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1540</x><y>740</y><w>580</w><h>140</h></coordinates><panel_attributes>DictionaryDB
+--
+--
++DictionaryDAO() : DictionaryDAO
+
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>2220</x><y>500</y><w>580</w><h>160</h></coordinates><panel_attributes>DBTypeConverter
+--
+--
++fromArrayList(ArrayList&lt;Vocab&gt;) : String
++fromString(String) : ArrayList&lt;Vocab&gt;
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>2100</x><y>560</y><w>160</w><h>60</h></coordinates><panel_attributes>lt=&lt;.</panel_attributes><additional_attributes>10;10;60;10</additional_attributes></element><element><id>Relation</id><coordinates><x>640</x><y>200</y><w>200</w><h>60</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>80;10;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>640</x><y>540</y><w>200</w><h>60</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>80;10;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>800</x><y>800</y><w>60</w><h>240</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;100;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>1300</x><y>1040</y><w>240</w><h>60</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>100;10;10;10</additional_attributes></element></diagram>
