@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">TranslationApp</string>
+    <string name="TakePicture">Take Picture\n</string>
+    <string name="Translate">Translate</string>
 </resources>
