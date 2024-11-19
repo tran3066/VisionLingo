@@ -12,17 +12,18 @@ import java.util.ArrayList;
 
 public class UserPreference
 {
-    private String mcColor;
-    private String mcLanguage;
+  private String mcColor;
+  private String mcLanguage;
 
-/**
- * Constructs the UserPreference class members
- * @param colorStream the color choice from the user
- * @param languageStream the language choice from the user
- **/
+  /**
+   * Constructs the UserPreference class members
+   *
+   * @param colorStream    the color choice from the user
+   * @param languageStream the language choice from the user
+   **/
 
-public UserPreference (InputStream colorStream, InputStream languageStream)
-{
+  public UserPreference (InputStream colorStream, InputStream languageStream)
+  {
     BufferedReader brColor;
     BufferedReader brLanguage;
     String color;
@@ -30,54 +31,56 @@ public UserPreference (InputStream colorStream, InputStream languageStream)
 
     try
     {
-        brColor = new BufferedReader (new InputStreamReader(colorStream));
+      brColor = new BufferedReader (new InputStreamReader (colorStream));
 
-        while ((color = brColor.readLine()) != null)
-        {
-            mcColor = color.trim();
+      while ((color = brColor.readLine ()) != null)
+      {
+        mcColor = color.trim ();
 
-        }
-    } catch (IOException e)
+      }
+    }
+    catch (IOException e)
     {
-        System.out.println ("An I/O Error occurred while processing file");
-        throw new RuntimeException (e);
+      System.out.println ("An I/O Error occurred while processing file");
+      throw new RuntimeException (e);
     }
 
-
-    try {
-        brLanguage = new BufferedReader (new InputStreamReader(languageStream));
-
-        while ((language = brLanguage.readLine()) != null)
-        {
-
-            mcLanguage = language.trim();
-
-        }
-    } catch (IOException e)
+    try
     {
-        System.out.println ("An I/O Error occurred while processing file");
-        throw new RuntimeException (e);
-    }
-}
+      brLanguage = new BufferedReader (new InputStreamReader (languageStream));
 
-    public void setMcLanguage (String mcLanguage)
-    {
-        this.mcLanguage = mcLanguage;
-    }
+      while ((language = brLanguage.readLine ()) != null)
+      {
 
-    public void setMcColor(String mcColor)
-    {
-        this.mcColor = mcColor;
-    }
+        mcLanguage = language.trim ();
 
-    public String getColor ()
-    {
-        return mcColor;
+      }
     }
+    catch (IOException e)
+    {
+      System.out.println ("An I/O Error occurred while processing file");
+      throw new RuntimeException (e);
+    }
+  }
 
-    public String getLanguage ()
-    {
-        return mcLanguage;
-    }
+  public void setMcLanguage (String mcLanguage)
+  {
+    this.mcLanguage = mcLanguage;
+  }
+
+  public void setMcColor (String mcColor)
+  {
+    this.mcColor = mcColor;
+  }
+
+  public String getColor ()
+  {
+    return mcColor;
+  }
+
+  public String getLanguage ()
+  {
+    return mcLanguage;
+  }
 
 }

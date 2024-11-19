@@ -17,87 +17,90 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 @Entity
-public class User {
+public class User
+{
 
-    @PrimaryKey(autoGenerate = true)
-    private int mUid;
+  @PrimaryKey (autoGenerate = true)
+  private int mUid;
 
-    @ColumnInfo (name = "mcUsername")
-    private String mcUsername;
+  @ColumnInfo (name = "mcUsername")
+  private String mcUsername;
 
-    @ColumnInfo (name = "mcPassword")
-    private String mcPassword;
+  @ColumnInfo (name = "mcPassword")
+  private String mcPassword;
 
-    @ColumnInfo (name = "mcUserPreference")
-    private UserPreference mcUserPreference;
+  @ColumnInfo (name = "mcUserPreference")
+  private UserPreference mcUserPreference;
 
-    @ColumnInfo (name = "mcVocabList")
-    private ArrayList<Vocab> mcVocabList;
+  @ColumnInfo (name = "mcVocabList")
+  private ArrayList<Vocab> mcVocabList;
 
+  /**
+   * Constructs the User class members
+   *
+   * @param userStream     the username of the user from screen
+   * @param passwordStream password associated with the username from screen
+   *                       //     * @param mcUserPreference the preferences that are associated with the username
+   *                       //     * @param mcVocabList the list of vocabs words created by user
+   */
+  public User (InputStream userStream, InputStream passwordStream)
+  {
+    BufferedReader brUser;
+    BufferedReader brPassword;
+    String username;
+    String password;
 
-    /**
-     * Constructs the User class members
-     * @param userStream the username of the user from screen
-     * @param passwordStream password associated with the username from screen
-//     * @param mcUserPreference the preferences that are associated with the username
-//     * @param mcVocabList the list of vocabs words created by user
-     */
-    public User (InputStream userStream, InputStream passwordStream)
+    mcUserPreference = new UserPreference (userStream, passwordStream);
+    mcVocabList = new ArrayList<Vocab> ();
+
+    try
     {
-        BufferedReader brUser;
-        BufferedReader brPassword;
-        String username;
-        String password;
+      brUser = new BufferedReader (new InputStreamReader (userStream));
 
-        mcUserPreference = new UserPreference (userStream,passwordStream);
-        mcVocabList = new ArrayList <Vocab>();
+      while ((username = brUser.readLine ()) != null)
+      {
+        mcUsername = username.trim ();
 
-        try
-        {
-            brUser = new BufferedReader (new InputStreamReader (userStream));
-
-            while ((username = brUser.readLine()) != null)
-            {
-                mcUsername = username.trim();
-
-            }
-        } catch (IOException e)
-        {
-            System.out.println ("An I/O Error occurred while processing file");
-            throw new RuntimeException (e);
-        }
-
-
-        try {
-            brPassword = new BufferedReader (new InputStreamReader(passwordStream));
-
-            while ((password = brPassword.readLine()) != null)
-            {
-
-                mcPassword = password.trim();
-
-            }
-        } catch (IOException e)
-        {
-            System.out.println ("An I/O Error occurred while processing file");
-            throw new RuntimeException (e);
-        }
-
+      }
+    }
+    catch (IOException e)
+    {
+      System.out.println ("An I/O Error occurred while processing file");
+      throw new RuntimeException (e);
     }
 
-    public String getUsername ()
+    try
     {
-        return mcUsername;
+      brPassword = new BufferedReader (new InputStreamReader (passwordStream));
+
+      while ((password = brPassword.readLine ()) != null)
+      {
+
+        mcPassword = password.trim ();
+
+      }
+    }
+    catch (IOException e)
+    {
+      System.out.println ("An I/O Error occurred while processing file");
+      throw new RuntimeException (e);
     }
 
-    public String getColor (UserPreference mcUserPreference)
-    {
-        return mcUserPreference.getColor();
-    }
+  }
 
-    public String getLanguage (UserPreference mcUserPreference)
-    {
-        return mcUserPreference.getLanguage();
-    }
+  public String getUsername ()
+  {
+    return mcUsername;
+  }
+
+  public String getColor (UserPreference mcUserPreference)
+  {
+    return mcUserPreference.getColor ();
+  }
+
+  public String getLanguage (UserPreference mcUserPreference)
+  {
+    return mcUserPreference.getLanguage ();
+  }
 
 }
