@@ -1,8 +1,15 @@
 package edu.pacificu.cs.cs325.translationapp;
 
+import androidx.room.Database;
 import androidx.room.RoomDatabase;
 
-// @Database (entities = { Word.class }, version = 2)
+/**
+ * Creates a DictionaryDB class that serves as the database to store words
+ *
+ * @author Jason Tran
+ */
+
+@Database (entities = { Word.class }, version = 2)
 // @TypeConverters ({ DBTypeConverter.class })
 public abstract class DictionaryDB extends RoomDatabase
 {
