@@ -7,9 +7,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
 
 public class ListActivity extends AppCompatActivity
 {
+  private ArrayList<Word> mcWordList;
+  private CourseRecyclerViewAdapter mcAdapter;
+  private RecyclerView mcRVWords;
 
   @Override
   protected void onCreate (Bundle savedInstanceState)
@@ -25,5 +32,16 @@ public class ListActivity extends AppCompatActivity
               systemBars.bottom);
           return insets;
         });
+
+    mcRVWords = findViewById (R.id.rvWords);
+    mcRVWords.setHasFixedSize (true);
+    mcRVWords.setLayoutManager (new LinearLayoutManager (this));
+  }
+
+  @Override
+  public void onResume () {
+    super.onResume ();
+    mcAdapter = new CourseRecyclerViewAdapter (mcWordList); // list of words (?)
+    mcRVWords.setAdapter (mcAdapter);
   }
 }

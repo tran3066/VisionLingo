@@ -8,12 +8,53 @@
         tools:context=".HomeActivity">
 
     <TextView
+            android:layout_width="223dp"
+            android:layout_height="35dp"
+            android:id="@+id/tvPassword"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.52"
+            android:hint="@string/tvPassword" />
+
+    <TextView
+            android:text="@string/Title"
+            android:layout_width="144dp"
+            android:layout_height="61dp"
+            android:id="@+id/tvTitle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintVertical_bias="0.291"
+            android:gravity="center"
+            android:fontFamily="sans-serif-smallcaps"
+            android:textSize="24sp"
+            android:focusable="false" />
+
+    <TextView
+            android:layout_width="223dp"
+            android:layout_height="35dp"
+            android:id="@+id/tvUsername"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.435"
+            android:hint="@string/tvUsername" />
+
+    <Button
+            android:text="@string/btnLogin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Hello World!"
+            android:id="@+id/btnLogin"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintVertical_bias="0.721"
+            app:layout_constraintHorizontal_bias="0.501" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

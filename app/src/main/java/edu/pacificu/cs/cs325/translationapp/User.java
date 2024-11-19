@@ -19,7 +19,6 @@ import java.util.ArrayList;
 @Entity
 public class User
 {
-
   @PrimaryKey (autoGenerate = true)
   private int mUid;
 

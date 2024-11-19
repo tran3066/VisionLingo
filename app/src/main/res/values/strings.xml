@@ -2,4 +2,22 @@
     <string name="app_name">TranslationApp</string>
     <string name="TakePicture">Take Picture\n</string>
     <string name="Translate">Translate</string>
+    <string name="Title">Visionlingo</string>
+    <string name="tvTitle">Visionlingo</string>
+    <string name="btnLogin">Login</string>
+    <string name="tvUsername">Username</string>
+    <string name="tvPassword">Password</string>
+    <string name="tvWordTranslate">Word Translation</string>
+    <string name="btnSpeak">Speak Word</string>
+    <string name="tvSearch">Search for a word...</string>
+    <string name="btnAdd">Add to Vocab List</string>
+    <string name="btnSearch">Search</string>
+    <string name="tvVocabQuiz">Vocabulary Quiz</string>
+    <string name="btnSubmit">Submit</string>
+    <string name="btnNewWord">New Word</string>
+    <string name="tvHint">(Or shake your phone for a new word)</string>
+    <string name="tvAnswerWord">Enter in the translation...</string>
+    <string name="tvQuestionWord">Random word from the vocab list</string>
+    <string name="tvVocabList">Vocabulary List</string>
+    <string name="btnConfirm">Confirm Preferences</string>
 </resources>

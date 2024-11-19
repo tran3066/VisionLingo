@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <TextView
+            android:text="TextView"
+            android:layout_width="191dp"
+            android:layout_height="35dp"
+            android:id="@+id/tvEnglishWord"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.122"
+            app:layout_constraintBottom_toTopOf="@+id/space1" />
+
+    <Space
+            android:layout_width="140dp"
+            android:layout_height="32dp"
+            android:id="@+id/space1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="48dp"
+            app:layout_constraintHorizontal_bias="0.501" />
+
+    <TextView
+            android:text="TextView"
+            android:layout_width="191dp"
+            android:layout_height="35dp"
+            android:id="@+id/tvTranslation"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintVertical_bias="0.428"
+            app:layout_constraintTop_toBottomOf="@+id/space1"
+            app:layout_constraintBottom_toTopOf="@+id/space2" />
+
+    <TextView
+            android:text="TextView"
+            android:layout_width="191dp"
+            android:layout_height="35dp"
+            android:id="@+id/tvWordType"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/space2"
+            android:layout_marginTop="12dp"
+            app:layout_constraintBottom_toTopOf="@+id/space3"
+            app:layout_constraintVertical_bias="0.0" />
+
+    <Space
+            android:layout_width="140dp"
+            android:layout_height="32dp"
+            android:id="@+id/space2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="136dp"
+            app:layout_constraintHorizontal_bias="0.498" />
+
+    <Space
+            android:layout_width="140dp"
+            android:layout_height="32dp"
+            android:id="@+id/space3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="224dp"
+            app:layout_constraintHorizontal_bias="0.498" />
+
+    <TextView
+            android:text="TextView"
+            android:layout_width="191dp"
+            android:layout_height="35dp"
+            android:id="@+id/tvDefinition"
+            android:inputType="text|textMultiLine"
+            app:layout_constraintTop_toBottomOf="@+id/space3"
+            app:layout_constraintBottom_toTopOf="@+id/space4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    <Space
+            android:layout_width="140dp"
+            android:layout_height="32dp"
+            android:id="@+id/space4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="316dp"
+            app:layout_constraintHorizontal_bias="0.501" />
+
+    <ImageView
+            android:layout_width="164dp"
+            android:layout_height="134dp"
+            app:srcCompat="@android:drawable/alert_dark_frame"
+            android:id="@+id/imageWord"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintTop_toBottomOf="@+id/space4"
+            android:layout_marginTop="12dp"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

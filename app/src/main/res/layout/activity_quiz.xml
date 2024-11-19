@@ -7,4 +7,79 @@
         android:layout_height="match_parent"
         tools:context=".QuizActivity">
 
+    <TextView
+            android:text="@string/tvVocabQuiz"
+            android:layout_width="171dp"
+            android:layout_height="79dp"
+            android:id="@+id/tvVocabQuiz"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.182"
+            android:focusable="false"
+            android:gravity="center"
+            android:textSize="24sp"
+            android:fontFamily="sans-serif-smallcaps" />
+
+    <Button
+            android:text="@string/btnSubmit"
+            android:layout_width="157dp"
+            android:layout_height="54dp"
+            android:id="@+id/btnSubmit"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintVertical_bias="0.545" />
+
+    <Button
+            android:text="@string/btnNewWord"
+            android:layout_width="157dp"
+            android:layout_height="54dp"
+            android:id="@+id/btnNewWord"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintVertical_bias="0.641" />
+
+    <TextView
+            android:text="@string/tvHint"
+            android:layout_width="222dp"
+            android:layout_height="44dp"
+            android:id="@+id/tvHint"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintVertical_bias="0.743"
+            android:focusable="false"
+            android:gravity="center" />
+
+    <TextView
+            android:layout_width="276dp"
+            android:layout_height="39dp"
+            android:id="@+id/tvQuestionWord"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintVertical_bias="0.342"
+            app:layout_constraintHorizontal_bias="0.496"
+            android:focusable="false"
+            android:hint="@string/tvQuestionWord" />
+
+    <TextView
+            android:layout_width="276dp"
+            android:layout_height="39dp"
+            android:id="@+id/tvAnswerWord"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintVertical_bias="0.432"
+            app:layout_constraintHorizontal_bias="0.496"
+            android:hint="@string/tvAnswerWord" />
 </androidx.constraintlayout.widget.ConstraintLayout>
