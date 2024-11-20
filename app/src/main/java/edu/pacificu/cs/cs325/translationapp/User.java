@@ -2,6 +2,8 @@
  * Creates a User class that is used to give us information about the user to
  * keep track of including their username, password, their preferences for the app and their vocab.
  * It is then put into the user database for all of the users from our app.
+ *
+ * @author AaJanae Henry
  */
 
 package edu.pacificu.cs.cs325.translationapp;
@@ -9,97 +11,116 @@ package edu.pacificu.cs.cs325.translationapp;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 @Entity
-public class User
-{
-  @PrimaryKey (autoGenerate = true)
-  private int mUid;
+public class User {
 
-  @ColumnInfo (name = "mcUsername")
-  private String mcUsername;
+    @PrimaryKey(autoGenerate = true)
+    private int mUid;
 
-  @ColumnInfo (name = "mcPassword")
-  private String mcPassword;
+    @ColumnInfo (name = "mcUsername")
+    private String mcUsername;
 
-  @ColumnInfo (name = "mcUserPreference")
-  private UserPreference mcUserPreference;
+    @ColumnInfo (name = "mcPassword")
+    private String mcPassword;
 
-  @ColumnInfo (name = "mcVocabList")
-  private ArrayList<Vocab> mcVocabList;
+    @ColumnInfo (name = "mcUserPreference")
+    private UserPreference mcUserPreference;
 
-  /**
-   * Constructs the User class members
-   *
-   * @param userStream     the username of the user from screen
-   * @param passwordStream password associated with the username from screen
-   *                       //     * @param mcUserPreference the preferences that are associated with the username
-   *                       //     * @param mcVocabList the list of vocabs words created by user
-   */
-  public User (InputStream userStream, InputStream passwordStream)
-  {
-    BufferedReader brUser;
-    BufferedReader brPassword;
-    String username;
-    String password;
+    @ColumnInfo (name = "mcVocabList")
+    private ArrayList<Vocab> mcVocabList;
 
-    mcUserPreference = new UserPreference (userStream, passwordStream);
-    mcVocabList = new ArrayList<Vocab> ();
 
-    try
+    /**
+     * Constructs the User class members
+     * @param mcUsername the username of the user from screen
+     * @param mcPassword password associated with the username from screen
+     */
+
+    public User (String mcUsername, String mcPassword)
     {
-      brUser = new BufferedReader (new InputStreamReader (userStream));
-
-      while ((username = brUser.readLine ()) != null)
-      {
-        mcUsername = username.trim ();
-
-      }
-    }
-    catch (IOException e)
-    {
-      System.out.println ("An I/O Error occurred while processing file");
-      throw new RuntimeException (e);
+        this.mcUsername = mcUsername;
+        this.mcPassword = mcPassword;
+        mcVocabList = new ArrayList<>();
     }
 
-    try
+    /**
+     * Sets the UserPreferences
+     * @param mcUserPreference the preferences associated with the user
+     */
+    public void setUserPreference (UserPreference mcUserPreference)
     {
-      brPassword = new BufferedReader (new InputStreamReader (passwordStream));
-
-      while ((password = brPassword.readLine ()) != null)
-      {
-
-        mcPassword = password.trim ();
-
-      }
-    }
-    catch (IOException e)
-    {
-      System.out.println ("An I/O Error occurred while processing file");
-      throw new RuntimeException (e);
+        this.mcUserPreference = mcUserPreference;
     }
 
-  }
+    /**
+     * Gets Username
+     * @return  mcUsername the username of the user
+     * */
+    public String getmcUsername ()
+    {
+        return mcUsername;
+    }
 
-  public String getUsername ()
-  {
-    return mcUsername;
-  }
+    /**
+     * Gets Password
+     * @return  mcPassword the password of the user
+     * */
 
-  public String getColor (UserPreference mcUserPreference)
-  {
-    return mcUserPreference.getColor ();
-  }
+    public String getmcPassword ()
+    {
+        return mcPassword;
+    }
 
-  public String getLanguage (UserPreference mcUserPreference)
-  {
-    return mcUserPreference.getLanguage ();
-  }
+    /**
+     * Gets UserPreference
+     * @return  mcUserPreference - the preferences associated with the user
+     * */
+
+    public UserPreference getMcUserPreference ()
+    {
+        return mcUserPreference;
+    }
+
+    /**
+     * Gets Color
+     * @param mcUserPreference - the preferences associated with the user
+     * @return mcUsernamePreference.getColor() - the color preference of the user
+     * */
+
+    public String getColor (UserPreference mcUserPreference)
+    {
+        return mcUserPreference.getColor();
+    }
+
+    /**
+     * Gets Language
+     * @param mcUserPreference - the preferences associated with the user
+     * @return  mcUsernamePreference.getLanguage() - the language preference of the user
+     * */
+    public String getLanguage (UserPreference mcUserPreference)
+    {
+        return mcUserPreference.getLanguage();
+    }
+
+    /**
+     * Returns the mUid
+     * @return the mUid
+     */
+    public int getmUid ()
+    {
+        return mUid;
+    }
+
+    /**
+     * Sets the mUid
+     * @param mUid - the primary key to set
+     */
+
+    public void setmUid (int mUid)
+    {
+        this.mUid = mUid;
+    }
 
 }

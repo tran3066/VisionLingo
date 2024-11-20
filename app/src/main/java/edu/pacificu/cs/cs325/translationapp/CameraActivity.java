@@ -1,5 +1,6 @@
 package edu.pacificu.cs.cs325.translationapp;
 
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -61,6 +62,8 @@ public class CameraActivity extends AppCompatActivity
   private ScheduledExecutorService mcCameraBackgroundExecutor;
   private ListenableFuture<ProcessCameraProvider> mcCameraProviderFuture;
   private byte[] mByteArray;
+  private ActivityResultLauncher<Intent> mActivityLauncher;
+
 
   @Override
   protected void onCreate (Bundle savedInstanceState)
@@ -193,18 +196,12 @@ public class CameraActivity extends AppCompatActivity
           });
     });
 
-    //Intent intentSend = new Intent(this, WordActivity.class);
+    Intent intentSend = new Intent(this, HomeActivity.class);
     mcTranslate.setOnClickListener (view -> {
       Log.d (LOG_TAG, "Launch Translate Button");
-      // intentSend.putExtra("Picture", mByteArray);
-      //setResult(RESULT_OK, intentSend);
-      //                    Log.d(LOG_TAG, "Sent Picture");
-      //                    intentSend.putExtra("Text", mcWordFromObject);
-      //                    setResult(RESULT_OK, intentSend);
-      //                    Log.d(LOG_TAG, "Sent Text");
-      finish ();
+      mActivityLauncher.launch(intentSend);
+      Log.d(LOG_TAG, "Info Activity started");
     });
-
   }
 
   private void checkPermissions ()
