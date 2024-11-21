@@ -2,6 +2,13 @@ package edu.pacificu.cs.cs325.translationapp;
 
 import androidx.room.TypeConverter;
 
+/**
+ * Creates a UserPreferenceConverter class used to convert a UserPreference to a
+ * String and vice versa
+ *
+ * @author Jason Tran
+ */
+
 public class UserPreferenceConverter
 {
   /**

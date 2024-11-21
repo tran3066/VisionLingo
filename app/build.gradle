@@ -76,4 +76,7 @@ dependencies {
     // Navigation bar
     implementation 'com.google.android.material:material:1.3.0-alpha03'
 
+    // For storing mcVocabList in a database using JSON files
+    implementation 'com.google.code.gson:gson:2.11.0'
+
 }

@@ -2,17 +2,23 @@ package edu.pacificu.cs.cs325.translationapp;
 
 import androidx.room.TypeConverter;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 /**
- * Creates a DBTypeConverter class used to convert a user's list of vocabulary
- * words to a string
+ * Creates a VocabTypeConverter class used to convert a user's list of
+ * vocabulary words to a String and vice versa
  *
  * @author Jason Tran
  */
 
 public class VocabTypeConverter
 {
+  private static final Gson mcGson = new Gson ();
+
   /**
    * Converts an ArrayList to a String
    *
@@ -23,14 +29,7 @@ public class VocabTypeConverter
   @TypeConverter
   public static String fromArrayList (ArrayList<Vocab> cList)
   {
-    StringBuilder cSB = new StringBuilder ();
-
-    for (Vocab cVocab : cList)
-    {
-      cSB.append (cVocab.getWord () + " "); // how should we convert it?
-    }
-
-    return cSB.toString ();
+    return mcGson.toJson (cList);
   }
 
   /**
@@ -43,10 +42,7 @@ public class VocabTypeConverter
   @TypeConverter
   public static ArrayList<Vocab> fromString (String cValue)
   {
-    ArrayList<Vocab> cArrayList = new ArrayList<>();
-
-    // ???
-
-    return cArrayList;
+    Type cListType = new TypeToken<ArrayList<Vocab>>() {}.getType ();
+    return mcGson.fromJson (cValue, cListType);
   }
 }
