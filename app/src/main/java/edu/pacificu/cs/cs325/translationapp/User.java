@@ -55,12 +55,31 @@ public class User {
     }
 
     /**
+     * Sets the VocabList
+     * @param mcVocabList the vocab list associated with the user
+     */
+
+    public void setMcVocabList (ArrayList<Vocab> mcVocabList)
+    {
+        this.mcVocabList = mcVocabList;
+    }
+
+    /**
      * Gets Username
      * @return  mcUsername the username of the user
      * */
     public String getmcUsername ()
     {
         return mcUsername;
+    }
+
+    /**
+     * Gets VocabList
+     * @return  mcVocabList the vocab list from the user
+     * */
+    public ArrayList<Vocab> getMcVocabList ()
+    {
+        return mcVocabList;
     }
 
     /**

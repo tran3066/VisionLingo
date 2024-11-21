@@ -20,4 +20,9 @@
     <string name="tvQuestionWord">Random word from the vocab list</string>
     <string name="tvVocabList">Vocabulary List</string>
     <string name="btnConfirm">Confirm Preferences</string>
+    <string name="preferences">Preferences</string>
+    <string name="vocabulary_list">Vocabulary List</string>
+    <string name="quiz">Quiz</string>
+    <string name="word_information">Word Information</string>
+    <string name="camera">Camera</string>
 </resources>
