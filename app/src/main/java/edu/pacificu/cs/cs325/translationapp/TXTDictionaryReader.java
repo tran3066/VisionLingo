@@ -38,7 +38,7 @@ public class TXTDictionaryReader extends IDictionaryReader
   @Override
   public boolean read (Dictionary cDictionary)
   {
-    final int AFTER_FIRST_WHITESPACE = 2;
+    final int THREE_PARTS = 3;
 
     boolean bRetVal = true;
 
@@ -51,7 +51,9 @@ public class TXTDictionaryReader extends IDictionaryReader
 
         while ((cLine = cBR.readLine ()) != null)
         {
-          // do stuff
+          String[] cSplit = cLine.split (" ", THREE_PARTS);
+          // Word cWord = new Word (cSplit[0], );
+          cDictionary.insertWord (cSplit[0], cWord);
         }
       }
     }

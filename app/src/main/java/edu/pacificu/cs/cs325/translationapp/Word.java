@@ -29,6 +29,7 @@ public class Word
       String mcLexical, String mcLanguage)
   {
     this.mcEnglishWord = mcEnglishWord;
+    // I feel like we should generate mcTranslatedWord here
     this.mcTranslatedWord = mcTranslatedWord;
     this.mcDefinition = mcDefinition;
     this.mcLexical = mcLexical;
