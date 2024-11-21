@@ -3,7 +3,6 @@ package edu.pacificu.cs.cs325.translationapp;
 import androidx.room.TypeConverter;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * Creates a DBTypeConverter class used to convert a user's list of vocabulary
@@ -12,11 +11,12 @@ import java.util.Arrays;
  * @author Jason Tran
  */
 
-public class DBTypeConverter
+public class VocabTypeConverter
 {
   /**
    * Converts an ArrayList to a String
    *
+   * @param cList ArrayList to convert to String
    * @return ArrayList represented as a String
    */
 
@@ -27,7 +27,7 @@ public class DBTypeConverter
 
     for (Vocab cVocab : cList)
     {
-      //cSB.append (cVocab.getWordEnglish () + " "); // how should we convert it?
+      cSB.append (cVocab.getWord () + " "); // how should we convert it?
     }
 
     return cSB.toString ();
@@ -36,6 +36,7 @@ public class DBTypeConverter
   /**
    * Converts a String to an ArrayList
    *
+   * @param cValue String to convert to ArrayList
    * @return String represented as an ArrayList
    */
 

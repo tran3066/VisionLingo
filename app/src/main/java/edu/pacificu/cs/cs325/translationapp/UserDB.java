@@ -11,7 +11,7 @@ import androidx.room.TypeConverters;
  */
 
 @Database (entities = { User.class }, version = 2)
-@TypeConverters ({ DBTypeConverter.class })
+@TypeConverters ({ VocabTypeConverter.class, UserPreferenceConverter.class })
 public abstract class UserDB extends RoomDatabase
 {
   public abstract UserDAO userDao ();

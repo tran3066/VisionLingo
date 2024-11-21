@@ -5,7 +5,7 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Creates a DictionaryDAO class used for creating functions that access the
@@ -24,7 +24,7 @@ public interface DictionaryDAO
    *         database
    */
   @Query ("SELECT * from Word")
-  ArrayList<Word> getAll ();
+  List<Word> getAll ();
 
   /**
    * Search for a specific word in the dictionary database

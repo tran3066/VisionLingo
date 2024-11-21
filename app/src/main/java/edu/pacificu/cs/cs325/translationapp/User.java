@@ -31,7 +31,6 @@ public class User {
     @ColumnInfo (name = "mcVocabList")
     private ArrayList<Vocab> mcVocabList;
 
-
     /**
      * Constructs the User class members
      * @param mcUsername the username of the user from screen
@@ -49,7 +48,7 @@ public class User {
      * Sets the UserPreferences
      * @param mcUserPreference the preferences associated with the user
      */
-    public void setUserPreference (UserPreference mcUserPreference)
+    public void setMcUserPreference (UserPreference mcUserPreference)
     {
         this.mcUserPreference = mcUserPreference;
     }
@@ -68,7 +67,7 @@ public class User {
      * Gets Username
      * @return  mcUsername the username of the user
      * */
-    public String getmcUsername ()
+    public String getMcUsername ()
     {
         return mcUsername;
     }
@@ -87,7 +86,7 @@ public class User {
      * @return  mcPassword the password of the user
      * */
 
-    public String getmcPassword ()
+    public String getMcPassword ()
     {
         return mcPassword;
     }
@@ -127,7 +126,7 @@ public class User {
      * Returns the mUid
      * @return the mUid
      */
-    public int getmUid ()
+    public int getMUid ()
     {
         return mUid;
     }
@@ -137,7 +136,7 @@ public class User {
      * @param mUid - the primary key to set
      */
 
-    public void setmUid (int mUid)
+    public void setMUid (int mUid)
     {
         this.mUid = mUid;
     }

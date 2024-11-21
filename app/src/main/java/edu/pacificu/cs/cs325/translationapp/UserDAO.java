@@ -5,7 +5,7 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Creates a UserDAO class used for creating functions that access the user
@@ -23,7 +23,7 @@ public interface UserDAO
    * @return an ArrayList containing all the users stored in the user database
    */
   @Query ("SELECT * from User")
-  ArrayList<User> getAll ();
+  List<User> getAll ();
 
   /**
    * Search for a specific user in the user database
@@ -33,7 +33,7 @@ public interface UserDAO
    */
 
   @Query ("SELECT * FROM User WHERE mUid=:id")
-  Word getWord (int id);
+  User getWord (int id);
 
   /**
    * Insert a user into the user database

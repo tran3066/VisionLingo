@@ -22,7 +22,7 @@ public class Word
   @ColumnInfo(name="mcLexical")
   private String mcLexical;
 
-  @ColumnInfo(name="mcLexical")
+  @ColumnInfo(name="mcLanguage")
   private String mcLanguage;
 
   public Word(String mcEnglishWord, String mcTranslatedWord, String mcDefinition,
@@ -33,30 +33,29 @@ public class Word
     this.mcDefinition = mcDefinition;
     this.mcLexical = mcLexical;
     this.mcLanguage = mcLanguage;
-
   }
 
-  public String getEnglishWord()
+  public String getMcEnglishWord()
   {
     return this.mcEnglishWord;
   }
 
-  public String getTranslatedWord()
+  public String getMcTranslatedWord()
   {
     return this.mcTranslatedWord;
   }
 
-  public String getDefinition()
+  public String getMcDefinition()
   {
     return this.mcDefinition;
   }
 
-  public String getLexical()
+  public String getMcLexical()
   {
     return this.mcLexical;
   }
 
-  public String getLanguage()
+  public String getMcLanguage()
   {
     return this.mcLanguage;
   }
@@ -70,7 +69,4 @@ public class Word
   {
     return this.mWid;
   }
-
-
-
 }
