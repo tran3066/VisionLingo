@@ -42,7 +42,9 @@ public class VocabTypeConverter
   @TypeConverter
   public static ArrayList<Vocab> fromString (String cValue)
   {
-    Type cListType = new TypeToken<ArrayList<Vocab>>() {}.getType ();
+    Type cListType = new TypeToken<ArrayList<Vocab>> ()
+    {
+    }.getType ();
     return mcGson.fromJson (cValue, cListType);
   }
 }

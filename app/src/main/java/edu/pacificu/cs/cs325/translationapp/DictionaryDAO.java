@@ -21,7 +21,7 @@ public interface DictionaryDAO
    * Obtains all the words in the dictionary database
    *
    * @return an ArrayList containing all the words stored in the dictionary
-   *         database
+   * database
    */
   @Query ("SELECT * from Word")
   List<Word> getAll ();

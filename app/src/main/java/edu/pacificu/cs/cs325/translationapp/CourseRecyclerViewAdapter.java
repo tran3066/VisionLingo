@@ -12,41 +12,70 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
+/**
+ * Creates a CourseRecyclerViewAdapter class that is used to set up the
+ * RecyclerView to display the English word, the translation, word type,
+ * definition, and image of the word
+ *
+ * @author Jason Tran
+ */
+
 public class CourseRecyclerViewAdapter
     extends RecyclerView.Adapter<CourseRecyclerViewAdapter.ViewHolder>
 {
   private ArrayList<Word> mcData;
 
-  /***
+  /**
    * Constructor to build the adapter
-   * @param data the data to be displayed by the views
+   *
+   * @param cData the data to be displayed by the views
    */
-  public CourseRecyclerViewAdapter (ArrayList<Word> data)
+
+  public CourseRecyclerViewAdapter (ArrayList<Word> cData)
   {
-    this.mcData = data;
+    this.mcData = cData;
   }
 
-  // inflate the XML file, produce a ViewHolder
+  /**
+   * Inflates the XML file and produces a ViewHolder
+   *
+   * @param cParent  ViewGroup object
+   * @param viewType type of view
+   * @return ViewHolder produced from inflating XML
+   */
+
   @NonNull
   @Override
   public CourseRecyclerViewAdapter.ViewHolder onCreateViewHolder (
-      @NonNull ViewGroup parent, int viewType)
+      @NonNull ViewGroup cParent, int viewType)
   {
-    View view = LayoutInflater.from (parent.getContext ())
-        .inflate (R.layout.display_word, parent, false);
-    ViewHolder holder = new ViewHolder (view);
+    View cView = LayoutInflater.from (cParent.getContext ())
+        .inflate (R.layout.display_word, cParent, false);
+    ViewHolder cHolder = new ViewHolder (cView);
 
-    return holder;
+    return cHolder;
   }
 
-  // Put on Course into one ViewHolder
+  /**
+   * Put on Word into one ViewHolder
+   *
+   * @param cHolder  ViewHolder object
+   * @param position position of mcData
+   */
+
   @Override
   public void onBindViewHolder (
-      @NonNull CourseRecyclerViewAdapter.ViewHolder holder, int position)
+      @NonNull CourseRecyclerViewAdapter.ViewHolder cHolder, int position)
   {
-    holder.mcWord = mcData.get (position);
-    holder.bindData ();
+    cHolder.mcWord = mcData.get (position);
+    cHolder.bindData ();
   }
+
+  /**
+   * Get number of items
+   *
+   * @return number of items
+   */
 
   // get number of items
   @Override
@@ -54,6 +83,13 @@ public class CourseRecyclerViewAdapter
   {
     return mcData.size ();
   }
+
+  /**
+   * Creates a ViewHolder class that displays the English word, the translation,
+   * word type, definition, and image of the word in the RecyclerView
+   *
+   * @author Jason Tran
+   */
 
   public class ViewHolder extends RecyclerView.ViewHolder
   {
@@ -64,10 +100,20 @@ public class CourseRecyclerViewAdapter
     private TextView mcTvDefinition;
     private ImageView mcImageWord;
 
-    public ViewHolder (@NonNull View itemView)
+    /**
+     * Constructor to build the ViewHolder
+     *
+     * @param cItemView View object used to build the ViewHolder
+     */
+
+    public ViewHolder (@NonNull View cItemView)
     {
-      super (itemView);
+      super (cItemView);
     }
+
+    /**
+     * Method used to display data in RecyclerView
+     */
 
     public void bindData ()
     {

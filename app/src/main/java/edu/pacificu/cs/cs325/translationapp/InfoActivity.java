@@ -1,8 +1,6 @@
 package edu.pacificu.cs.cs325.translationapp;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 import androidx.activity.EdgeToEdge;
@@ -13,30 +11,50 @@ import androidx.core.view.WindowInsetsCompat;
 
 import edu.pacificu.cs.cs325.translationapp.databinding.ActivityHomeBinding;
 
+/**
+ * Creates a InfoActivity class that opens after the user presses the translate
+ * button from CameraActivity. The user is provided a translation of the word
+ * detected from the image, the word type (e.g., noun, verb, adjective),
+ * a definition of the word, and the picture of the item from CameraActivity.
+ * The user can click the button “Speak Word” to learn how to say the word
+ * phonetically. The user then has the option to add this word to the vocabulary
+ * list (ListActivity) or to search for a completely new word by entering text
+ * in the “Search for a word…” box. Searching for a word allows the user to add
+ * their own custom words they want to find the translations for, which we will
+ * use the network (Oxford Dictionary) to access a dictionary to get this word.
+ *
+ * @author AaJanae Henry, Jason Tran, Christian Flores
+ */
+
 public class InfoActivity extends AppCompatActivity
 {
-    private ActivityHomeBinding mcBinding;
+  private ActivityHomeBinding mcBinding;
 
+  /**
+   * onCreate method that starts the activity
+   *
+   * @param cSavedInstanceState Stores a small amount of data needed to reload
+   *                            UI state if the system stops and then recreates
+   *                            UI
+   */
 
-    @Override
-  protected void onCreate (Bundle savedInstanceState)
+  @Override
+  protected void onCreate (Bundle cSavedInstanceState)
   {
-
-    super.onCreate (savedInstanceState);
+    super.onCreate (cSavedInstanceState);
     EdgeToEdge.enable (this);
-    mcBinding = ActivityHomeBinding.inflate(getLayoutInflater());
-    View view = mcBinding.getRoot();
-    setContentView(view);
+    mcBinding = ActivityHomeBinding.inflate (getLayoutInflater ());
+    View cView = mcBinding.getRoot ();
+    setContentView (cView);
     //setContentView (R.layout.activity_info);
     ViewCompat.setOnApplyWindowInsetsListener (findViewById (R.id.main),
         (v, insets) -> {
-          Insets systemBars = insets.getInsets (
+          Insets cSystemBars = insets.getInsets (
               WindowInsetsCompat.Type.systemBars ());
-          v.setPadding (systemBars.left, systemBars.top, systemBars.right,
-              systemBars.bottom);
+          v.setPadding (cSystemBars.left, cSystemBars.top, cSystemBars.right,
+              cSystemBars.bottom);
           return insets;
         });
-
 
   }
 }

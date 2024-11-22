@@ -1,144 +1,160 @@
-/**
- * Creates a User class that is used to give us information about the user to
- * keep track of including their username, password, their preferences for the app and their vocab.
- * It is then put into the user database for all of the users from our app.
- *
- * @author AaJanae Henry
- */
-
 package edu.pacificu.cs.cs325.translationapp;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+
 import java.util.ArrayList;
 
+/**
+ * Creates a User class that is used to give us information about the user to
+ * keep track of including their username, password, their preferences for the
+ * app and their vocab. It is then put into the user database for all of the
+ * users from our app.
+ *
+ * @author AaJanae Henry
+ */
+
 @Entity
-public class User {
+public class User
+{
+  @PrimaryKey (autoGenerate = true)
+  private int mUid;
 
-    @PrimaryKey(autoGenerate = true)
-    private int mUid;
+  @ColumnInfo (name = "mcUsername")
+  private String mcUsername;
 
-    @ColumnInfo (name = "mcUsername")
-    private String mcUsername;
+  @ColumnInfo (name = "mcPassword")
+  private String mcPassword;
 
-    @ColumnInfo (name = "mcPassword")
-    private String mcPassword;
+  @ColumnInfo (name = "mcUserPreference")
+  private UserPreference mcUserPreference;
 
-    @ColumnInfo (name = "mcUserPreference")
-    private UserPreference mcUserPreference;
+  @ColumnInfo (name = "mcVocabList")
+  private ArrayList<Vocab> mcVocabList;
 
-    @ColumnInfo (name = "mcVocabList")
-    private ArrayList<Vocab> mcVocabList;
+  /**
+   * Constructs the User class members
+   *
+   * @param mcUsername the username of the user from screen
+   * @param mcPassword password associated with the username from screen
+   */
 
-    /**
-     * Constructs the User class members
-     * @param mcUsername the username of the user from screen
-     * @param mcPassword password associated with the username from screen
-     */
+  public User (String mcUsername, String mcPassword)
+  {
+    this.mcUsername = mcUsername;
+    this.mcPassword = mcPassword;
+    mcVocabList = new ArrayList<> ();
+  }
 
-    public User (String mcUsername, String mcPassword)
-    {
-        this.mcUsername = mcUsername;
-        this.mcPassword = mcPassword;
-        mcVocabList = new ArrayList<>();
-    }
+  /**
+   * Sets the UserPreferences
+   *
+   * @param mcUserPreference the preferences associated with the user
+   */
 
-    /**
-     * Sets the UserPreferences
-     * @param mcUserPreference the preferences associated with the user
-     */
-    public void setMcUserPreference (UserPreference mcUserPreference)
-    {
-        this.mcUserPreference = mcUserPreference;
-    }
+  public void setMcUserPreference (UserPreference mcUserPreference)
+  {
+    this.mcUserPreference = mcUserPreference;
+  }
 
-    /**
-     * Sets the VocabList
-     * @param mcVocabList the vocab list associated with the user
-     */
+  /**
+   * Sets the VocabList
+   *
+   * @param mcVocabList the vocab list associated with the user
+   */
 
-    public void setMcVocabList (ArrayList<Vocab> mcVocabList)
-    {
-        this.mcVocabList = mcVocabList;
-    }
+  public void setMcVocabList (ArrayList<Vocab> mcVocabList)
+  {
+    this.mcVocabList = mcVocabList;
+  }
 
-    /**
-     * Gets Username
-     * @return  mcUsername the username of the user
-     * */
-    public String getMcUsername ()
-    {
-        return mcUsername;
-    }
+  /**
+   * Gets Username
+   *
+   * @return mcUsername the username of the user
+   */
 
-    /**
-     * Gets VocabList
-     * @return  mcVocabList the vocab list from the user
-     * */
-    public ArrayList<Vocab> getMcVocabList ()
-    {
-        return mcVocabList;
-    }
+  public String getMcUsername ()
+  {
+    return mcUsername;
+  }
 
-    /**
-     * Gets Password
-     * @return  mcPassword the password of the user
-     * */
+  /**
+   * Gets VocabList
+   *
+   * @return mcVocabList the vocab list from the user
+   */
 
-    public String getMcPassword ()
-    {
-        return mcPassword;
-    }
+  public ArrayList<Vocab> getMcVocabList ()
+  {
+    return mcVocabList;
+  }
 
-    /**
-     * Gets UserPreference
-     * @return  mcUserPreference - the preferences associated with the user
-     * */
+  /**
+   * Gets Password
+   *
+   * @return mcPassword the password of the user
+   */
 
-    public UserPreference getMcUserPreference ()
-    {
-        return mcUserPreference;
-    }
+  public String getMcPassword ()
+  {
+    return mcPassword;
+  }
 
-    /**
-     * Gets Color
-     * @param mcUserPreference - the preferences associated with the user
-     * @return mcUsernamePreference.getColor() - the color preference of the user
-     * */
+  /**
+   * Gets UserPreference
+   *
+   * @return mcUserPreference - the preferences associated with the user
+   */
 
-    public String getColor (UserPreference mcUserPreference)
-    {
-        return mcUserPreference.getColor();
-    }
+  public UserPreference getMcUserPreference ()
+  {
+    return mcUserPreference;
+  }
 
-    /**
-     * Gets Language
-     * @param mcUserPreference - the preferences associated with the user
-     * @return  mcUsernamePreference.getLanguage() - the language preference of the user
-     * */
-    public String getLanguage (UserPreference mcUserPreference)
-    {
-        return mcUserPreference.getLanguage();
-    }
+  /**
+   * Gets Color
+   *
+   * @return mcUsernamePreference.getColor () - the color preference of the user
+   */
 
-    /**
-     * Returns the mUid
-     * @return the mUid
-     */
-    public int getMUid ()
-    {
-        return mUid;
-    }
+  public String getColor ()
+  {
+    return mcUserPreference.getColor ();
+  }
 
-    /**
-     * Sets the mUid
-     * @param mUid - the primary key to set
-     */
+  /**
+   * Gets Language
+   *
+   * @return mcUsernamePreference.getLanguage() - the language preference of the
+   * user
+   */
 
-    public void setMUid (int mUid)
-    {
-        this.mUid = mUid;
-    }
+  public String getLanguage ()
+  {
+    return mcUserPreference.getLanguage ();
+  }
 
+  /**
+   * Returns the mUid
+   *
+   * @return the mUid
+   */
+
+  public int getMUid ()
+  {
+    return mUid;
+  }
+
+  /**
+   * Sets the mUid
+   *
+   * @param mUid - the primary key to set
+   */
+
+  public void setMUid (int mUid)
+  {
+    this.mUid = mUid;
+  }
 }

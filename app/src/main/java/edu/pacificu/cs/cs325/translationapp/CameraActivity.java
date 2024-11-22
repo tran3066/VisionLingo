@@ -46,9 +46,19 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
+/**
+ * Creates a CameraActivity class that lets the user take a picture and displays
+ * the image they have taken in the “display image” box. It also displays the
+ * word of the object detected in the image on the same screen.  The user then
+ * has the option to translate the word of the object which sends them to
+ * InfoActivity to display the information of the word they just took a picture
+ * of.
+ *
+ * @author AaJanae Henry
+ */
+
 public class CameraActivity extends AppCompatActivity
 {
-
   private final String LOG_TAG = "CameraActivity";
   private ActivityResultLauncher<String> mCameraPermissionRequest;
   private boolean mbCameraPermission;
@@ -64,23 +74,30 @@ public class CameraActivity extends AppCompatActivity
   private byte[] mByteArray;
   private ActivityResultLauncher<Intent> mActivityLauncher;
 
+  /**
+   * onCreate method that starts the activity
+   *
+   * @param cSavedInstanceState Stores a small amount of data needed to reload
+   *                            UI state if the system stops and then recreates
+   *                            UI
+   */
 
   @Override
-  protected void onCreate (Bundle savedInstanceState)
+  protected void onCreate (Bundle cSavedInstanceState)
   {
-    super.onCreate (savedInstanceState);
+    super.onCreate (cSavedInstanceState);
     EdgeToEdge.enable (this);
     setContentView (R.layout.activity_camera);
     ViewCompat.setOnApplyWindowInsetsListener (findViewById (R.id.main),
         (v, insets) -> {
-          Insets systemBars = insets.getInsets (
+          Insets cSystemBars = insets.getInsets (
               WindowInsetsCompat.Type.systemBars ());
-          v.setPadding (systemBars.left, systemBars.top, systemBars.right,
-              systemBars.bottom);
+          v.setPadding (cSystemBars.left, cSystemBars.top, cSystemBars.right,
+              cSystemBars.bottom);
           return insets;
         });
 
-    ObjectDetectorOptions options = new ObjectDetectorOptions.Builder ().setDetectorMode (
+    ObjectDetectorOptions cOptions = new ObjectDetectorOptions.Builder ().setDetectorMode (
         ObjectDetectorOptions.STREAM_MODE).enableClassification ().build ();
 
     mcCptImageView = findViewById (R.id.cptIMG);
@@ -88,7 +105,7 @@ public class CameraActivity extends AppCompatActivity
     mcCameraView = findViewById (R.id.cameraPreview);
     mcTakePicture = findViewById (R.id.btnTakePicture);
     mcTranslate = findViewById (R.id.btnTranslate);
-    ObjectDetector objectDetector = ObjectDetection.getClient (options);
+    ObjectDetector cObjectDetector = ObjectDetection.getClient (cOptions);
 
     mbCameraPermission = false;
 
@@ -107,8 +124,8 @@ public class CameraActivity extends AppCompatActivity
     mcCameraProviderFuture.addListener (() -> {
       try
       {
-        ProcessCameraProvider cameraProvider = mcCameraProviderFuture.get ();
-        bindPreview (cameraProvider);
+        ProcessCameraProvider cCameraProvider = mcCameraProviderFuture.get ();
+        bindPreview (cCameraProvider);
       }
       catch (ExecutionException | InterruptedException e)
       {
@@ -117,39 +134,52 @@ public class CameraActivity extends AppCompatActivity
     }, ContextCompat.getMainExecutor (this));
     checkPermissions ();
     mcTakePicture.setOnClickListener ((view) -> {
-      ByteArrayOutputStream byteArrayStream = new ByteArrayOutputStream ();
-      ImageCapture.OutputFileOptions outputFileOptions = null;
-      outputFileOptions = new ImageCapture.OutputFileOptions.Builder (
-          byteArrayStream).build ();
+      ByteArrayOutputStream cByteArrayStream = new ByteArrayOutputStream ();
+      ImageCapture.OutputFileOptions cOutputFileOptions = null;
+      cOutputFileOptions = new ImageCapture.OutputFileOptions.Builder (
+          cByteArrayStream).build ();
 
       mcCameraBackgroundExecutor = Executors.newSingleThreadScheduledExecutor ();
 
-      mcImageCapture.takePicture (outputFileOptions, mcCameraBackgroundExecutor,
-          new ImageCapture.OnImageSavedCallback ()
+      mcImageCapture.takePicture (cOutputFileOptions,
+          mcCameraBackgroundExecutor, new ImageCapture.OnImageSavedCallback ()
           {
+            /**
+             * Saves the image in a ByteArrayStream once it is saved
+             *
+             * @param cOutputFileResults info about the saved image file
+             */
+
             @Override
             public void onImageSaved (
-                @NonNull ImageCapture.OutputFileResults outputFileResults)
+                @NonNull ImageCapture.OutputFileResults cOutputFileResults)
             {
               Bitmap cImage = BitmapFactory.decodeByteArray (
-                  byteArrayStream.toByteArray (), 0,
-                  byteArrayStream.toByteArray ().length);
-              InputImage image = InputImage.fromBitmap (cImage, 0);
-              objectDetector.process (image).addOnSuccessListener (
+                  cByteArrayStream.toByteArray (), 0,
+                  cByteArrayStream.toByteArray ().length);
+              InputImage cInputImage = InputImage.fromBitmap (cImage, 0);
+              cObjectDetector.process (cInputImage).addOnSuccessListener (
                   new OnSuccessListener<List<DetectedObject>> ()
                   {
+                    /**
+                     * Runs if objects were successfully detected in the image
+                     *
+                     * @param cDetectedObjects objects detected in the image
+                     */
+
                     @Override
-                    public void onSuccess (List<DetectedObject> detectedObjects)
+                    public void onSuccess (
+                        List<DetectedObject> cDetectedObjects)
                     {
                       Log.d ("TEXT", "SUCCESS");
 
-                      for (DetectedObject detectedObject : detectedObjects)
+                      for (DetectedObject cDetectedObject : cDetectedObjects)
                       {
-                        Rect boundingBox = detectedObject.getBoundingBox ();
-                        Integer trackingId = detectedObject.getTrackingId ();
-                        for (DetectedObject.Label label : detectedObject.getLabels ())
+                        Rect cBoundingBox = cDetectedObject.getBoundingBox ();
+                        Integer cTrackingId = cDetectedObject.getTrackingId ();
+                        for (DetectedObject.Label cLabel : cDetectedObject.getLabels ())
                         {
-                          String text = label.getText ();
+                          String text = cLabel.getText ();
                           if (PredefinedCategory.FOOD.equals (text))
                           {
                             mcWordFromObject = text;
@@ -172,37 +202,57 @@ public class CameraActivity extends AppCompatActivity
                     }
                   }).addOnFailureListener (new OnFailureListener ()
               {
+                /**
+                 * Runs if an error occurred while trying to detect objects in
+                 * the image
+                 *
+                 * @param cError error obtained attempting to detect objects
+                 */
+
                 @Override
-                public void onFailure (@NonNull Exception e)
+                public void onFailure (@NonNull Exception cError)
                 {
-                  Log.d ("TEXT", "FAILURE " + e.getMessage ());
+                  Log.d ("TEXT", "FAILURE " + cError.getMessage ());
                 }
               });
 
               runOnUiThread (() -> {
                 mcCptImageView.setImageBitmap (BitmapFactory.decodeByteArray (
-                    byteArrayStream.toByteArray (), 0,
-                    byteArrayStream.toByteArray ().length));
-                mByteArray = byteArrayStream.toByteArray ();
+                    cByteArrayStream.toByteArray (), 0,
+                    cByteArrayStream.toByteArray ().length));
+                mByteArray = cByteArrayStream.toByteArray ();
               });
               Log.d ("Camera:", "Took a picture!");
             }
 
+            /**
+             * Runs only if there has been an error while capturing the image
+             *
+             * @param cError An exception thrown to indicate an error has
+             *               occurred during image capture or while saving the
+             *               captured image
+             */
+
             @Override
-            public void onError (@NonNull ImageCaptureException error)
+            public void onError (@NonNull ImageCaptureException cError)
             {
-              Log.d ("Camera: ", "error!" + error.toString ());
+              Log.d ("Camera: ", "error!" + cError.toString ());
             }
           });
     });
 
-    Intent intentSend = new Intent(this, HomeActivity.class);
+    Intent cIntentSend = new Intent (this, HomeActivity.class);
     mcTranslate.setOnClickListener (view -> {
       Log.d (LOG_TAG, "Launch Translate Button");
-      mActivityLauncher.launch(intentSend);
-      Log.d(LOG_TAG, "Info Activity started");
+      mActivityLauncher.launch (cIntentSend);
+      Log.d (LOG_TAG, "Info Activity started");
     });
   }
+
+  /**
+   * Checks if the app has permission to use the device's camera, and if not,
+   * requests permission from the user
+   */
 
   private void checkPermissions ()
   {
@@ -214,16 +264,22 @@ public class CameraActivity extends AppCompatActivity
     }
   }
 
-  void bindPreview (@NonNull ProcessCameraProvider cameraProvider)
+  /**
+   * Sets up camera preview and image capture functionality
+   *
+   * @param cCameraProvider used to bind the lifecycle of cameras
+   */
+
+  void bindPreview (@NonNull ProcessCameraProvider cCameraProvider)
   {
     checkPermissions ();
     mcImageCapture = new ImageCapture.Builder ().setTargetRotation (
         Objects.requireNonNull (getDisplay ()).getRotation ()).build ();
-    Preview preview = new Preview.Builder ().build ();
-    CameraSelector cameraSelector = new CameraSelector.Builder ().requireLensFacing (
+    Preview cPreview = new Preview.Builder ().build ();
+    CameraSelector cCameraSelector = new CameraSelector.Builder ().requireLensFacing (
         CameraSelector.LENS_FACING_BACK).build ();
-    preview.setSurfaceProvider (mcCameraView.getSurfaceProvider ());
-    Camera camera = cameraProvider.bindToLifecycle (this, cameraSelector,
-        preview, mcImageCapture);
+    cPreview.setSurfaceProvider (mcCameraView.getSurfaceProvider ());
+    Camera cCamera = cCameraProvider.bindToLifecycle (this, cCameraSelector,
+        cPreview, mcImageCapture);
   }
 }
