@@ -33,7 +33,7 @@ public interface UserDAO
    */
 
   @Query ("SELECT * FROM User WHERE mUid=:id")
-  User getWord (int id);
+  User getUser (int id);
 
   /**
    * Insert a user into the user database
