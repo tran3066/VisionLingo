@@ -21,8 +21,8 @@ public class Word
   @ColumnInfo(name="mcEnglishWord")
   private String mcEnglishWord;
 
-  @ColumnInfo(name="mcTranslatedWord")
-  private String mcTranslatedWord;
+  //@ColumnInfo(name="mcTranslatedWord")
+  //private String mcTranslatedWord;
 
   @ColumnInfo(name="mcDefinition")
   private String mcDefinition;
@@ -30,8 +30,8 @@ public class Word
   @ColumnInfo(name="mcLexical")
   private String mcLexical;
 
-  @ColumnInfo(name="mcLanguage")
-  private String mcLanguage;
+  //@ColumnInfo(name="mcLanguage")
+  //private String mcLanguage;
 
   /**
    * Initializes Word by initializing the English word, the translated word,
@@ -49,10 +49,10 @@ public class Word
   {
     this.mcEnglishWord = mcEnglishWord;
     // I feel like we should generate mcTranslatedWord here
-    this.mcTranslatedWord = mcTranslatedWord;
+    //this.mcTranslatedWord = mcTranslatedWord;
     this.mcDefinition = mcDefinition;
     this.mcLexical = mcLexical;
-    this.mcLanguage = mcLanguage;
+    //this.mcLanguage = mcLanguage;
   }
 
   /**
@@ -72,10 +72,10 @@ public class Word
    * @return translated word
    */
 
-  public String getMcTranslatedWord()
-  {
-    return this.mcTranslatedWord;
-  }
+//  public String getMcTranslatedWord()
+//  {
+//    return this.mcTranslatedWord;
+//  }
 
   /**
    * Obtains the definition of the word
@@ -105,10 +105,10 @@ public class Word
    * @return the language
    */
 
-  public String getMcLanguage()
-  {
-    return this.mcLanguage;
-  }
+  //public String getMcLanguage()
+//  {
+//    return this.mcLanguage;
+//  }
 
   /**
    * Sets the WID of the word

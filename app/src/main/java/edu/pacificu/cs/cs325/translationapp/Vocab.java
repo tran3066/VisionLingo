@@ -11,6 +11,7 @@ public class Vocab
 {
   private Word mcTheWord;
   private Byte[] mcImage;
+  private String mcTranslatedWord;
 
   /**
    * Initializes Vocab by initializing the word and image
@@ -19,10 +20,11 @@ public class Vocab
    * @param mcImage   image stored as a byte array
    */
 
-  public Vocab (Word mcTheWord, Byte[] mcImage)
+  public Vocab (Word mcTheWord, Byte[] mcImage, String mcTranslatedWord)
   {
     this.mcTheWord = mcTheWord;
     this.mcImage = mcImage;
+    this.mcTranslatedWord = mcTranslatedWord;
   }
 
   /**
@@ -45,5 +47,9 @@ public class Vocab
   public Word getWord ()
   {
     return this.mcTheWord;
+  }
+
+  public String getTranslatedWord() {
+    return mcTranslatedWord;
   }
 }
