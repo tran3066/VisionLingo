@@ -13,6 +13,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.room.Room;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -37,7 +38,7 @@ public class HomeActivity extends AppCompatActivity
   private ActivityHomeBinding mcBinding;
   private UserDAO mcDAO;
   private UserDB mcDB;
-  private HashMap<String, String> usersFromDB = new HashMap<> ();
+  private List<User> usersFromDB;
   private edu.pacificu.cs.cs325.translationapp.User mcUser;
 
   /**
@@ -73,7 +74,7 @@ public class HomeActivity extends AppCompatActivity
         mcDB = Room.databaseBuilder (getApplicationContext (), UserDB.class,
             "User-db").fallbackToDestructiveMigrationOnDowngrade ().build ();
         mcDAO = mcDB.userDao ();
-        //usersFromDB.put(mcDAO.getAll().)= mcDAO.getAll();
+        usersFromDB = mcDAO.getAll();
       }
       catch (Exception e)
       {
@@ -82,15 +83,19 @@ public class HomeActivity extends AppCompatActivity
 
     });
 
-    // shouldn't we have a hashtable so we can look up id and their values?
-    // yeah I'll implement that later ^ (Jason)
 
     Intent cIntentCam = new Intent (this, CameraActivity.class);
     mcBinding.btnLogin.setOnClickListener (v -> {
-      //                  for (User check: usersFromDB)
-      //                  {
-      //                      if (mcBinding.tvUsername.toString())
-      //                  }
+      for (User check : usersFromDB)
+      {
+        if (mcBinding.tvUsername.toString().equals (check.getMcUsername()))
+        {
+          if (mcBinding.tvPassword.toString().equals(check.getMcPassword()))
+          {
+
+          }
+        }
+      }
 
       Log.d (LOG_TAG, "Launch CameraActivity from Login");
       startActivity (cIntentCam);

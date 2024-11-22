@@ -7,82 +7,75 @@
     android:layout_height="match_parent"
     tools:context=".CameraActivity">
 
-<!--    <androidx.camera.view.PreviewView-->
-<!--        android:id="@+id/cameraPreview"-->
-<!--        android:layout_width="300dp"-->
-<!--        android:layout_height="300dp"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintHorizontal_bias="0.495"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        app:layout_constraintVertical_bias="0.037" >-->
+    <androidx.camera.view.PreviewView
+        android:id="@+id/cameraPreview"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.037" >
 
-<!--    </androidx.camera.view.PreviewView>-->
+    </androidx.camera.view.PreviewView>
 
-<!--    <ImageView-->
-<!--        android:id="@+id/cptIMG"-->
-<!--        android:layout_width="161dp"-->
-<!--        android:layout_height="156dp"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintHorizontal_bias="0.064"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        app:layout_constraintVertical_bias="0.683"-->
-<!--        app:srcCompat="@android:drawable/alert_dark_frame" />-->
+    <ImageView
+        android:id="@+id/cptIMG"
+        android:layout_width="161dp"
+        android:layout_height="156dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.064"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.683"
+        app:srcCompat="@android:drawable/alert_dark_frame" />
 
-<!--    <Button-->
-<!--        android:id="@+id/btnTakePicture"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="@string/TakePicture"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintHorizontal_bias="0.508"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        app:layout_constraintVertical_bias="0.485" />-->
+    <Button
+        android:id="@+id/btnTakePicture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/TakePicture"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.508"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.485" />
 
-<!--    <Button-->
-<!--        android:id="@+id/btnTranslate"-->
-<!--        android:layout_width="147dp"-->
-<!--        android:layout_height="67dp"-->
-<!--        android:text="@string/Translate"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        app:layout_constraintVertical_bias="0.844" />-->
-
-<!--    <TextView-->
-<!--        android:id="@+id/txtTextView"-->
-<!--        android:layout_width="161dp"-->
-<!--        android:layout_height="156dp"-->
-<!--        app:layout_constraintBottom_toTopOf="@+id/btnTranslate"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintHorizontal_bias="0.936"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        app:layout_constraintVertical_bias="0.97" />-->
-
-    <FrameLayout
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
+    <Button
+        android:id="@+id/btnTranslate"
+        android:layout_width="147dp"
+        android:layout_height="67dp"
+        android:text="@string/Translate"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.844" />
 
-    </FrameLayout>
+    <TextView
+        android:id="@+id/txtTextView"
+        android:layout_width="161dp"
+        android:layout_height="156dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnTranslate"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.936"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.97" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="23dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnTranslate"
         app:menu="@menu/bottom_nav_menu">
 
     </com.google.android.material.bottomnavigation.BottomNavigationView>

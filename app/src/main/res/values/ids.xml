@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="cameraPreview" type="id">cameraPreview</item>
+    <item name="cptIMG" type="id">cptIMG</item>
+    <item name="btnTakePicture" type="id">btnTakePicture</item>
+    <item name="btnTranslate" type="id">btnTranslate</item>
+    <item name="txtTextView" type="id">txtTextView</item>
+</resources>

@@ -4,16 +4,16 @@
     <item android:title="@string/camera"
         android:icon="@drawable/baseline_add_a_photo_24"
         android:id="@+id/camera"/>
-    <item android:title="@string/word_information"
-        android:icon="@drawable/baseline_info_24"
-        android:id="@+id/wordInformation"/>
-    <item android:title="@string/quiz"
-        android:icon="@drawable/baseline_school_24"
-        android:id="@+id/quiz"/>
-    <item android:title="@string/vocabulary_list"
-        android:icon="@drawable/baseline_list_alt_24"
-        android:id="@+id/vocabularyList"/>
     <item android:title="@string/preferences"
         android:icon="@drawable/baseline_manage_accounts_24"
         android:id="@+id/preferences"/>
+    <item android:title="@string/word_information"
+        android:icon="@drawable/baseline_info_24"
+        android:id="@+id/wordInformation"/>
+    <item android:title="@string/vocabulary_list"
+        android:icon="@drawable/baseline_list_alt_24"
+        android:id="@+id/vocabularyList"/>
+    <item android:title="@string/quiz"
+        android:icon="@drawable/baseline_school_24"
+        android:id="@+id/quiz"/>
 </menu>
