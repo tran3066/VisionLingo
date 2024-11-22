@@ -18,16 +18,16 @@ public class Word
   @PrimaryKey (autoGenerate = true)
   private int mWid;
 
-  @ColumnInfo(name="mcEnglishWord")
+  @ColumnInfo (name = "mcEnglishWord")
   private String mcEnglishWord;
 
   //@ColumnInfo(name="mcTranslatedWord")
   //private String mcTranslatedWord;
 
-  @ColumnInfo(name="mcDefinition")
+  @ColumnInfo (name = "mcDefinition")
   private String mcDefinition;
 
-  @ColumnInfo(name="mcLexical")
+  @ColumnInfo (name = "mcLexical")
   private String mcLexical;
 
   //@ColumnInfo(name="mcLanguage")
@@ -37,15 +37,12 @@ public class Word
    * Initializes Word by initializing the English word, the translated word,
    * the word's definition, the word type, and the language
    *
-   * @param mcEnglishWord    the word in English
-   * @param mcTranslatedWord the word translated from English
-   * @param mcDefinition     the definition of the word
-   * @param mcLexical        the word type (e.g. noun, verb, adjective)
-   * @param mcLanguage       the language to translate the word to
+   * @param mcEnglishWord the word in English
+   * @param mcDefinition  the definition of the word
+   * @param mcLexical     the word type (e.g. noun, verb, adjective)
    */
 
-  public Word(String mcEnglishWord, String mcTranslatedWord, String mcDefinition,
-      String mcLexical, String mcLanguage)
+  public Word (String mcEnglishWord, String mcDefinition, String mcLexical)
   {
     this.mcEnglishWord = mcEnglishWord;
     // I feel like we should generate mcTranslatedWord here
@@ -61,7 +58,7 @@ public class Word
    * @return the word in English
    */
 
-  public String getMcEnglishWord()
+  public String getMcEnglishWord ()
   {
     return this.mcEnglishWord;
   }
@@ -72,10 +69,10 @@ public class Word
    * @return translated word
    */
 
-//  public String getMcTranslatedWord()
-//  {
-//    return this.mcTranslatedWord;
-//  }
+  //  public String getMcTranslatedWord()
+  //  {
+  //    return this.mcTranslatedWord;
+  //  }
 
   /**
    * Obtains the definition of the word
@@ -83,7 +80,7 @@ public class Word
    * @return definition of word
    */
 
-  public String getMcDefinition()
+  public String getMcDefinition ()
   {
     return this.mcDefinition;
   }
@@ -94,7 +91,7 @@ public class Word
    * @return the word type
    */
 
-  public String getMcLexical()
+  public String getMcLexical ()
   {
     return this.mcLexical;
   }
@@ -106,9 +103,9 @@ public class Word
    */
 
   //public String getMcLanguage()
-//  {
-//    return this.mcLanguage;
-//  }
+  //  {
+  //    return this.mcLanguage;
+  //  }
 
   /**
    * Sets the WID of the word
@@ -116,7 +113,7 @@ public class Word
    * @param wid the WID to set the new WID
    */
 
-  public void setWid(int wid)
+  public void setWid (int wid)
   {
     this.mWid = wid;
   }
@@ -127,7 +124,7 @@ public class Word
    * @return the WID
    */
 
-  public int getWid()
+  public int getWid ()
   {
     return this.mWid;
   }
