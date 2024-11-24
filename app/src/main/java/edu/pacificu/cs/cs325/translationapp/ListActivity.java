@@ -29,8 +29,6 @@ import java.util.ArrayList;
 
 public class ListActivity extends AppCompatActivity
 {
-  // need to change this later (i.e. use User to get the list of Vocab)
-  private ArrayList<Vocab> mcVocabList;
   private VocabRecyclerViewAdapter mcAdapter;
   private RecyclerView mcRVWords;
 
@@ -71,7 +69,7 @@ public class ListActivity extends AppCompatActivity
   public void onResume ()
   {
     super.onResume ();
-    mcAdapter = new VocabRecyclerViewAdapter (mcVocabList);
+    mcAdapter = new VocabRecyclerViewAdapter (HomeActivity.mcCurrentUser.getMcVocabList ());
     mcRVWords.setAdapter (mcAdapter);
   }
 }
