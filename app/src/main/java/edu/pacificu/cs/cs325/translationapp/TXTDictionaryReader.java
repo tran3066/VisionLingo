@@ -12,7 +12,7 @@ import java.util.Arrays;
  * class IDictionaryReader. As implied by its name, TXTDictionaryReader reads
  * from a txt file
  *
- * @author Jason Tran, Christian Flores
+ * @author Jason Tran
  */
 
 public class TXTDictionaryReader extends IDictionaryReader
@@ -38,6 +38,9 @@ public class TXTDictionaryReader extends IDictionaryReader
   @Override
   public boolean read (Dictionary cDictionary)
   {
+    final int WORD = 0;
+    final int LEXICAL = 1;
+    final int DEFINITION = 2;
     final int THREE_PARTS = 3;
 
     boolean bRetVal = true;
@@ -52,8 +55,9 @@ public class TXTDictionaryReader extends IDictionaryReader
         while ((cLine = cBR.readLine ()) != null)
         {
           String[] cSplit = cLine.split (" ", THREE_PARTS);
-          // Word cWord = new Word (cSplit[0], );
-          // cDictionary.insertWord (cSplit[0], cWord);
+          Word cWord = new Word (cSplit[WORD], cSplit[LEXICAL],
+              cSplit[DEFINITION]);
+          cDictionary.insertWord (cSplit[WORD], cWord);
         }
       }
     }
