@@ -35,16 +35,16 @@ public class VocabTypeConverter
   /**
    * Converts a String to an ArrayList
    *
-   * @param cValue String to convert to ArrayList
+   * @param cString String to convert to ArrayList
    * @return String represented as an ArrayList
    */
 
   @TypeConverter
-  public static ArrayList<Vocab> fromString (String cValue)
+  public static ArrayList<Vocab> fromString (String cString)
   {
     Type cListType = new TypeToken<ArrayList<Vocab>> ()
     {
     }.getType ();
-    return mcGson.fromJson (cValue, cListType);
+    return mcGson.fromJson (cString, cListType);
   }
 }
