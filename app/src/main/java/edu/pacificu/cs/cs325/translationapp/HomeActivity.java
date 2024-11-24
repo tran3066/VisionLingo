@@ -38,6 +38,7 @@ public class HomeActivity extends AppCompatActivity
 {
   private final String LOG_TAG = "HomeActivity";
   private final int NUM_THREADS = 2;
+  private final int SIZE_DATABASE = 36657;
 
   private ActivityHomeBinding mcBinding;
   private ExecutorService mcRunner;
@@ -106,18 +107,21 @@ public class HomeActivity extends AppCompatActivity
           TXTDatabaseReader cReader = new TXTDatabaseReader (
               cDictionaryURL.openStream ());
           cReader.read (mcDictionaryDAO);
-
-          runOnUiThread (() -> {
-            int duration = Toast.LENGTH_SHORT;
-            Toast cToast = Toast.makeText (this,
-                "Database fully loaded from URL", duration);
-            cToast.show ();
-          });
         }
         catch (IOException cException)
         {
           throw new RuntimeException (cException);
         }
+      }
+
+      if (mcDictionaryDAO.getSize () == SIZE_DATABASE)
+      {
+        runOnUiThread (() -> {
+          int duration = Toast.LENGTH_SHORT;
+          Toast cToast = Toast.makeText (this,
+              "Database fully loaded from URL", duration);
+          cToast.show ();
+        });
       }
     });
 
