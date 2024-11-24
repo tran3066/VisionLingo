@@ -60,6 +60,7 @@ import java.util.concurrent.ScheduledExecutorService;
 public class CameraActivity extends AppCompatActivity
 {
   private final String LOG_TAG = "CameraActivity";
+
   private ActivityResultLauncher<String> mCameraPermissionRequest;
   private boolean mbCameraPermission;
   private String mcWordFromObject;

@@ -4,26 +4,24 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
- * Creates a TXTDictionaryReader that implements the methods in the abstract
- * class IDictionaryReader. As implied by its name, TXTDictionaryReader reads
+ * Creates a TXTDatabaseReader that implements the methods in the abstract
+ * class IDatabaseReader. As implied by its name, TXTDatabaseReader reads
  * from a txt file
  *
  * @author Jason Tran
  */
 
-public class TXTDictionaryReader extends IDictionaryReader
+public class TXTDatabaseReader extends IDatabaseReader
 {
   /**
-   * Initializes TXTDictionaryReader using parameter list values
+   * Initializes TXTDatabaseReader using parameter list values
    *
    * @param cInputStream input stream from which the dictionary will read
    */
 
-  public TXTDictionaryReader (InputStream cInputStream)
+  public TXTDatabaseReader (InputStream cInputStream)
   {
     super (cInputStream);
   }
@@ -31,12 +29,12 @@ public class TXTDictionaryReader extends IDictionaryReader
   /**
    * Reads from a text file
    *
-   * @param cDictionary dictionary to be initialized
+   * @param cDAO database to be initialized
    * @return true if the text file was successfully read from; else, false
    */
 
   @Override
-  public boolean read (Dictionary cDictionary)
+  public boolean read (DictionaryDAO cDAO)
   {
     final int WORD = 0;
     final int LEXICAL = 1;
@@ -57,7 +55,7 @@ public class TXTDictionaryReader extends IDictionaryReader
           String[] cSplit = cLine.split (" ", THREE_PARTS);
           Word cWord = new Word (cSplit[WORD], cSplit[LEXICAL],
               cSplit[DEFINITION]);
-          cDictionary.insertWord (cSplit[WORD], cWord);
+          cDAO.insert (cWord);
         }
       }
     }

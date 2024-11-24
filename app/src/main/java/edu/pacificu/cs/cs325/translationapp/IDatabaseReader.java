@@ -3,23 +3,23 @@ package edu.pacificu.cs.cs325.translationapp;
 import java.io.InputStream;
 
 /**
- * Creates an abstract IDictionaryReader class that stores an InputStream object
- * that determines where the dictionary will read
+ * Creates an abstract IDatabaseReader class that stores an InputStream object
+ * that determines where the database will read
  *
  * @author Jason Tran
  */
 
-public abstract class IDictionaryReader
+public abstract class IDatabaseReader
 {
   private final InputStream mcInputStream;
 
   /**
-   * Initializes IDictionaryReader using parameter list values
+   * Initializes IDatabaseReader using parameter list values
    *
-   * @param cInputStream input stream from which the dictionary will read
+   * @param cInputStream input stream from which the database will read
    */
 
-  public IDictionaryReader (InputStream cInputStream)
+  public IDatabaseReader (InputStream cInputStream)
   {
     mcInputStream = cInputStream;
   }
@@ -27,11 +27,11 @@ public abstract class IDictionaryReader
   /**
    * Pure virtual method that is intended to read from the input stream
    *
-   * @param cDictionary dictionary containing the Oxford dictionary
+   * @param cDAO database to be initialized
    * @return true if the input stream was successfully read from; else, false
    */
 
-  public abstract boolean read (Dictionary cDictionary);
+  public abstract boolean read (DictionaryDAO cDAO);
 
   /**
    * Obtain the input stream

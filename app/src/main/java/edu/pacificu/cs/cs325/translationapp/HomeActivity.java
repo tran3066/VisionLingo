@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,7 +13,8 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.room.Room;
 
-import java.util.HashMap;
+import java.io.IOException;
+import java.net.URL;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -35,11 +37,18 @@ import edu.pacificu.cs.cs325.translationapp.databinding.ActivityHomeBinding;
 public class HomeActivity extends AppCompatActivity
 {
   private final String LOG_TAG = "HomeActivity";
+  private final int NUM_THREADS = 2;
+
   private ActivityHomeBinding mcBinding;
-  private UserDAO mcDAO;
-  private UserDB mcDB;
+  private ExecutorService mcRunner;
+  private UserDAO mcUserDAO;
+  private UserDB mcUserDB;
   private List<User> usersFromDB;
-  private edu.pacificu.cs.cs325.translationapp.User mcUser;
+  private DictionaryDB mcDictionaryDB;
+  private DictionaryDAO mcDictionaryDAO;
+
+  // protected static Dictionary mcDictionary;
+  // protected static User mcCurrentUser;
 
   /**
    * onCreate method that starts the activity
@@ -67,14 +76,18 @@ public class HomeActivity extends AppCompatActivity
           return insets;
         });
 
-    ExecutorService cExec = Executors.newFixedThreadPool (2);
-    cExec.execute (() -> {
+    mcRunner = Executors.newFixedThreadPool (NUM_THREADS);
+    mcDictionaryDB = Room.databaseBuilder (getApplicationContext (),
+        DictionaryDB.class, "Dictionary-DB").build ();
+    mcDictionaryDAO = mcDictionaryDB.dictionaryDao ();
+
+    mcRunner.execute (() -> {
       try
       {
-        mcDB = Room.databaseBuilder (getApplicationContext (), UserDB.class,
-            "User-db").fallbackToDestructiveMigrationOnDowngrade ().build ();
-        mcDAO = mcDB.userDao ();
-        usersFromDB = mcDAO.getAll();
+        mcUserDB = Room.databaseBuilder (getApplicationContext (), UserDB.class,
+            "User-DB").fallbackToDestructiveMigrationOnDowngrade ().build ();
+        mcUserDAO = mcUserDB.userDao ();
+        usersFromDB = mcUserDAO.getAll ();
       }
       catch (Exception e)
       {
@@ -83,14 +96,38 @@ public class HomeActivity extends AppCompatActivity
 
     });
 
+    mcRunner.execute (() -> {
+      if (mcDictionaryDAO.getSize () == 0)
+      {
+        try
+        {
+          URL cDictionaryURL = new URL (
+              "https://zeus.cs.pacificu.edu/chadd/cs325/Cleaned_Oxford_Dictionary.txt");
+          TXTDatabaseReader cReader = new TXTDatabaseReader (
+              cDictionaryURL.openStream ());
+          cReader.read (mcDictionaryDAO);
+
+          runOnUiThread (() -> {
+            int duration = Toast.LENGTH_SHORT;
+            Toast cToast = Toast.makeText (this,
+                "Database fully loaded from URL", duration);
+            cToast.show ();
+          });
+        }
+        catch (IOException cException)
+        {
+          throw new RuntimeException (cException);
+        }
+      }
+    });
 
     Intent cIntentCam = new Intent (this, CameraActivity.class);
     mcBinding.btnLogin.setOnClickListener (v -> {
       for (User check : usersFromDB)
       {
-        if (mcBinding.tvUsername.toString().equals (check.getMcUsername()))
+        if (mcBinding.tvUsername.toString ().equals (check.getMcUsername ()))
         {
-          if (mcBinding.tvPassword.toString().equals(check.getMcPassword()))
+          if (mcBinding.tvPassword.toString ().equals (check.getMcPassword ()))
           {
 
           }
