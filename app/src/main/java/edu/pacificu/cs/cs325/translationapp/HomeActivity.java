@@ -102,7 +102,7 @@ public class HomeActivity extends AppCompatActivity
         try
         {
           URL cDictionaryURL = new URL (
-              "https://zeus.cs.pacificu.edu/chadd/cs325/Cleaned_Oxford_Dictionary.txt");
+              "https://raw.githubusercontent.com/sujithps/Dictionary/refs/heads/master/Oxford%20English%20Dictionary.txt");
           TXTDatabaseReader cReader = new TXTDatabaseReader (
               cDictionaryURL.openStream ());
           cReader.read (mcDictionaryDAO);
@@ -124,44 +124,53 @@ public class HomeActivity extends AppCompatActivity
     Intent cIntentCam = new Intent (this, CameraActivity.class);
     Intent cIntentUserPref = new Intent (this, PreferenceActivity.class);
     mcBinding.btnLogin.setOnClickListener (v -> {
-      if (usersFromDB != null) {
-        for (User check : usersFromDB) {
-          if (mcBinding.ptUsername.toString().equals(check.getMcUsername())) {
+      if (usersFromDB != null)
+      {
+        for (User check : usersFromDB)
+        {
+          if (mcBinding.ptUsername.toString ().equals (check.getMcUsername ()))
+          {
             bUserFound = true;
-            if (mcBinding.ptPassword.toString().equals(check.getMcPassword())) {
+            if (mcBinding.ptPassword.toString ()
+                .equals (check.getMcPassword ()))
+            {
               mcCurrentUser = check;
-            } else {
-              runOnUiThread(() ->
-              {
+            }
+            else
+            {
+              runOnUiThread (() -> {
                 int time = Toast.LENGTH_SHORT;
-                StringBuilder wordMessage = new StringBuilder();
-                wordMessage.append("Incorrect Password for User: ")
-                        .append(mcBinding.ptUsername.toString());
-                Toast toast = Toast.makeText(this, wordMessage, time);
-                toast.show();
-                Log.d(LOG_TAG, "Password Incorrect Toast was shown");
+                StringBuilder wordMessage = new StringBuilder ();
+                wordMessage.append ("Incorrect Password for User: ")
+                    .append (mcBinding.ptUsername.toString ());
+                Toast toast = Toast.makeText (this, wordMessage, time);
+                toast.show ();
+                Log.d (LOG_TAG, "Password Incorrect Toast was shown");
               });
             }
           }
         }
-          if (!bUserFound) {
-            mcCurrentUser = new User(mcBinding.ptUsername.toString(), mcBinding.ptPassword.toString());
-            //mcUserDAO.insert(mcCurrentUser);
-            Log.d(LOG_TAG, "New user created and inserted into database");
-            Log.d(LOG_TAG, "Launch User Preferences");
-            //startActivity(cIntentCam);
+        if (!bUserFound)
+        {
+          mcCurrentUser = new User (mcBinding.ptUsername.toString (),
+              mcBinding.ptPassword.toString ());
+          //mcUserDAO.insert(mcCurrentUser);
+          Log.d (LOG_TAG, "New user created and inserted into database");
+          Log.d (LOG_TAG, "Launch User Preferences");
+          //startActivity(cIntentCam);
 
-            startActivity(cIntentUserPref);
-            Log.d(LOG_TAG, "User Preferences Activity started");
-            //are we inserting into the data base here or when the program ends in order to get user
-            // preferences and vocab list?
-          }
+          startActivity (cIntentUserPref);
+          Log.d (LOG_TAG, "User Preferences Activity started");
+          //are we inserting into the data base here or when the program ends in order to get user
+          // preferences and vocab list?
         }
-        if (mcCurrentUser != null && bUserFound) {
-          Log.d(LOG_TAG, "Launch CameraActivity from Login");
-          startActivity(cIntentCam);
-          Log.d(LOG_TAG, "Camera Activity started");
-        }
+      }
+      if (mcCurrentUser != null && bUserFound)
+      {
+        Log.d (LOG_TAG, "Launch CameraActivity from Login");
+        startActivity (cIntentCam);
+        Log.d (LOG_TAG, "Camera Activity started");
+      }
     });
   }
 }

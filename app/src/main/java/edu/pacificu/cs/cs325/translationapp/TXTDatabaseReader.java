@@ -52,10 +52,18 @@ public class TXTDatabaseReader extends IDatabaseReader
 
         while ((cLine = cBR.readLine ()) != null)
         {
-          String[] cSplit = cLine.split (" ", THREE_PARTS);
-          Word cWord = new Word (cSplit[WORD], cSplit[LEXICAL],
-              cSplit[DEFINITION]);
-          cDAO.insert (cWord);
+          if (!cLine.trim ().isEmpty () && !cLine.equals ("A"))
+          {
+            String[] cSplit = cLine.replaceAll ("  ", " ")
+                .split (" ", THREE_PARTS);
+
+            if (cSplit.length == THREE_PARTS)
+            {
+              Word cWord = new Word (cSplit[WORD], cSplit[LEXICAL],
+                  cSplit[DEFINITION]);
+              cDAO.insert (cWord);
+            }
+          }
         }
       }
     }
