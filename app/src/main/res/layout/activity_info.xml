@@ -8,19 +8,19 @@
         tools:context=".InfoActivity">
 
     <TextView
-            android:text="@string/tvWordTranslate"
-            android:layout_width="200dp"
-            android:layout_height="45dp"
-            android:id="@+id/tvWordTranslate"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintHorizontal_bias="0.497"
-            app:layout_constraintVertical_bias="0.043"
-            android:gravity="center"
-            android:textSize="24sp"
-            android:focusable="false" />
+        android:id="@+id/tvWordTranslate"
+        android:layout_width="200dp"
+        android:layout_height="45dp"
+        android:focusable="false"
+        android:gravity="center"
+        android:text="@string/tvWordTranslate"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.023" />
 
     <Button
             android:text="@string/btnSpeak"
@@ -47,17 +47,16 @@
             app:layout_constraintVertical_bias="0.89" />
 
     <TextView
-            android:layout_width="282dp"
-            android:layout_height="445dp"
-            android:id="@+id/tvWordInfo"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintHorizontal_bias="0.496"
-            app:layout_constraintVertical_bias="0.318"
-            android:focusable="false"
-            android:inputType="text|textMultiLine" />
+        android:id="@+id/tvWordInfo"
+        android:layout_width="347dp"
+        android:layout_height="329dp"
+        android:focusable="false"
+        android:inputType="text|textMultiLine"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.174" />
 
     <TextView
             android:layout_width="262dp"
@@ -82,4 +81,16 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintHorizontal_bias="0.948"
             app:layout_constraintVertical_bias="0.801" />
+
+    <ImageView
+        android:id="@+id/imgWord"
+        android:layout_width="160dp"
+        android:layout_height="132dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.686"
+        app:srcCompat="@drawable/baseline_info_24" />
 </androidx.constraintlayout.widget.ConstraintLayout>

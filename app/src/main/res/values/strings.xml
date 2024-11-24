@@ -25,4 +25,6 @@
     <string name="quiz">Quiz</string>
     <string name="word_information">Word Information</string>
     <string name="camera">Camera</string>
+    <string name="Username">Username</string>
+    <string name="Password">Password</string>
 </resources>

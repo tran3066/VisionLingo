@@ -1,5 +1,6 @@
 package edu.pacificu.cs.cs325.translationapp;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -12,6 +13,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -242,10 +245,19 @@ public class CameraActivity extends AppCompatActivity
           });
     });
 
-    Intent cIntentSend = new Intent (this, HomeActivity.class);
+
+
+    Intent cIntentInfo = new Intent (this, InfoActivity.class);
     mcTranslate.setOnClickListener (view -> {
+
       Log.d (LOG_TAG, "Launch Translate Button");
-      mActivityLauncher.launch (cIntentSend);
+      cIntentInfo.putExtra("Picture", mByteArray);
+      setResult(RESULT_OK, cIntentInfo);
+      Log.d(LOG_TAG, "Sent Picture");
+      cIntentInfo.putExtra("Text", mcWordFromObject);
+      setResult(RESULT_OK, cIntentInfo);
+      Log.d(LOG_TAG, "Sent Text");
+      startActivity(cIntentInfo);
       Log.d (LOG_TAG, "Info Activity started");
     });
   }

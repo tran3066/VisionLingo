@@ -1,6 +1,10 @@
 package edu.pacificu.cs.cs325.translationapp;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.activity.EdgeToEdge;
@@ -9,7 +13,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import edu.pacificu.cs.cs325.translationapp.databinding.ActivityHomeBinding;
+import edu.pacificu.cs.cs325.translationapp.databinding.ActivityInfoBinding;
 
 /**
  * Creates a InfoActivity class that opens after the user presses the translate
@@ -28,7 +32,9 @@ import edu.pacificu.cs.cs325.translationapp.databinding.ActivityHomeBinding;
 
 public class InfoActivity extends AppCompatActivity
 {
-  private ActivityHomeBinding mcBinding;
+    private final String LOG_TAG = "InfoActivity";
+
+    private ActivityInfoBinding mcBinding;
 
   /**
    * onCreate method that starts the activity
@@ -43,7 +49,7 @@ public class InfoActivity extends AppCompatActivity
   {
     super.onCreate (cSavedInstanceState);
     EdgeToEdge.enable (this);
-    mcBinding = ActivityHomeBinding.inflate (getLayoutInflater ());
+    mcBinding = ActivityInfoBinding.inflate (getLayoutInflater ());
     View cView = mcBinding.getRoot ();
     setContentView (cView);
     //setContentView (R.layout.activity_info);
@@ -55,6 +61,33 @@ public class InfoActivity extends AppCompatActivity
               cSystemBars.bottom);
           return insets;
         });
+
+    Intent intent = getIntent();
+
+      if(null != intent)
+      {
+          Log.d(LOG_TAG, "got Picture Intent");
+          byte[] byteArray = intent.getByteArrayExtra("Picture");
+          String textSent = intent.getStringExtra("Text");
+
+          if (textSent != null) {
+              mcBinding.tvWordTranslate.setText(textSent);
+              Log.d(LOG_TAG, "Text RECEIVED");
+          }
+          else {
+              Log.d(LOG_TAG, "No TEXT");
+          }
+          if (byteArray != null)
+          {
+              Bitmap bitmap = BitmapFactory.decodeByteArray(byteArray,
+                      0, byteArray.length);
+              mcBinding.imgWord.setImageBitmap(bitmap);
+              Log.d(LOG_TAG, "Picture RECEIVED");
+          }
+          else {
+              Log.d(LOG_TAG, "No PICTURE");
+          }
+      }
 
   }
 }

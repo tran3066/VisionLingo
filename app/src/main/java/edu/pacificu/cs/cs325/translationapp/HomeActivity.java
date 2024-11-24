@@ -46,9 +46,9 @@ public class HomeActivity extends AppCompatActivity
   private List<User> usersFromDB;
   private DictionaryDB mcDictionaryDB;
   private DictionaryDAO mcDictionaryDAO;
-
+  private boolean bUserFound = false;
   // protected static Dictionary mcDictionary;
-  // protected static User mcCurrentUser;
+  protected static User mcCurrentUser;
 
   /**
    * onCreate method that starts the activity
@@ -122,21 +122,46 @@ public class HomeActivity extends AppCompatActivity
     });
 
     Intent cIntentCam = new Intent (this, CameraActivity.class);
+    Intent cIntentUserPref = new Intent (this, PreferenceActivity.class);
     mcBinding.btnLogin.setOnClickListener (v -> {
-      for (User check : usersFromDB)
-      {
-        if (mcBinding.tvUsername.toString ().equals (check.getMcUsername ()))
-        {
-          if (mcBinding.tvPassword.toString ().equals (check.getMcPassword ()))
-          {
-
+      if (usersFromDB != null) {
+        for (User check : usersFromDB) {
+          if (mcBinding.ptUsername.toString().equals(check.getMcUsername())) {
+            bUserFound = true;
+            if (mcBinding.ptPassword.toString().equals(check.getMcPassword())) {
+              mcCurrentUser = check;
+            } else {
+              runOnUiThread(() ->
+              {
+                int time = Toast.LENGTH_SHORT;
+                StringBuilder wordMessage = new StringBuilder();
+                wordMessage.append("Incorrect Password for User: ")
+                        .append(mcBinding.ptUsername.toString());
+                Toast toast = Toast.makeText(this, wordMessage, time);
+                toast.show();
+                Log.d(LOG_TAG, "Password Incorrect Toast was shown");
+              });
+            }
           }
         }
-      }
+          if (!bUserFound) {
+            mcCurrentUser = new User(mcBinding.ptUsername.toString(), mcBinding.ptPassword.toString());
+            //mcUserDAO.insert(mcCurrentUser);
+            Log.d(LOG_TAG, "New user created and inserted into database");
+            Log.d(LOG_TAG, "Launch User Preferences");
+            //startActivity(cIntentCam);
 
-      Log.d (LOG_TAG, "Launch CameraActivity from Login");
-      startActivity (cIntentCam);
-      Log.d (LOG_TAG, "Camera Activity started");
+            startActivity(cIntentUserPref);
+            Log.d(LOG_TAG, "User Preferences Activity started");
+            //are we inserting into the data base here or when the program ends in order to get user
+            // preferences and vocab list?
+          }
+        }
+        if (mcCurrentUser != null && bUserFound) {
+          Log.d(LOG_TAG, "Launch CameraActivity from Login");
+          startActivity(cIntentCam);
+          Log.d(LOG_TAG, "Camera Activity started");
+        }
     });
   }
 }
