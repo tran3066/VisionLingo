@@ -36,10 +36,9 @@ public class TXTDatabaseReader extends IDatabaseReader
   @Override
   public boolean read (DictionaryDAO cDAO)
   {
-    final int WORD = 0;
-    final int LEXICAL = 1;
-    final int DEFINITION = 2;
-    final int THREE_PARTS = 3;
+    final int DOES_NOT_EXIST = -1;
+    final int SKIP_ONE_SPACE = 1;
+    final int SKIP_TWO_SPACES = 2;
 
     boolean bRetVal = true;
 
@@ -52,17 +51,19 @@ public class TXTDatabaseReader extends IDatabaseReader
 
         while ((cLine = cBR.readLine ()) != null)
         {
-          if (!cLine.trim ().isEmpty () && !cLine.equals ("A"))
-          {
-            String[] cSplit = cLine.replaceAll ("  ", " ")
-                .split (" ", THREE_PARTS);
+          int twoSpacesIndex = cLine.indexOf ("  ");
 
-            if (cSplit.length == THREE_PARTS)
-            {
-              Word cWord = new Word (cSplit[WORD], cSplit[LEXICAL],
-                  cSplit[DEFINITION]);
-              cDAO.insert (cWord);
-            }
+          if (!cLine.trim ().isEmpty () && twoSpacesIndex != DOES_NOT_EXIST)
+          {
+            String cLiteralWord = cLine.substring (0, twoSpacesIndex).trim ();
+            String cRest = cLine.substring (twoSpacesIndex + SKIP_TWO_SPACES)
+                .trim ();
+            int firstSpaceIndex = cRest.indexOf (" ");
+            String cWordType = cRest.substring (0, firstSpaceIndex).trim ();
+            String cDefinition = cRest.substring (
+                firstSpaceIndex + SKIP_ONE_SPACE).trim ();
+            Word cWord = new Word (cLiteralWord, cWordType, cDefinition);
+            cDAO.insert (cWord);
           }
         }
       }

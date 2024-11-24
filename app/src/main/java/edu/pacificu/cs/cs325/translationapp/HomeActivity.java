@@ -97,6 +97,8 @@ public class HomeActivity extends AppCompatActivity
     });
 
     mcRunner.execute (() -> {
+      mcDictionaryDAO.deleteAll ();
+
       if (mcDictionaryDAO.getSize () == 0)
       {
         try
