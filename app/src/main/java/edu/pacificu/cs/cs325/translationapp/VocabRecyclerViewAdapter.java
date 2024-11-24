@@ -20,10 +20,10 @@ import java.util.ArrayList;
  * @author Jason Tran
  */
 
-public class CourseRecyclerViewAdapter
-    extends RecyclerView.Adapter<CourseRecyclerViewAdapter.ViewHolder>
+public class VocabRecyclerViewAdapter
+    extends RecyclerView.Adapter<VocabRecyclerViewAdapter.ViewHolder>
 {
-  private ArrayList<Word> mcData;
+  private ArrayList<Vocab> mcData;
 
   /**
    * Constructor to build the adapter
@@ -31,7 +31,7 @@ public class CourseRecyclerViewAdapter
    * @param cData the data to be displayed by the views
    */
 
-  public CourseRecyclerViewAdapter (ArrayList<Word> cData)
+  public VocabRecyclerViewAdapter (ArrayList<Vocab> cData)
   {
     this.mcData = cData;
   }
@@ -46,7 +46,7 @@ public class CourseRecyclerViewAdapter
 
   @NonNull
   @Override
-  public CourseRecyclerViewAdapter.ViewHolder onCreateViewHolder (
+  public VocabRecyclerViewAdapter.ViewHolder onCreateViewHolder (
       @NonNull ViewGroup cParent, int viewType)
   {
     View cView = LayoutInflater.from (cParent.getContext ())
@@ -65,9 +65,9 @@ public class CourseRecyclerViewAdapter
 
   @Override
   public void onBindViewHolder (
-      @NonNull CourseRecyclerViewAdapter.ViewHolder cHolder, int position)
+      @NonNull VocabRecyclerViewAdapter.ViewHolder cHolder, int position)
   {
-    cHolder.mcWord = mcData.get (position);
+    cHolder.mcVocab = mcData.get (position);
     cHolder.bindData ();
   }
 
@@ -93,7 +93,7 @@ public class CourseRecyclerViewAdapter
 
   public class ViewHolder extends RecyclerView.ViewHolder
   {
-    private Word mcWord;
+    private Vocab mcVocab;
     private TextView mcTvEnglishWord;
     private TextView mcTvTranslation;
     private TextView mcTvWordType;
@@ -138,13 +138,13 @@ public class CourseRecyclerViewAdapter
         mcImageWord = (ImageView) itemView.findViewById (R.id.imageWord);
       }
 
-      //      mcTvEnglishWord.setText (mcWord.getEnglish ());
-      //      mcTvTranslation.setText (mcWord.getTranslated ());
-      //      mcTvWordType.setText (mcWord.getLexical ());
-      //      mcTvDefinition.setText (mcWord.getDefinition ());
-      //      mcImageWord.setImageBitmap (
-      //          BitmapFactory.decodeByteArray (mcWord.getImage (), 0,
-      //              mcWord.getImage.length));
+      mcTvEnglishWord.setText (mcVocab.getWord ().getMcEnglishWord ());
+      mcTvTranslation.setText (mcVocab.getTranslatedWord ());
+      mcTvWordType.setText (mcVocab.getWord ().getMcLexical ());
+      mcTvDefinition.setText (mcVocab.getWord ().getMcDefinition ());
+      mcImageWord.setImageBitmap (
+          BitmapFactory.decodeByteArray (mcVocab.getImage (), 0,
+              mcVocab.getImage ().length));
     }
   }
 }

@@ -29,8 +29,9 @@ import java.util.ArrayList;
 
 public class ListActivity extends AppCompatActivity
 {
-  private ArrayList<Word> mcWordList; // need to change this later
-  private CourseRecyclerViewAdapter mcAdapter;
+  // need to change this later (i.e. use User to get the list of Vocab)
+  private ArrayList<Vocab> mcVocabList;
+  private VocabRecyclerViewAdapter mcAdapter;
   private RecyclerView mcRVWords;
 
   /**
@@ -70,7 +71,7 @@ public class ListActivity extends AppCompatActivity
   public void onResume ()
   {
     super.onResume ();
-    mcAdapter = new CourseRecyclerViewAdapter (mcWordList); // list of words (?)
+    mcAdapter = new VocabRecyclerViewAdapter (mcVocabList);
     mcRVWords.setAdapter (mcAdapter);
   }
 }

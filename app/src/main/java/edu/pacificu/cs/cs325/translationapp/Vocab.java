@@ -10,7 +10,7 @@ package edu.pacificu.cs.cs325.translationapp;
 public class Vocab
 {
   private Word mcTheWord;
-  private Byte[] mcImage;
+  private byte[] mcImage;
   private String mcTranslatedWord;
 
   /**
@@ -20,7 +20,7 @@ public class Vocab
    * @param mcImage   image stored as a byte array
    */
 
-  public Vocab (Word mcTheWord, Byte[] mcImage, String mcTranslatedWord)
+  public Vocab (Word mcTheWord, byte[] mcImage, String mcTranslatedWord)
   {
     this.mcTheWord = mcTheWord;
     this.mcImage = mcImage;
@@ -33,7 +33,7 @@ public class Vocab
    * @return image of the word
    */
 
-  public Byte[] getImage ()
+  public byte[] getImage ()
   {
     return mcImage;
   }
@@ -48,6 +48,12 @@ public class Vocab
   {
     return this.mcTheWord;
   }
+
+  /**
+   * Obtains the translated word
+   *
+   * @return translated word
+   */
 
   public String getTranslatedWord() {
     return mcTranslatedWord;
