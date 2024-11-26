@@ -3,6 +3,7 @@ package edu.pacificu.cs.cs325.translationapp;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -33,8 +34,11 @@ import edu.pacificu.cs.cs325.translationapp.databinding.ActivityInfoBinding;
 public class InfoActivity extends AppCompatActivity
 {
   private final String LOG_TAG = "InfoActivity";
+  private final String FRENCH_URL = "https://forvo.com/word/*/#fr";
+  private final String SPANISH_URL = "https://forvo.com/word/*/#es";
 
   private ActivityInfoBinding mcBinding;
+  private String mcTranslatedWord;
 
   /**
    * onCreate method that starts the activity
@@ -91,5 +95,35 @@ public class InfoActivity extends AppCompatActivity
       }
     }
 
+    mcBinding.btnSpeak.setOnClickListener (v -> {
+      String cCurrentLanguage = HomeActivity.mcCurrentUser.getLanguage ();
+      String cUpdatedURL;
+
+      // Make sure to update mcTranslatedWord here
+      if (cCurrentLanguage.equals ("French"))
+      {
+        cUpdatedURL = FRENCH_URL.replace ("*", mcTranslatedWord);
+        openURL (cUpdatedURL);
+      }
+      else if (cCurrentLanguage.equals ("Spanish"))
+      {
+        cUpdatedURL = SPANISH_URL.replace ("*", mcTranslatedWord);
+        openURL (cUpdatedURL);
+      }
+    });
+  }
+
+  /**
+   * Opens the URL specified by the parameter
+   *
+   * @param cURL URL to open
+   */
+
+  public void openURL (String cURL)
+  {
+    Uri cUrl = Uri.parse (cURL);
+    Intent cBrowserIntent = new Intent (Intent.ACTION_VIEW, cUrl);
+    cBrowserIntent.addCategory (Intent.CATEGORY_BROWSABLE);
+    startActivity (cBrowserIntent);
   }
 }
