@@ -1,6 +1,5 @@
 package edu.pacificu.cs.cs325.translationapp;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -8,13 +7,9 @@ import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.view.View;
 
 import androidx.activity.EdgeToEdge;
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -25,7 +20,6 @@ import androidx.camera.core.ImageCapture;
 import androidx.camera.core.ImageCaptureException;
 import androidx.camera.core.Preview;
 import androidx.camera.lifecycle.ProcessCameraProvider;
-import androidx.camera.view.PreviewView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
@@ -49,6 +43,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
+import edu.pacificu.cs.cs325.translationapp.databinding.ActivityCameraBinding;
+
 /**
  * Creates a CameraActivity class that lets the user take a picture and displays
  * the image they have taken in the “display image” box. It also displays the
@@ -65,18 +61,14 @@ public class CameraActivity extends AppCompatActivity
   private final String LOG_TAG = "CameraActivity";
 
   private ActivityResultLauncher<String> mCameraPermissionRequest;
-  private boolean mbCameraPermission;
   private String mcWordFromObject;
   private ImageCapture mcImageCapture;
-  private Button mcTakePicture;
-  private Button mcTranslate;
-  private ImageView mcCptImageView;
-  private TextView mcCptTextView;
-  private PreviewView mcCameraView;
   private ScheduledExecutorService mcCameraBackgroundExecutor;
   private ListenableFuture<ProcessCameraProvider> mcCameraProviderFuture;
-  private byte[] mByteArray;
   private ActivityResultLauncher<Intent> mActivityLauncher;
+  private ActivityCameraBinding mcBinding;
+  private boolean mbCameraPermission;
+  private byte[] mByteArray;
 
   /**
    * onCreate method that starts the activity
@@ -91,7 +83,9 @@ public class CameraActivity extends AppCompatActivity
   {
     super.onCreate (cSavedInstanceState);
     EdgeToEdge.enable (this);
-    setContentView (R.layout.activity_camera);
+    mcBinding = ActivityCameraBinding.inflate (getLayoutInflater ());
+    View cView = mcBinding.getRoot ();
+    setContentView (cView);
     ViewCompat.setOnApplyWindowInsetsListener (findViewById (R.id.main),
         (v, insets) -> {
           Insets cSystemBars = insets.getInsets (
@@ -103,12 +97,6 @@ public class CameraActivity extends AppCompatActivity
 
     ObjectDetectorOptions cOptions = new ObjectDetectorOptions.Builder ().setDetectorMode (
         ObjectDetectorOptions.STREAM_MODE).enableClassification ().build ();
-
-    mcCptImageView = findViewById (R.id.cptIMG);
-    mcCptTextView = findViewById (R.id.txtTextView);
-    mcCameraView = findViewById (R.id.cameraPreview);
-    mcTakePicture = findViewById (R.id.btnTakePicture);
-    mcTranslate = findViewById (R.id.btnTranslate);
     ObjectDetector cObjectDetector = ObjectDetection.getClient (cOptions);
 
     mbCameraPermission = false;
@@ -137,7 +125,7 @@ public class CameraActivity extends AppCompatActivity
       }
     }, ContextCompat.getMainExecutor (this));
     checkPermissions ();
-    mcTakePicture.setOnClickListener ((view) -> {
+    mcBinding.btnTakePicture.setOnClickListener ((view) -> {
       ByteArrayOutputStream cByteArrayStream = new ByteArrayOutputStream ();
       ImageCapture.OutputFileOptions cOutputFileOptions = null;
       cOutputFileOptions = new ImageCapture.OutputFileOptions.Builder (
@@ -195,14 +183,13 @@ public class CameraActivity extends AppCompatActivity
                         if (mcWordFromObject != null
                             && !mcWordFromObject.isEmpty ())
                         {
-                          mcCptTextView.setText (mcWordFromObject);
+                          mcBinding.txtTextView.setText (mcWordFromObject);
                         }
                         else
                         {
-                          mcCptTextView.setText ("");
+                          mcBinding.txtTextView.setText ("");
                         }
                       });
-
                     }
                   }).addOnFailureListener (new OnFailureListener ()
               {
@@ -221,7 +208,7 @@ public class CameraActivity extends AppCompatActivity
               });
 
               runOnUiThread (() -> {
-                mcCptImageView.setImageBitmap (BitmapFactory.decodeByteArray (
+                mcBinding.cptIMG.setImageBitmap (BitmapFactory.decodeByteArray (
                     cByteArrayStream.toByteArray (), 0,
                     cByteArrayStream.toByteArray ().length));
                 mByteArray = cByteArrayStream.toByteArray ();
@@ -246,7 +233,7 @@ public class CameraActivity extends AppCompatActivity
     });
 
     Intent cIntentInfo = new Intent (this, InfoActivity.class);
-    mcTranslate.setOnClickListener (view -> {
+    mcBinding.btnTranslate.setOnClickListener (view -> {
 
       Log.d (LOG_TAG, "Launch Translate Button");
       cIntentInfo.putExtra ("Picture", mByteArray);
@@ -289,7 +276,7 @@ public class CameraActivity extends AppCompatActivity
     Preview cPreview = new Preview.Builder ().build ();
     CameraSelector cCameraSelector = new CameraSelector.Builder ().requireLensFacing (
         CameraSelector.LENS_FACING_BACK).build ();
-    cPreview.setSurfaceProvider (mcCameraView.getSurfaceProvider ());
+    cPreview.setSurfaceProvider (mcBinding.cameraPreview.getSurfaceProvider ());
     Camera cCamera = cCameraProvider.bindToLifecycle (this, cCameraSelector,
         cPreview, mcImageCapture);
   }

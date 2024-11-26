@@ -1,12 +1,15 @@
 package edu.pacificu.cs.cs325.translationapp;
 
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import edu.pacificu.cs.cs325.translationapp.databinding.ActivityQuizBinding;
 
 /**
  * Creates a QuizActivity class that tests the user's knowledge on the
@@ -23,6 +26,8 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class QuizActivity extends AppCompatActivity
 {
+  private ActivityQuizBinding mcBinding;
+
   /**
    * onCreate method that starts the activity
    *
@@ -36,7 +41,9 @@ public class QuizActivity extends AppCompatActivity
   {
     super.onCreate (cSavedInstanceState);
     EdgeToEdge.enable (this);
-    setContentView (R.layout.activity_quiz);
+    mcBinding = ActivityQuizBinding.inflate (getLayoutInflater ());
+    View cView = mcBinding.getRoot ();
+    setContentView (cView);
     ViewCompat.setOnApplyWindowInsetsListener (findViewById (R.id.main),
         (v, insets) -> {
           Insets cSystemBars = insets.getInsets (

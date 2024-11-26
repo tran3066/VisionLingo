@@ -1,6 +1,7 @@
 package edu.pacificu.cs.cs325.translationapp;
 
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,9 +9,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
+import edu.pacificu.cs.cs325.translationapp.databinding.ActivityListBinding;
 
 /**
  * Creates a ListActivity class that contains a vocabulary list containing words
@@ -30,7 +30,7 @@ import java.util.ArrayList;
 public class ListActivity extends AppCompatActivity
 {
   private VocabRecyclerViewAdapter mcAdapter;
-  private RecyclerView mcRVWords;
+  private ActivityListBinding mcBinding;
 
   /**
    * onCreate method that starts the activity
@@ -45,7 +45,9 @@ public class ListActivity extends AppCompatActivity
   {
     super.onCreate (cSavedInstanceState);
     EdgeToEdge.enable (this);
-    setContentView (R.layout.activity_list);
+    mcBinding = ActivityListBinding.inflate (getLayoutInflater ());
+    View cView = mcBinding.getRoot ();
+    setContentView (cView);
     ViewCompat.setOnApplyWindowInsetsListener (findViewById (R.id.main),
         (v, insets) -> {
           Insets cSystemBars = insets.getInsets (
@@ -55,9 +57,8 @@ public class ListActivity extends AppCompatActivity
           return insets;
         });
 
-    mcRVWords = findViewById (R.id.rvWords);
-    mcRVWords.setHasFixedSize (true);
-    mcRVWords.setLayoutManager (new LinearLayoutManager (this));
+    mcBinding.rvWords.setHasFixedSize (true);
+    mcBinding.rvWords.setLayoutManager (new LinearLayoutManager (this));
   }
 
   /**
@@ -71,6 +72,6 @@ public class ListActivity extends AppCompatActivity
     super.onResume ();
     mcAdapter = new VocabRecyclerViewAdapter (
         HomeActivity.mcCurrentUser.getMcVocabList ());
-    mcRVWords.setAdapter (mcAdapter);
+    mcBinding.rvWords.setAdapter (mcAdapter);
   }
 }

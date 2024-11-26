@@ -67,7 +67,6 @@ public class HomeActivity extends AppCompatActivity
     mcBinding = ActivityHomeBinding.inflate (getLayoutInflater ());
     View cView = mcBinding.getRoot ();
     setContentView (cView);
-    //setContentView (R.layout.activity_home);
     ViewCompat.setOnApplyWindowInsetsListener (findViewById (R.id.main),
         (v, insets) -> {
           Insets cSystemBars = insets.getInsets (

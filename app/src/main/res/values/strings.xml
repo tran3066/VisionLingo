@@ -27,4 +27,5 @@
     <string name="camera">Camera</string>
     <string name="Username">Username</string>
     <string name="Password">Password</string>
+    <string name="btnNewUser">New User</string>
 </resources>

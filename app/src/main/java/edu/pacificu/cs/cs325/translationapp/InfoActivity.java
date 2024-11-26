@@ -52,7 +52,6 @@ public class InfoActivity extends AppCompatActivity
     mcBinding = ActivityInfoBinding.inflate (getLayoutInflater ());
     View cView = mcBinding.getRoot ();
     setContentView (cView);
-    //setContentView (R.layout.activity_info);
     ViewCompat.setOnApplyWindowInsetsListener (findViewById (R.id.main),
         (v, insets) -> {
           Insets cSystemBars = insets.getInsets (
