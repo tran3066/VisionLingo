@@ -69,7 +69,8 @@ public class ListActivity extends AppCompatActivity
   public void onResume ()
   {
     super.onResume ();
-    mcAdapter = new VocabRecyclerViewAdapter (HomeActivity.mcCurrentUser.getMcVocabList ());
+    mcAdapter = new VocabRecyclerViewAdapter (
+        HomeActivity.mcCurrentUser.getMcVocabList ());
     mcRVWords.setAdapter (mcAdapter);
   }
 }

@@ -32,9 +32,9 @@ import edu.pacificu.cs.cs325.translationapp.databinding.ActivityInfoBinding;
 
 public class InfoActivity extends AppCompatActivity
 {
-    private final String LOG_TAG = "InfoActivity";
+  private final String LOG_TAG = "InfoActivity";
 
-    private ActivityInfoBinding mcBinding;
+  private ActivityInfoBinding mcBinding;
 
   /**
    * onCreate method that starts the activity
@@ -62,32 +62,35 @@ public class InfoActivity extends AppCompatActivity
           return insets;
         });
 
-    Intent intent = getIntent();
+    Intent cIntent = getIntent ();
 
-      if(null != intent)
+    if (null != cIntent)
+    {
+      Log.d (LOG_TAG, "got Picture Intent");
+      byte[] byteArray = cIntent.getByteArrayExtra ("Picture");
+      String cTextSent = cIntent.getStringExtra ("Text");
+
+      if (cTextSent != null)
       {
-          Log.d(LOG_TAG, "got Picture Intent");
-          byte[] byteArray = intent.getByteArrayExtra("Picture");
-          String textSent = intent.getStringExtra("Text");
-
-          if (textSent != null) {
-              mcBinding.tvWordTranslate.setText(textSent);
-              Log.d(LOG_TAG, "Text RECEIVED");
-          }
-          else {
-              Log.d(LOG_TAG, "No TEXT");
-          }
-          if (byteArray != null)
-          {
-              Bitmap bitmap = BitmapFactory.decodeByteArray(byteArray,
-                      0, byteArray.length);
-              mcBinding.imgWord.setImageBitmap(bitmap);
-              Log.d(LOG_TAG, "Picture RECEIVED");
-          }
-          else {
-              Log.d(LOG_TAG, "No PICTURE");
-          }
+        mcBinding.tvWordTranslate.setText (cTextSent);
+        Log.d (LOG_TAG, "Text RECEIVED");
       }
+      else
+      {
+        Log.d (LOG_TAG, "No TEXT");
+      }
+      if (byteArray != null)
+      {
+        Bitmap cBitmap = BitmapFactory.decodeByteArray (byteArray, 0,
+            byteArray.length);
+        mcBinding.imgWord.setImageBitmap (cBitmap);
+        Log.d (LOG_TAG, "Picture RECEIVED");
+      }
+      else
+      {
+        Log.d (LOG_TAG, "No PICTURE");
+      }
+    }
 
   }
 }

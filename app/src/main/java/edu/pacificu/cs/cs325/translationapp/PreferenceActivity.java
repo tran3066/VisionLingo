@@ -51,7 +51,7 @@ public class PreferenceActivity extends AppCompatActivity
     mcLanguageSpinner = findViewById (R.id.languageSpinner);
     mcColorSpinner = findViewById (R.id.colorSpinner);
 
-    String[] languageArray = new String[] { "French", "Spanish", "Chinese" };
+    String[] languageArray = new String[] { "French", "Spanish" };
     ArrayAdapter<String> languageAdapter = new ArrayAdapter<> (this,
         android.R.layout.simple_spinner_dropdown_item, languageArray);
     languageAdapter.setDropDownViewResource (

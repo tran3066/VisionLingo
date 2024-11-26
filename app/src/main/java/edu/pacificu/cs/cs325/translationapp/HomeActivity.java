@@ -98,8 +98,11 @@ public class HomeActivity extends AppCompatActivity
     });
 
     mcRunner.execute (() -> {
-      if (mcDictionaryDAO.getSize () == 0)
+      if (mcDictionaryDAO.getSize () == 0
+          || mcDictionaryDAO.getSize () != SIZE_DATABASE)
       {
+        mcDictionaryDAO.deleteAll ();
+
         try
         {
           URL cDictionaryURL = new URL (
@@ -118,8 +121,8 @@ public class HomeActivity extends AppCompatActivity
       {
         runOnUiThread (() -> {
           int duration = Toast.LENGTH_SHORT;
-          Toast cToast = Toast.makeText (this,
-              "Database fully loaded from URL", duration);
+          Toast cToast = Toast.makeText (this, "Database fully loaded from URL",
+              duration);
           cToast.show ();
         });
       }

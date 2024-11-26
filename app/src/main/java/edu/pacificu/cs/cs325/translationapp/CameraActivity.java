@@ -245,19 +245,17 @@ public class CameraActivity extends AppCompatActivity
           });
     });
 
-
-
     Intent cIntentInfo = new Intent (this, InfoActivity.class);
     mcTranslate.setOnClickListener (view -> {
 
       Log.d (LOG_TAG, "Launch Translate Button");
-      cIntentInfo.putExtra("Picture", mByteArray);
-      setResult(RESULT_OK, cIntentInfo);
-      Log.d(LOG_TAG, "Sent Picture");
-      cIntentInfo.putExtra("Text", mcWordFromObject);
-      setResult(RESULT_OK, cIntentInfo);
-      Log.d(LOG_TAG, "Sent Text");
-      startActivity(cIntentInfo);
+      cIntentInfo.putExtra ("Picture", mByteArray);
+      setResult (RESULT_OK, cIntentInfo);
+      Log.d (LOG_TAG, "Sent Picture");
+      cIntentInfo.putExtra ("Text", mcWordFromObject);
+      setResult (RESULT_OK, cIntentInfo);
+      Log.d (LOG_TAG, "Sent Text");
+      startActivity (cIntentInfo);
       Log.d (LOG_TAG, "Info Activity started");
     });
   }
