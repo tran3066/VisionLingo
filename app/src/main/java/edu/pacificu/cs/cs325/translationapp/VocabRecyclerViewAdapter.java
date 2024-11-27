@@ -142,9 +142,17 @@ public class VocabRecyclerViewAdapter
       mcTvTranslation.setText (mcVocab.getTranslatedWord ());
       mcTvWordType.setText (mcVocab.getWord ().getMcLexical ());
       mcTvDefinition.setText (mcVocab.getWord ().getMcDefinition ());
-      mcImageWord.setImageBitmap (
-          BitmapFactory.decodeByteArray (mcVocab.getImage (), 0,
-              mcVocab.getImage ().length));
+
+      if (null != mcVocab.getImage () && 0 < mcVocab.getImage ().length)
+      {
+        mcImageWord.setImageBitmap (
+            BitmapFactory.decodeByteArray (mcVocab.getImage (), 0,
+                mcVocab.getImage ().length));
+      }
+      else
+      {
+        mcImageWord.setImageResource (R.drawable.baseline_add_a_photo_24);
+      }
     }
   }
 }
