@@ -39,15 +39,16 @@ public class HomeActivity extends AppCompatActivity
   private final String LOG_TAG = "HomeActivity";
   private final int NUM_THREADS = 2;
   private final int SIZE_DATABASE = 36657;
-
   private ActivityHomeBinding mcBinding;
   private ExecutorService mcRunner;
   private UserDAO mcUserDAO;
   private UserDB mcUserDB;
+  private String mcUsername;
+  private String mcPassword;
   private List<User> usersFromDB;
   private DictionaryDB mcDictionaryDB;
   private DictionaryDAO mcDictionaryDAO;
-  private boolean bUserFound = false;
+  private boolean bUserFound;
   // protected static Dictionary mcDictionary;
   protected static User mcCurrentUser;
 
@@ -76,6 +77,7 @@ public class HomeActivity extends AppCompatActivity
           return insets;
         });
 
+    bUserFound = false;
     mcRunner = Executors.newFixedThreadPool (NUM_THREADS);
     mcDictionaryDB = Room.databaseBuilder (getApplicationContext (),
         DictionaryDB.class, "Dictionary-DB").build ();
@@ -93,7 +95,6 @@ public class HomeActivity extends AppCompatActivity
       {
         throw new RuntimeException (e);
       }
-
     });
 
     mcRunner.execute (() -> {
@@ -105,7 +106,8 @@ public class HomeActivity extends AppCompatActivity
         try
         {
           URL cDictionaryURL = new URL (
-              "https://raw.githubusercontent.com/sujithps/Dictionary/refs/heads/master/Oxford%20English%20Dictionary.txt");
+              "https://raw.githubusercontent.com" +
+                      "/sujithps/Dictionary/refs/heads/master/Oxford%20English%20Dictionary.txt");
           TXTDatabaseReader cReader = new TXTDatabaseReader (
               cDictionaryURL.openStream ());
           cReader.read (mcDictionaryDAO);
@@ -129,16 +131,27 @@ public class HomeActivity extends AppCompatActivity
 
     Intent cIntentCam = new Intent (this, CameraActivity.class);
     Intent cIntentUserPref = new Intent (this, PreferenceActivity.class);
+
     mcBinding.btnLogin.setOnClickListener (v -> {
+
+      mcUsername = mcBinding.ptUsername.getText().toString().trim();
+      mcPassword = mcBinding.ptPassword.getText().toString().trim();
+
+      if (mcPassword == null || mcUsername == null)
+      {
+        Toast.makeText(this, "Username and password cannot be empty",
+                Toast.LENGTH_SHORT).show();
+        return;
+      }
+
       if (usersFromDB != null)
       {
         for (User check : usersFromDB)
         {
-          if (mcBinding.ptUsername.toString ().equals (check.getMcUsername ()))
+          if (mcUsername.equals (check.getMcUsername ()))
           {
             bUserFound = true;
-            if (mcBinding.ptPassword.toString ()
-                .equals (check.getMcPassword ()))
+            if (mcPassword.equals (check.getMcPassword ()))
             {
               mcCurrentUser = check;
             }
@@ -148,27 +161,13 @@ public class HomeActivity extends AppCompatActivity
                 int time = Toast.LENGTH_SHORT;
                 StringBuilder wordMessage = new StringBuilder ();
                 wordMessage.append ("Incorrect Password for User: ")
-                    .append (mcBinding.ptUsername.toString ());
+                    .append (mcUsername);
                 Toast toast = Toast.makeText (this, wordMessage, time);
                 toast.show ();
                 Log.d (LOG_TAG, "Password Incorrect Toast was shown");
               });
             }
           }
-        }
-        if (!bUserFound)
-        {
-          mcCurrentUser = new User (mcBinding.ptUsername.toString (),
-              mcBinding.ptPassword.toString ());
-          //mcUserDAO.insert(mcCurrentUser);
-          Log.d (LOG_TAG, "New user created and inserted into database");
-          Log.d (LOG_TAG, "Launch User Preferences");
-          //startActivity(cIntentCam);
-
-          startActivity (cIntentUserPref);
-          Log.d (LOG_TAG, "User Preferences Activity started");
-          //are we inserting into the data base here or when the program ends in order to get user
-          // preferences and vocab list?
         }
       }
       if (mcCurrentUser != null && bUserFound)
@@ -177,6 +176,47 @@ public class HomeActivity extends AppCompatActivity
         startActivity (cIntentCam);
         Log.d (LOG_TAG, "Camera Activity started");
       }
+      else if (!bUserFound) {
+        runOnUiThread(() -> {
+          int time = Toast.LENGTH_SHORT;
+          StringBuilder wordMessage = new StringBuilder ();
+          wordMessage.append ("User: ")
+                  .append (mcUsername).append(" not found. Please create a new account");
+          Toast toast = Toast.makeText (this, wordMessage, time);
+          toast.show ();
+          Log.d (LOG_TAG, "User not Found Toast was shown");
+        });
+      }
     });
+
+    mcBinding.btnNewUser.setOnClickListener( (view -> {
+
+      mcUsername = mcBinding.ptUsername.getText().toString().trim();
+      mcPassword = mcBinding.ptPassword.getText().toString().trim();
+
+      if (mcPassword == null || mcUsername == null)
+      {
+        Toast.makeText(this, "Username and password cannot be empty",
+                Toast.LENGTH_SHORT).show();
+
+        return;
+      }
+      //need to check to see if the username already exists in the database
+
+      if (!bUserFound)
+      {
+        mcCurrentUser = new User (mcUsername,
+                mcPassword);
+        //im not able to insert a user?
+        mcUserDAO.insert(mcCurrentUser);
+        Log.d (LOG_TAG, "New user created and inserted into database");
+        Log.d (LOG_TAG, "Launch User Preferences");
+
+        startActivity (cIntentUserPref);
+        Log.d (LOG_TAG, "User Preferences Activity started");
+
+      }
+
+    }));
   }
 }
