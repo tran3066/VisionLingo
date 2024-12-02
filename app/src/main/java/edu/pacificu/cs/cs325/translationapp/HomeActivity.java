@@ -60,6 +60,7 @@ public class HomeActivity extends AppCompatActivity
    *                            UI
    */
 
+  //
   @Override
   protected void onCreate (Bundle cSavedInstanceState)
   {
@@ -203,21 +204,26 @@ public class HomeActivity extends AppCompatActivity
 
         return;
       }
-      //need to check to see if the username already exists in the database
+      mcRunner.execute (() -> {
+        //need to check to see if the username already exists in the database
 
-      if (!bUserFound)
-      {
-        mcCurrentUser = new User (mcUsername,
-                mcPassword);
-        //im not able to insert a user?
-        mcUserDAO.insert(mcCurrentUser);
-        Log.d (LOG_TAG, "New user created and inserted into database");
-        Log.d (LOG_TAG, "Launch User Preferences");
+        if (!bUserFound) {
+          mcCurrentUser = new User(mcUsername,
+                  mcPassword);
+          //im not able to insert a user?
+          mcUserDAO.insert(mcCurrentUser);
+          Log.d(LOG_TAG, "New user created and inserted into database");
+          Log.d(LOG_TAG, "Launch User Preferences");
 
-        startActivity (cIntentUserPref);
-        Log.d (LOG_TAG, "User Preferences Activity started");
+          startActivity(cIntentUserPref);
 
-      }
+          //send data of username and password to contsiner and then insert in data base as you do the
+          //user preference
+          Log.d(LOG_TAG, "User Preferences Activity started");
+
+        }
+      });
+      Log.d (LOG_TAG, "this worked");
 
     }));
   }

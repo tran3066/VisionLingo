@@ -59,6 +59,8 @@ import edu.pacificu.cs.cs325.translationapp.databinding.ActivityCameraBinding;
  * @author AaJanae Henry
  */
 
+//We have to turn this into fragments :(
+
 public class CameraActivity extends AppCompatActivity
 {
   private final String LOG_TAG = "CameraActivity";
@@ -176,6 +178,7 @@ public class CameraActivity extends AppCompatActivity
                       {
                         Rect cBoundingBox = cDetectedObject.getBoundingBox ();
                         Integer cTrackingId = cDetectedObject.getTrackingId ();
+                        //tell user to get close
 
                         for (DetectedObject.Label cLabel : cDetectedObject.getLabels ())
                         {
@@ -183,19 +186,20 @@ public class CameraActivity extends AppCompatActivity
                           float confidence = cLabel.getConfidence();
                           Log.d ("ObjectDetection", "Label " + text + " , Confidence: "
                            + confidence);
-                          if (PredefinedCategory.FOOD.equals (text))
-                          {
-                            mcWordFromObject = text;
-                            detectedWords.append(text).append(" ,");
-                          }
+
+
+                          mcWordFromObject = text;
+                          detectedWords.append(text).append(" ,");
                         }
                       }
-                      Log.d ("Object Word:", mcWordFromObject);
                       runOnUiThread (() -> {
                         if (mcWordFromObject != null
                             && !mcWordFromObject.isEmpty ())
                         {
-                          mcBinding.txtTextView.setText (mcWordFromObject);
+                          Log.d ("Object Word:", mcWordFromObject);
+                          mcBinding.txtTextView.setText (detectedWords);
+
+                          //mcBinding.txtTextView.setText (mcWordFromObject);
                         }
                         else
                         {

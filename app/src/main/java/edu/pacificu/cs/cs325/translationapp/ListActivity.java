@@ -41,6 +41,8 @@ public class ListActivity extends AppCompatActivity
    *                            UI
    */
 
+  //needs to update the DB as the user adds on to the vocab list
+
   @Override
   protected void onCreate (Bundle cSavedInstanceState)
   {
