@@ -130,12 +130,11 @@ public class HomeActivity extends AppCompatActivity
       }
     });
 
-    Intent cIntentCam = new Intent (this, CameraActivity.class);
-    Intent cIntentUserPref = new Intent (this, PreferenceActivity.class);
+    Intent intent = new Intent (this, TransferActivity.class);
 
     mcBinding.btnLogin.setOnClickListener (v -> {
 
-      startActivity (cIntentCam);
+      startActivity (intent);
 
       mcUsername = mcBinding.ptUsername.getText().toString().trim();
       mcPassword = mcBinding.ptPassword.getText().toString().trim();
@@ -176,7 +175,7 @@ public class HomeActivity extends AppCompatActivity
       if (mcCurrentUser != null && bUserFound)
       {
         Log.d (LOG_TAG, "Launch CameraActivity from Login");
-        startActivity (cIntentCam);
+        startActivity (intent);
         Log.d (LOG_TAG, "Camera Activity started");
       }
       else if (!bUserFound) {
@@ -211,11 +210,15 @@ public class HomeActivity extends AppCompatActivity
           mcCurrentUser = new User(mcUsername,
                   mcPassword);
           //im not able to insert a user?
-          mcUserDAO.insert(mcCurrentUser);
+          //mcUserDAO.insert(mcCurrentUser);
           Log.d(LOG_TAG, "New user created and inserted into database");
           Log.d(LOG_TAG, "Launch User Preferences");
 
-          startActivity(cIntentUserPref);
+          intent.setAction(Intent.ACTION_SEND);
+          intent.putExtra("Username", mcCurrentUser.getMcUsername());
+          intent.putExtra("Password", mcCurrentUser.getMcPassword());
+          intent.setType("String");
+          startActivity(intent);
 
           //send data of username and password to contsiner and then insert in data base as you do the
           //user preference
