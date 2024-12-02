@@ -203,7 +203,7 @@ public class HomeActivity extends AppCompatActivity
 
         return;
       }
-      mcRunner.execute (() -> {
+     // mcRunner.execute (() -> {
         //need to check to see if the username already exists in the database
 
         if (!bUserFound) {
@@ -220,12 +220,12 @@ public class HomeActivity extends AppCompatActivity
           intent.setType("String");
           startActivity(intent);
 
-          //send data of username and password to contsiner and then insert in data base as you do the
+          //send data of username and password to container and then insert in data base as you do the
           //user preference
           Log.d(LOG_TAG, "User Preferences Activity started");
 
         }
-      });
+      //});
       Log.d (LOG_TAG, "this worked");
 
     }));

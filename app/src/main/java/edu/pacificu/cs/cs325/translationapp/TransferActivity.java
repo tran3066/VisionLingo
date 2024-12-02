@@ -23,16 +23,20 @@ public class TransferActivity extends AppCompatActivity {
         });
 
         Intent recieveIntent = getIntent();
-        Intent cameraIntent = new Intent (this, CameraActivity.class);
-        Intent preferenceIntent = new Intent(this, PreferenceActivity.class);
+
         if (null == recieveIntent)
         {
+            getSupportFragmentManager ().beginTransaction ()
+                    .setReorderingAllowed (true)
+                    .add (R.id.fragment_container_view,
+                            CameraFragment.class, null).commit();
 
-
-            startActivity(cameraIntent);
         }
         else if (recieveIntent.getType().equals("String")){
-            startActivity(preferenceIntent);
+            getSupportFragmentManager ().beginTransaction ()
+                    .setReorderingAllowed (true)
+                    .add (R.id.fragment_container_view,
+                            PreferenceFragment.class, null).commit();
 
         }
     }
