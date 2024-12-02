@@ -1,5 +1,6 @@
 package edu.pacificu.cs.cs325.translationapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -52,6 +53,43 @@ public class QuizActivity extends AppCompatActivity
               cSystemBars.bottom);
           return insets;
         });
+
+      mcBinding.bottomNavigationView.setOnItemSelectedListener (item -> {
+
+          if (item.getItemId() == R.id.camera) {
+              Intent cameraIntent = new Intent(this, CameraActivity.class);
+              startActivity(cameraIntent);
+              return true;
+          }
+
+          else if (item.getItemId() == R.id.preferences) {
+
+              Intent preferencesIntent = new Intent(this, PreferenceActivity.class);
+              startActivity(preferencesIntent);
+              return true;
+          }
+
+          else if (item.getItemId() == R.id.wordInformation) {
+
+              Intent wordIntent = new Intent(this, InfoActivity.class);
+              startActivity(wordIntent);
+              return true;
+          }
+
+          else if (item.getItemId() == R.id.quiz) {
+              Intent quizIntent = new Intent(this, QuizActivity.class);
+              startActivity(quizIntent);
+              return true;
+          }
+
+          else if (item.getItemId() == R.id.vocabularyList) {
+              Intent listIntent = new Intent(this, ListActivity.class);
+              startActivity(listIntent);
+              return true;
+          }
+          return false;
+      });
+
 
   }
 }

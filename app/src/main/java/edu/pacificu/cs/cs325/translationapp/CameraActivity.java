@@ -7,6 +7,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import androidx.activity.EdgeToEdge;
@@ -28,6 +30,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.mlkit.vision.common.InputImage;
 import com.google.mlkit.vision.objects.DetectedObject;
@@ -67,6 +70,7 @@ public class CameraActivity extends AppCompatActivity
   private ListenableFuture<ProcessCameraProvider> mcCameraProviderFuture;
   private ActivityResultLauncher<Intent> mActivityLauncher;
   private ActivityCameraBinding mcBinding;
+  private ObjectDetector mcObjectDetector;
   private boolean mbCameraPermission;
   private byte[] mByteArray;
 
@@ -95,9 +99,9 @@ public class CameraActivity extends AppCompatActivity
           return insets;
         });
 
-    ObjectDetectorOptions cOptions = new ObjectDetectorOptions.Builder ().setDetectorMode (
-        ObjectDetectorOptions.STREAM_MODE).enableClassification ().build ();
-    ObjectDetector cObjectDetector = ObjectDetection.getClient (cOptions);
+    mcObjectDetector = ObjectDetection.getClient (new ObjectDetectorOptions.Builder ().setDetectorMode (
+        ObjectDetectorOptions.SINGLE_IMAGE_MODE).enableMultipleObjects()
+            .enableClassification ().build ());
 
     mbCameraPermission = false;
 
@@ -125,11 +129,11 @@ public class CameraActivity extends AppCompatActivity
       }
     }, ContextCompat.getMainExecutor (this));
     checkPermissions ();
+
     mcBinding.btnTakePicture.setOnClickListener ((view) -> {
       ByteArrayOutputStream cByteArrayStream = new ByteArrayOutputStream ();
-      ImageCapture.OutputFileOptions cOutputFileOptions = null;
-      cOutputFileOptions = new ImageCapture.OutputFileOptions.Builder (
-          cByteArrayStream).build ();
+      ImageCapture.OutputFileOptions cOutputFileOptions = new ImageCapture
+              .OutputFileOptions.Builder (cByteArrayStream).build ();
 
       mcCameraBackgroundExecutor = Executors.newSingleThreadScheduledExecutor ();
 
@@ -150,7 +154,7 @@ public class CameraActivity extends AppCompatActivity
                   cByteArrayStream.toByteArray (), 0,
                   cByteArrayStream.toByteArray ().length);
               InputImage cInputImage = InputImage.fromBitmap (cImage, 0);
-              cObjectDetector.process (cInputImage).addOnSuccessListener (
+              mcObjectDetector.process (cInputImage).addOnSuccessListener (
                   new OnSuccessListener<List<DetectedObject>> ()
                   {
                     /**
@@ -164,17 +168,25 @@ public class CameraActivity extends AppCompatActivity
                         List<DetectedObject> cDetectedObjects)
                     {
                       Log.d ("TEXT", "SUCCESS");
+                      Log.d("ObjectDetection", "Detection Success: Detected " + cDetectedObjects.size() + " objects.");
+
+                      StringBuilder detectedWords = new StringBuilder();
 
                       for (DetectedObject cDetectedObject : cDetectedObjects)
                       {
                         Rect cBoundingBox = cDetectedObject.getBoundingBox ();
                         Integer cTrackingId = cDetectedObject.getTrackingId ();
+
                         for (DetectedObject.Label cLabel : cDetectedObject.getLabels ())
                         {
                           String text = cLabel.getText ();
+                          float confidence = cLabel.getConfidence();
+                          Log.d ("ObjectDetection", "Label " + text + " , Confidence: "
+                           + confidence);
                           if (PredefinedCategory.FOOD.equals (text))
                           {
                             mcWordFromObject = text;
+                            detectedWords.append(text).append(" ,");
                           }
                         }
                       }
@@ -204,6 +216,8 @@ public class CameraActivity extends AppCompatActivity
                 public void onFailure (@NonNull Exception cError)
                 {
                   Log.d ("TEXT", "FAILURE " + cError.getMessage ());
+                  runOnUiThread(() -> mcBinding.txtTextView.setText("Detection failed."));
+
                 }
               });
 
@@ -244,6 +258,44 @@ public class CameraActivity extends AppCompatActivity
       Log.d (LOG_TAG, "Sent Text");
       startActivity (cIntentInfo);
       Log.d (LOG_TAG, "Info Activity started");
+    });
+
+
+    mcBinding.bottomNavigationView.setOnItemSelectedListener (item -> {
+
+      if (item.getItemId() == R.id.camera) {
+        Intent cameraIntent = new Intent(this, CameraActivity.class);
+        startActivity(cameraIntent);
+        return true;
+      }
+
+      else if (item.getItemId() == R.id.preferences) {
+
+        Intent preferencesIntent = new Intent(this, PreferenceActivity.class);
+        startActivity(preferencesIntent);
+        return true;
+      }
+
+      else if (item.getItemId() == R.id.wordInformation) {
+
+        Intent wordIntent = new Intent(this, InfoActivity.class);
+        startActivity(wordIntent);
+        return true;
+      }
+
+      else if (item.getItemId() == R.id.vocabularyList) {
+        Intent listIntent = new Intent(this, ListActivity.class);
+        startActivity(listIntent);
+        return true;
+      }
+
+      else if (item.getItemId() == R.id.quiz) {
+        Intent quizIntent = new Intent(this, QuizActivity.class);
+        startActivity(quizIntent);
+        return true;
+      }
+
+      return false;
     });
   }
 

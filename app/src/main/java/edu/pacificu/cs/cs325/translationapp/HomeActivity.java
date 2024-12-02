@@ -134,6 +134,8 @@ public class HomeActivity extends AppCompatActivity
 
     mcBinding.btnLogin.setOnClickListener (v -> {
 
+      startActivity (cIntentCam);
+
       mcUsername = mcBinding.ptUsername.getText().toString().trim();
       mcPassword = mcBinding.ptPassword.getText().toString().trim();
 
