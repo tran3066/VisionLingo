@@ -58,7 +58,7 @@ public class PreferenceActivity extends AppCompatActivity
     languageAdapter.setDropDownViewResource (
         android.R.layout.simple_spinner_dropdown_item);
 
-    String[] colorArray = new String[] { "Red", "Green", "Blue" };
+    String[] colorArray = new String[] { "White", "Red", "Green", "Blue" };
     ArrayAdapter<String> colorAdapter = new ArrayAdapter<> (this,
         android.R.layout.simple_spinner_dropdown_item, colorArray);
     colorAdapter.setDropDownViewResource (
