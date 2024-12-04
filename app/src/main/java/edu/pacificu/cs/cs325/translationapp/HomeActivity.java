@@ -11,10 +11,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.room.Room;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -52,6 +54,8 @@ public class HomeActivity extends AppCompatActivity
   // protected static Dictionary mcDictionary;
   protected static User mcCurrentUser;
 
+  private BusinessLogic mcLogic;
+
   /**
    * onCreate method that starts the activity
    *
@@ -77,6 +81,8 @@ public class HomeActivity extends AppCompatActivity
               cSystemBars.bottom);
           return insets;
         });
+
+    mcLogic = new ViewModelProvider (this).get(BusinessLogic.class);
 
     bUserFound = false;
     mcRunner = Executors.newFixedThreadPool (NUM_THREADS);
@@ -208,7 +214,9 @@ public class HomeActivity extends AppCompatActivity
 
         if (!bUserFound) {
           mcCurrentUser = new User(mcUsername,
-                  mcPassword);
+                  mcPassword,
+              new UserPreference ("", ""),
+              new ArrayList<> ());
           //im not able to insert a user?
           //mcUserDAO.insert(mcCurrentUser);
           Log.d(LOG_TAG, "New user created and inserted into database");
