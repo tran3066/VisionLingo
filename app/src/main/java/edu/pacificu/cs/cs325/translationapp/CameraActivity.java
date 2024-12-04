@@ -64,7 +64,6 @@ import edu.pacificu.cs.cs325.translationapp.databinding.ActivityCameraBinding;
 public class CameraActivity extends AppCompatActivity
 {
   private final String LOG_TAG = "CameraActivity";
-
   private ActivityResultLauncher<String> mCameraPermissionRequest;
   private String mcWordFromObject;
   private ImageCapture mcImageCapture;
