@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.room.Room;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +18,10 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
+
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import edu.pacificu.cs.cs325.translationapp.databinding.FragmentPreferenceBinding;
 
@@ -34,13 +39,15 @@ public class PreferenceFragment extends Fragment {
 
     private FragmentPreferenceBinding mcBinding;
     private final String LOG_TAG = "PreferenceFragment";
+    private UserDAO mcUserDAO;
+    private UserDB mcUserDB;
+    private List<User> usersFromDB;
 
     private String selectedLanguage;
-
+    private ExecutorService mcRunner;
     private String selectedColor;
-
+    private int NUM_THREADS = 1;
     private UserPreference mcUserPref;
-
     private BusinessLogic mcLogic;
 
     public PreferenceFragment() {
@@ -74,6 +81,8 @@ public class PreferenceFragment extends Fragment {
                                @Nullable Bundle savedInstanceState)
     {
         super.onViewCreated (view, savedInstanceState);
+
+        mcRunner = Executors.newFixedThreadPool (NUM_THREADS);
 
         mcLogic = new ViewModelProvider(getActivity()).get(BusinessLogic.class);
 
@@ -125,11 +134,27 @@ public class PreferenceFragment extends Fragment {
             public void onNothingSelected(AdapterView<?> parentView) {
             }
         });
+        mcUserPref = new UserPreference(selectedColor,selectedLanguage);
 
-        //mcUserPref = new UserPreference(selectedColor,selectedLanguage);
+        mcLogic.getUser().setMcUserPreference(mcUserPref);
 
-       // mcLogic.getUser().setMcUserPreference(mcUserPref);
+       mcBinding.btnConfirm.setOnClickListener (v -> {
+//           mcRunner.execute(() -> {
+//               try {
+//                   mcUserDB = Room.databaseBuilder(getActivity().getApplicationContext(),
+//                           UserDB.class,
+//                           "User-DB").fallbackToDestructiveMigrationOnDowngrade().build();
+//                   mcUserDAO = mcUserDB.userDao();
+//                   usersFromDB = mcUserDAO.getAll();
+//                   mcUserDAO.insert(mcLogic.getUser());
+//               } catch (Exception e) {
+//                   throw new RuntimeException(e);
+//               }
+//           });
 
-
+           Toast.makeText(getActivity().getApplicationContext(),
+                   "Preferences Confirmed: Please Choose Activity Below",
+                   Toast.LENGTH_LONG).show();
+       });
     }
 }

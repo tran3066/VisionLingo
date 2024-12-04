@@ -21,6 +21,8 @@ import androidx.camera.lifecycle.ProcessCameraProvider;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -58,18 +60,19 @@ import edu.pacificu.cs.cs325.translationapp.databinding.FragmentCameraBinding;
  */
 
 public class CameraFragment extends Fragment {
-    private final String LOG_TAG = "CameraActivity";
-
+    private final String LOG_TAG = "CameraFragment";
+    private Observer<BusinessLogicUIState> mcObserver;
     private ActivityResultLauncher<String> mCameraPermissionRequest;
     private String mcWordFromObject;
     private ImageCapture mcImageCapture;
     private ScheduledExecutorService mcCameraBackgroundExecutor;
     private ListenableFuture<ProcessCameraProvider> mcCameraProviderFuture;
-    private ActivityResultLauncher<Intent> mActivityLauncher;
     private FragmentCameraBinding mcBinding;
     private ObjectDetector mcObjectDetector;
     private boolean mbCameraPermission;
     private byte[] mByteArray;
+    private BusinessLogic mcLogic;
+
 
 
     public CameraFragment() {
@@ -96,13 +99,16 @@ public class CameraFragment extends Fragment {
     {
         super.onDestroyView ();
         mcBinding = null;
-
+        //mcLogic.getUiState ().removeObserver (mcObserver);
     }
     @Override
     public void onViewCreated (@NonNull View view,
                                @Nullable Bundle savedInstanceState)
     {
         super.onViewCreated (view, savedInstanceState);
+
+        mcLogic = new ViewModelProvider(this).get(BusinessLogic.class);
+
         mcObjectDetector = ObjectDetection.getClient (new ObjectDetectorOptions.Builder
                 ().setDetectorMode (
                         ObjectDetectorOptions.SINGLE_IMAGE_MODE).enableMultipleObjects()
@@ -156,6 +162,7 @@ public class CameraFragment extends Fragment {
                         public void onImageSaved (
                                 @NonNull ImageCapture.OutputFileResults cOutputFileResults)
                         {
+
                             Bitmap cImage = BitmapFactory.decodeByteArray (
                                     cByteArrayStream.toByteArray (), 0,
                                     cByteArrayStream.toByteArray ().length);
@@ -169,6 +176,7 @@ public class CameraFragment extends Fragment {
                                          * @param cDetectedObjects objects detected in the image
                                          */
 
+                                        @SuppressLint("SetTextI18n")
                                         @Override
                                         public void onSuccess (
                                                 List<DetectedObject> cDetectedObjects)
@@ -178,24 +186,18 @@ public class CameraFragment extends Fragment {
                                                     "Detection Success: Detected "
                                                             + cDetectedObjects.size() + " objects.");
 
-                                            StringBuilder detectedWords = new StringBuilder();
+                                            //StringBuilder detectedWords = new StringBuilder();
 
                                             for (DetectedObject cDetectedObject : cDetectedObjects)
                                             {
-                                                Rect cBoundingBox = cDetectedObject.getBoundingBox ();
-                                                Integer cTrackingId = cDetectedObject.getTrackingId ();
                                                 //tell user to get close
-
                                                 for (DetectedObject.Label cLabel : cDetectedObject.getLabels ())
                                                 {
                                                     String text = cLabel.getText ();
-                                                    float confidence = cLabel.getConfidence();
-                                                    Log.d ("ObjectDetection", "Label " + text + " , Confidence: "
-                                                            + confidence);
-
-
+                                                    Log.d (LOG_TAG, "Label: "
+                                                            + text);
                                                     mcWordFromObject = text;
-                                                    detectedWords.append(text).append(" ,");
+                                                    //detectedWords.append(text).append(" ,");
                                                 }
                                             }
                                             assert getActivity() != null;
@@ -204,13 +206,14 @@ public class CameraFragment extends Fragment {
                                                         && !mcWordFromObject.isEmpty ())
                                                 {
                                                     Log.d ("Object Word:", mcWordFromObject);
-                                                    mcBinding.txtTextView.setText (detectedWords);
+                                                    //mcBinding.txtTextView.setText (detectedWords);
 
-                                                    //mcBinding.txtTextView.setText (mcWordFromObject);
+                                                    mcBinding.txtTextView.setText (mcWordFromObject);
                                                 }
                                                 else
                                                 {
-                                                    mcBinding.txtTextView.setText ("");
+                                                    mcBinding.txtTextView.setText
+                                                            ("No Object Detected");
                                                 }
                                             });
                                         }
@@ -261,18 +264,20 @@ public class CameraFragment extends Fragment {
                     });
         });
 
-        Intent cIntentInfo = new Intent (getActivity(), InfoActivity.class);
         mcBinding.btnTranslate.setOnClickListener (v -> {
-            //businesslogic required
 
             Log.d (LOG_TAG, "Launch Translate Button");
-            cIntentInfo.putExtra ("Picture", mByteArray);
-            //setResult (RESULT_OK, cIntentInfo);
+
+            mcLogic.takePicture(mByteArray);
             Log.d (LOG_TAG, "Sent Picture");
-            cIntentInfo.putExtra ("Text", mcWordFromObject);
-            //setResult (RESULT_OK, cIntentInfo);
+
+            mcLogic.detectWord(mcWordFromObject);
             Log.d (LOG_TAG, "Sent Text");
-            startActivity (cIntentInfo);
+
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .setReorderingAllowed(true)
+                    .replace(R.id.fragment_container_view, InfoFragment.class, null)
+                    .commit();
             Log.d (LOG_TAG, "Info Activity started");
         });
 
@@ -310,7 +315,7 @@ public class CameraFragment extends Fragment {
                 CameraSelector.LENS_FACING_BACK).build ();
         cPreview.setSurfaceProvider (mcBinding.cameraPreview.getSurfaceProvider ());
         assert getActivity() != null;
-        cCameraProvider.bindToLifecycle (this, cCameraSelector,
+        cCameraProvider.bindToLifecycle (getActivity(), cCameraSelector,
                 cPreview, mcImageCapture);
     }
 }

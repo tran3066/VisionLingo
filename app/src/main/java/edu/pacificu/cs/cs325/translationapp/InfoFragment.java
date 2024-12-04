@@ -1,8 +1,11 @@
 package edu.pacificu.cs.cs325.translationapp;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,12 +24,9 @@ public class InfoFragment extends Fragment
   private final String LOG_TAG = "InfoActivity";
   private final String FRENCH_URL = "https://forvo.com/word/*/#fr";
   private final String SPANISH_URL = "https://forvo.com/word/*/#es";
-
   private Observer<BusinessLogicUIState> mcObserver;
   private BusinessLogic mcLogic;
-
   private FragmentInfoBinding mcBinding;
-
   private String mcTranslatedWord;
 
   public InfoFragment ()
@@ -50,6 +50,8 @@ public class InfoFragment extends Fragment
       @Nullable Bundle savedInstanceState)
   {
     super.onViewCreated (view, savedInstanceState);
+    assert getActivity() != null;
+
     mcLogic = new ViewModelProvider (getActivity ()).get(BusinessLogic.class);
 
     mcObserver = new Observer<BusinessLogicUIState> ()
@@ -61,6 +63,27 @@ public class InfoFragment extends Fragment
       }
     };
 
+    if (mcLogic.getWordFromCamera() != null)
+    {
+      mcBinding.tvWordTranslate.setText (mcLogic.getWordFromCamera());
+      Log.d (LOG_TAG, "Text RECEIVED");
+    }
+    else
+    {
+      Log.d (LOG_TAG, "No TEXT");
+    }
+
+    if (mcLogic.getImage() != null)
+    {
+      Bitmap cBitmap = BitmapFactory.decodeByteArray (mcLogic.getImage(), 0,
+              mcLogic.getImage().length);
+      mcBinding.imgWord.setImageBitmap (cBitmap);
+      Log.d (LOG_TAG, "Picture RECEIVED");
+    }
+    else
+    {
+      Log.d (LOG_TAG, "No PICTURE");
+    }
 
     mcBinding.btnSpeak.setOnClickListener (v -> {
       String cCurrentLanguage = HomeActivity.mcCurrentUser.getLanguage ();

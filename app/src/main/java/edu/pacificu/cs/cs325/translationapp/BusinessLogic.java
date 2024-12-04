@@ -9,24 +9,40 @@ public class BusinessLogic extends ViewModel
   private final MutableLiveData<BusinessLogicUIState> uiState;
   private boolean mbPictureTaken;
   private boolean mbSignedIn;
-  private Byte[] mcImage;
+  private byte[] mcImage;
   private User mcUser;
-  private String mcWord;
+  private String mcWordFromCamera;
 
   public BusinessLogic() {
     mbSignedIn = false;
-    mcWord = "";
+    mcWordFromCamera = "";
     mbPictureTaken = false;
     uiState = new MutableLiveData<> (new BusinessLogicUIState (
-        new User("",""), null, mcWord, mbPictureTaken, mbSignedIn));
+        new User("",""), null, mcWordFromCamera, mbPictureTaken, mbSignedIn));
   }
 
-  public void takePicture(Byte[] cImage)
+  public void takePicture(byte[] cImage)
   {
     mbPictureTaken = true;
     this.mcImage = cImage;
     uiState.setValue(new BusinessLogicUIState (
-        mcUser, mcImage, mcWord, mbPictureTaken, mbSignedIn));
+        mcUser, mcImage, mcWordFromCamera, mbPictureTaken, mbSignedIn));
+  }
+
+  public byte[] getImage() {
+    return mcImage;
+  }
+  
+  public void detectWord (String cWord)
+  {
+    this.mcWordFromCamera = cWord;
+    uiState.setValue(new BusinessLogicUIState (
+            mcUser, mcImage, mcWordFromCamera, mbPictureTaken, mbSignedIn));
+  }
+  
+  public String getWordFromCamera ()
+  {
+    return mcWordFromCamera;
   }
 
   public LiveData<BusinessLogicUIState> getUiState() {
@@ -35,7 +51,8 @@ public class BusinessLogic extends ViewModel
 
   public void createUser (String username, String password) {
     mcUser = new User(username,password);
-    uiState.setValue(new BusinessLogicUIState( mcUser, mcImage, mcWord, 
+    mbSignedIn = true;
+    uiState.setValue(new BusinessLogicUIState( mcUser, mcImage, mcWordFromCamera, 
             mbPictureTaken, mbSignedIn));
   }
   

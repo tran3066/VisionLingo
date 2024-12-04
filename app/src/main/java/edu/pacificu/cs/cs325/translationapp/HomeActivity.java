@@ -102,17 +102,17 @@ public class HomeActivity extends AppCompatActivity
 
     mcBinding.btnLogin.setOnClickListener (v -> {
 
-      login(intent, mcRunner);
+      login(intent, mcRunner, usersFromDB);
     });
 
     mcBinding.btnNewUser.setOnClickListener( (view -> {
 
-      newUser(intent , mcRunner);
+      newUser(intent , mcRunner, usersFromDB);
 
     }));
   }
 
-  private void newUser (Intent intent, ExecutorService mcRunner)
+  private void newUser (Intent intent, ExecutorService mcRunner, List<User> usersFromDB)
   {
     mcUsername = mcBinding.ptUsername.getText().toString().trim();
     mcPassword = mcBinding.ptPassword.getText().toString().trim();
@@ -126,7 +126,6 @@ public class HomeActivity extends AppCompatActivity
     }
 
     mcRunner.execute (() -> {
-
       for (User check : usersFromDB) {
         if (mcUsername.equals(check.getMcUsername())) {
           Toast.makeText(this, "Username taken: Please login or Choose a new Username",
@@ -153,7 +152,7 @@ public class HomeActivity extends AppCompatActivity
   }
 
 
-  private void login (Intent intent, ExecutorService mcRunner)
+  private void login (Intent intent, ExecutorService mcRunner, List<User> usersFromDB)
   {
 
     mcUsername = mcBinding.ptUsername.getText().toString().trim();

@@ -17,7 +17,6 @@ import edu.pacificu.cs.cs325.translationapp.databinding.ActivityTransferBinding;
 public class TransferActivity extends AppCompatActivity {
 
     private ActivityTransferBinding mcBinding;
-
     private BusinessLogic mcLogic;
 
 
