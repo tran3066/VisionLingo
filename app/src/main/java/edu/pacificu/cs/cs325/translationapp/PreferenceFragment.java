@@ -1,5 +1,7 @@
 package edu.pacificu.cs.cs325.translationapp;
 
+import static androidx.camera.core.impl.utils.ContextUtil.getApplicationContext;
+
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -7,10 +9,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Toast;
 
 import edu.pacificu.cs.cs325.translationapp.databinding.FragmentPreferenceBinding;
 
@@ -27,7 +32,15 @@ import edu.pacificu.cs.cs325.translationapp.databinding.FragmentPreferenceBindin
 public class PreferenceFragment extends Fragment {
 
     private FragmentPreferenceBinding mcBinding;
+    private final String LOG_TAG = "PreferenceFragment";
 
+    private String selectedLanguage;
+
+    private String selectedColor;
+
+    private UserPreference mcUserPref;
+
+    private BusinessLogic mcLogic;
 
     public PreferenceFragment() {
         // Required empty public constructor
@@ -61,16 +74,58 @@ public class PreferenceFragment extends Fragment {
     {
         super.onViewCreated (view, savedInstanceState);
         String[] languageArray = new String[] { "French", "Spanish" };
+        assert getActivity() != null;
         ArrayAdapter<String> languageAdapter = new ArrayAdapter<> (getActivity(),
                 android.R.layout.simple_spinner_dropdown_item, languageArray);
         languageAdapter.setDropDownViewResource (
                 android.R.layout.simple_spinner_dropdown_item);
+
+        mcBinding.languageSpinner.setAdapter(languageAdapter);
 
         String[] colorArray = new String[] { "Red", "Green", "Blue" };
         ArrayAdapter<String> colorAdapter = new ArrayAdapter<> (getActivity(),
                 android.R.layout.simple_spinner_dropdown_item, colorArray);
         colorAdapter.setDropDownViewResource (
                 android.R.layout.simple_spinner_dropdown_item);
+
+        mcBinding.colorSpinner.setAdapter(colorAdapter);
+
+        mcBinding.languageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+                assert getActivity() != null;
+                Toast.makeText(getActivity().getApplicationContext(),
+                        (String) adapterView.getSelectedItem(),
+                        Toast.LENGTH_LONG).show();
+                selectedLanguage = (String) adapterView.getItemAtPosition(position);
+                Log.d(LOG_TAG, "Language selected: " + selectedLanguage);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+            }
+        });
+
+        mcBinding.colorSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+                assert getActivity() != null;
+                Toast.makeText(getActivity().getApplicationContext(),
+                        (String) adapterView.getSelectedItem(),
+                        Toast.LENGTH_LONG).show();
+                selectedColor = (String) adapterView.getItemAtPosition(position);
+                Log.d(LOG_TAG, "Color selected: " + selectedColor);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+            }
+        });
+
+        mcUserPref = new UserPreference(selectedColor,selectedLanguage);
+
+        mcLogic.getUser().setMcUserPreference(mcUserPref);
+
 
     }
 }

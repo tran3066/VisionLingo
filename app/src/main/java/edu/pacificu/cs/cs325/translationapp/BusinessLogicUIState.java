@@ -2,8 +2,7 @@ package edu.pacificu.cs.cs325.translationapp;
 
 public class BusinessLogicUIState
 {
-  private User mcCurrentUser;
-
+  private User mcUser;
   private Byte[] mcImage;
 
   private String mcCameraWord;
@@ -15,7 +14,7 @@ public class BusinessLogicUIState
   public BusinessLogicUIState(User cCurrentUser, Byte[] cImage,
       String cCameraWord, boolean bPictureTaken, boolean bSignedIn)
   {
-    mcCurrentUser = cCurrentUser;
+    this.mcUser = cCurrentUser;
     mcImage = cImage;
     mcCameraWord = cCameraWord;
     mbPictureTaken = bPictureTaken;
@@ -24,7 +23,7 @@ public class BusinessLogicUIState
 
   public User getUser()
   {
-    return mcCurrentUser;
+    return mcUser;
   }
 
   public boolean isPictureTaken()
@@ -42,11 +41,9 @@ public class BusinessLogicUIState
     return tempImage;
   }
 
-  public String getCameraWord()
-  {
+  public String getCameraWord() {
     String tempString = null;
-    if(mbPictureTaken)
-    {
+    if (mbPictureTaken) {
       tempString = mcCameraWord;
     }
 

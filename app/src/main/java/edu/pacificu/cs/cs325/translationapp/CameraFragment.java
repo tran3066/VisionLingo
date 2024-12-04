@@ -1,5 +1,6 @@
 package edu.pacificu.cs.cs325.translationapp;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -81,7 +82,7 @@ public class CameraFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         mcBinding = edu.pacificu.cs.cs325.translationapp.databinding.FragmentCameraBinding.inflate(
@@ -102,7 +103,8 @@ public class CameraFragment extends Fragment {
                                @Nullable Bundle savedInstanceState)
     {
         super.onViewCreated (view, savedInstanceState);
-        mcObjectDetector = ObjectDetection.getClient (new ObjectDetectorOptions.Builder ().setDetectorMode (
+        mcObjectDetector = ObjectDetection.getClient (new ObjectDetectorOptions.Builder
+                ().setDetectorMode (
                         ObjectDetectorOptions.SINGLE_IMAGE_MODE).enableMultipleObjects()
                 .enableClassification ().build ());
 
@@ -119,6 +121,7 @@ public class CameraFragment extends Fragment {
                         mbCameraPermission = false;
                     }
                 });
+        assert getActivity() != null;
         mcCameraProviderFuture = ProcessCameraProvider.getInstance (getActivity());
         mcCameraProviderFuture.addListener (() -> {
             try
@@ -133,7 +136,7 @@ public class CameraFragment extends Fragment {
         }, ContextCompat.getMainExecutor (getActivity()));
         checkPermissions ();
 
-        mcBinding.btnTakePicture.setOnClickListener ((view) -> {
+        mcBinding.btnTakePicture.setOnClickListener ((v) -> {
             ByteArrayOutputStream cByteArrayStream = new ByteArrayOutputStream ();
             ImageCapture.OutputFileOptions cOutputFileOptions = new ImageCapture
                     .OutputFileOptions.Builder (cByteArrayStream).build ();
@@ -171,7 +174,9 @@ public class CameraFragment extends Fragment {
                                                 List<DetectedObject> cDetectedObjects)
                                         {
                                             Log.d ("TEXT", "SUCCESS");
-                                            Log.d("ObjectDetection", "Detection Success: Detected " + cDetectedObjects.size() + " objects.");
+                                            Log.d("ObjectDetection",
+                                                    "Detection Success: Detected "
+                                                            + cDetectedObjects.size() + " objects.");
 
                                             StringBuilder detectedWords = new StringBuilder();
 
@@ -193,7 +198,8 @@ public class CameraFragment extends Fragment {
                                                     detectedWords.append(text).append(" ,");
                                                 }
                                             }
-                                            runOnUiThread (() -> {
+                                            assert getActivity() != null;
+                                            getActivity().runOnUiThread (() -> {
                                                 if (mcWordFromObject != null
                                                         && !mcWordFromObject.isEmpty ())
                                                 {
@@ -217,16 +223,20 @@ public class CameraFragment extends Fragment {
                                  * @param cError error obtained attempting to detect objects
                                  */
 
+                                @SuppressLint("SetTextI18n")
                                 @Override
                                 public void onFailure (@NonNull Exception cError)
                                 {
                                     Log.d ("TEXT", "FAILURE " + cError.getMessage ());
-                                    getActivity().runOnUiThread(() -> mcBinding.txtTextView.setText("Detection failed."));
+                                    assert getActivity() != null;
+                                    getActivity().runOnUiThread(() ->
+                                            mcBinding.txtTextView.setText("Detection failed."));
 
                                 }
                             });
 
-                            runOnUiThread (() -> {
+                            assert getActivity() != null;
+                            getActivity().runOnUiThread (() -> {
                                 mcBinding.cptIMG.setImageBitmap (BitmapFactory.decodeByteArray (
                                         cByteArrayStream.toByteArray (), 0,
                                         cByteArrayStream.toByteArray ().length));
@@ -252,15 +262,15 @@ public class CameraFragment extends Fragment {
         });
 
         Intent cIntentInfo = new Intent (getActivity(), InfoActivity.class);
-        mcBinding.btnTranslate.setOnClickListener (view -> {
+        mcBinding.btnTranslate.setOnClickListener (v -> {
             //businesslogic required
 
             Log.d (LOG_TAG, "Launch Translate Button");
             cIntentInfo.putExtra ("Picture", mByteArray);
-            setResult (RESULT_OK, cIntentInfo);
+            //setResult (RESULT_OK, cIntentInfo);
             Log.d (LOG_TAG, "Sent Picture");
             cIntentInfo.putExtra ("Text", mcWordFromObject);
-            setResult (RESULT_OK, cIntentInfo);
+            //setResult (RESULT_OK, cIntentInfo);
             Log.d (LOG_TAG, "Sent Text");
             startActivity (cIntentInfo);
             Log.d (LOG_TAG, "Info Activity started");
@@ -275,6 +285,7 @@ public class CameraFragment extends Fragment {
 
     private void checkPermissions ()
     {
+        assert getActivity() != null;
         if (ActivityCompat.checkSelfPermission (getActivity(),
                 android.Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED)
@@ -292,13 +303,14 @@ public class CameraFragment extends Fragment {
     void bindPreview (@NonNull ProcessCameraProvider cCameraProvider)
     {
         checkPermissions ();
-        mcImageCapture = new ImageCapture.Builder ().setTargetRotation (
-                Objects.requireNonNull (getDisplay ()).getRotation ()).build ();
+        int rotation = Objects.requireNonNull(requireActivity().getDisplay()).getRotation();
+        mcImageCapture = new ImageCapture.Builder ().setTargetRotation (rotation).build();
         Preview cPreview = new Preview.Builder ().build ();
         CameraSelector cCameraSelector = new CameraSelector.Builder ().requireLensFacing (
                 CameraSelector.LENS_FACING_BACK).build ();
         cPreview.setSurfaceProvider (mcBinding.cameraPreview.getSurfaceProvider ());
-        Camera cCamera = cCameraProvider.bindToLifecycle (getActivity(), cCameraSelector,
+        assert getActivity() != null;
+        cCameraProvider.bindToLifecycle (this, cCameraSelector,
                 cPreview, mcImageCapture);
     }
 }

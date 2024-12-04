@@ -37,7 +37,6 @@ import edu.pacificu.cs.cs325.translationapp.databinding.ActivityHomeBinding;
 public class HomeActivity extends AppCompatActivity
 {
   private final String LOG_TAG = "HomeActivity";
-  private final int NUM_THREADS = 2;
   private final int SIZE_DATABASE = 36657;
   private ActivityHomeBinding mcBinding;
   private ExecutorService mcRunner;
@@ -46,7 +45,6 @@ public class HomeActivity extends AppCompatActivity
   private String mcUsername;
   private String mcPassword;
   private List<User> usersFromDB;
-  private DictionaryDB mcDictionaryDB;
   private DictionaryDAO mcDictionaryDAO;
   private boolean bUserFound;
   // protected static Dictionary mcDictionary;
@@ -79,10 +77,9 @@ public class HomeActivity extends AppCompatActivity
         });
 
     bUserFound = false;
-    mcRunner = Executors.newFixedThreadPool (NUM_THREADS);
-    mcDictionaryDB = Room.databaseBuilder (getApplicationContext (),
-        DictionaryDB.class, "Dictionary-DB").build ();
-    mcDictionaryDAO = mcDictionaryDB.dictionaryDao ();
+      int NUM_THREADS = 4;
+      mcRunner = Executors.newFixedThreadPool (NUM_THREADS);
+
 
     mcRunner.execute (() -> {
       try
@@ -98,19 +95,137 @@ public class HomeActivity extends AppCompatActivity
       }
     });
 
+    buildDictionary(mcRunner);
+
+
+    Intent intent = new Intent (this, TransferActivity.class);
+
+    mcBinding.btnLogin.setOnClickListener (v -> {
+
+      login(intent, mcRunner);
+    });
+
+    mcBinding.btnNewUser.setOnClickListener( (view -> {
+
+      newUser(intent , mcRunner);
+
+    }));
+  }
+
+  private void newUser (Intent intent, ExecutorService mcRunner)
+  {
+    mcUsername = mcBinding.ptUsername.getText().toString().trim();
+    mcPassword = mcBinding.ptPassword.getText().toString().trim();
+
+    if (mcPassword.isEmpty() || mcUsername.isEmpty())
+    {
+      Toast.makeText(this, "Username and password cannot be empty",
+              Toast.LENGTH_SHORT).show();
+
+      return;
+    }
+
+    mcRunner.execute (() -> {
+
+      for (User check : usersFromDB) {
+        if (mcUsername.equals(check.getMcUsername())) {
+          Toast.makeText(this, "Username taken: Please login or Choose a new Username",
+                  Toast.LENGTH_SHORT).show();
+          return;
+        }
+      }
+    });
+
+    if (!bUserFound) {
+      mcCurrentUser = new User(mcUsername,mcPassword);
+
+      Log.d(LOG_TAG, "New user created");
+      Log.d(LOG_TAG, "Launch User Preferences");
+
+      intent.setAction(Intent.ACTION_SEND);
+      intent.putExtra("Username", mcCurrentUser.getMcUsername());
+      intent.putExtra("Password", mcCurrentUser.getMcPassword());
+      intent.setType("String");
+      startActivity(intent);
+      Log.d(LOG_TAG, "User Preferences Activity started");
+
+    }
+  }
+
+
+  private void login (Intent intent, ExecutorService mcRunner)
+  {
+    mcUsername = mcBinding.ptUsername.getText().toString().trim();
+    mcPassword = mcBinding.ptPassword.getText().toString().trim();
+
+    if (mcPassword.isEmpty() || mcUsername.isEmpty())
+    {
+      Toast.makeText(this, "Username and password cannot be empty",
+              Toast.LENGTH_SHORT).show();
+      return;
+    }
+
+    mcRunner.execute (() -> {
+      if (usersFromDB != null) {
+        for (User check : usersFromDB) {
+          if (mcUsername.equals(check.getMcUsername())) {
+            bUserFound = true;
+            if (mcPassword.equals(check.getMcPassword())) {
+              mcCurrentUser = check;
+            } else {
+              runOnUiThread(() -> {
+                int time = Toast.LENGTH_SHORT;
+                StringBuilder wordMessage = new StringBuilder();
+                wordMessage.append("Incorrect Password for User: ")
+                        .append(mcUsername);
+                Toast toast = Toast.makeText(this, wordMessage, time);
+                toast.show();
+                Log.d(LOG_TAG, "Password Incorrect Toast was shown");
+              });
+            }
+          }
+        }
+      }
+    });
+
+    if (mcCurrentUser != null && bUserFound)
+    {
+      Log.d (LOG_TAG, "Launch CameraActivity from Login");
+      startActivity (intent);
+      Log.d (LOG_TAG, "Camera Activity started");
+    }
+    else if (!bUserFound) {
+      runOnUiThread(() -> {
+        int time = Toast.LENGTH_SHORT;
+        StringBuilder wordMessage = new StringBuilder ();
+        wordMessage.append ("User: ")
+                .append (mcUsername).append(" not found. Please create a new account");
+        Toast toast = Toast.makeText (this, wordMessage, time);
+        toast.show ();
+        Log.d (LOG_TAG, "User not Found Toast was shown");
+      });
+    }
+  }
+  private void buildDictionary (ExecutorService mcRunner)
+  {
+      DictionaryDB mcDictionaryDB = Room.databaseBuilder(getApplicationContext(),
+              DictionaryDB.class, "Dictionary-DB").build();
+    mcDictionaryDAO = mcDictionaryDB.dictionaryDao ();
+
     mcRunner.execute (() -> {
       if (mcDictionaryDAO.getSize () == 0
-          || mcDictionaryDAO.getSize () != SIZE_DATABASE)
+              || mcDictionaryDAO.getSize () != SIZE_DATABASE)
       {
         mcDictionaryDAO.deleteAll ();
 
         try
         {
           URL cDictionaryURL = new URL (
-              "https://raw.githubusercontent.com" +
-                      "/sujithps/Dictionary/refs/heads/master/Oxford%20English%20Dictionary.txt");
+                  "https://raw.githubusercontent.com" +
+                          "/sujithps/Dictionary/refs/heads/master" +
+                          "/Oxford%20English%20Dictionary.txt");
           TXTDatabaseReader cReader = new TXTDatabaseReader (
-              cDictionaryURL.openStream ());
+                  cDictionaryURL.openStream ());
           cReader.read (mcDictionaryDAO);
         }
         catch (IOException cException)
@@ -124,110 +239,10 @@ public class HomeActivity extends AppCompatActivity
         runOnUiThread (() -> {
           int duration = Toast.LENGTH_SHORT;
           Toast cToast = Toast.makeText (this, "Database fully loaded from URL",
-              duration);
+                  duration);
           cToast.show ();
         });
       }
     });
-
-    Intent intent = new Intent (this, TransferActivity.class);
-
-    mcBinding.btnLogin.setOnClickListener (v -> {
-
-      startActivity (intent);
-
-      mcUsername = mcBinding.ptUsername.getText().toString().trim();
-      mcPassword = mcBinding.ptPassword.getText().toString().trim();
-
-      if (mcPassword == null || mcUsername == null)
-      {
-        Toast.makeText(this, "Username and password cannot be empty",
-                Toast.LENGTH_SHORT).show();
-        return;
-      }
-
-      if (usersFromDB != null)
-      {
-        for (User check : usersFromDB)
-        {
-          if (mcUsername.equals (check.getMcUsername ()))
-          {
-            bUserFound = true;
-            if (mcPassword.equals (check.getMcPassword ()))
-            {
-              mcCurrentUser = check;
-            }
-            else
-            {
-              runOnUiThread (() -> {
-                int time = Toast.LENGTH_SHORT;
-                StringBuilder wordMessage = new StringBuilder ();
-                wordMessage.append ("Incorrect Password for User: ")
-                    .append (mcUsername);
-                Toast toast = Toast.makeText (this, wordMessage, time);
-                toast.show ();
-                Log.d (LOG_TAG, "Password Incorrect Toast was shown");
-              });
-            }
-          }
-        }
-      }
-      if (mcCurrentUser != null && bUserFound)
-      {
-        Log.d (LOG_TAG, "Launch CameraActivity from Login");
-        startActivity (intent);
-        Log.d (LOG_TAG, "Camera Activity started");
-      }
-      else if (!bUserFound) {
-        runOnUiThread(() -> {
-          int time = Toast.LENGTH_SHORT;
-          StringBuilder wordMessage = new StringBuilder ();
-          wordMessage.append ("User: ")
-                  .append (mcUsername).append(" not found. Please create a new account");
-          Toast toast = Toast.makeText (this, wordMessage, time);
-          toast.show ();
-          Log.d (LOG_TAG, "User not Found Toast was shown");
-        });
-      }
-    });
-
-    mcBinding.btnNewUser.setOnClickListener( (view -> {
-
-      mcUsername = mcBinding.ptUsername.getText().toString().trim();
-      mcPassword = mcBinding.ptPassword.getText().toString().trim();
-
-      if (mcPassword == null || mcUsername == null)
-      {
-        Toast.makeText(this, "Username and password cannot be empty",
-                Toast.LENGTH_SHORT).show();
-
-        return;
-      }
-     // mcRunner.execute (() -> {
-        //need to check to see if the username already exists in the database
-
-        if (!bUserFound) {
-          mcCurrentUser = new User(mcUsername,
-                  mcPassword);
-          //im not able to insert a user?
-          //mcUserDAO.insert(mcCurrentUser);
-          Log.d(LOG_TAG, "New user created and inserted into database");
-          Log.d(LOG_TAG, "Launch User Preferences");
-
-          intent.setAction(Intent.ACTION_SEND);
-          intent.putExtra("Username", mcCurrentUser.getMcUsername());
-          intent.putExtra("Password", mcCurrentUser.getMcPassword());
-          intent.setType("String");
-          startActivity(intent);
-
-          //send data of username and password to container and then insert in data base as you do the
-          //user preference
-          Log.d(LOG_TAG, "User Preferences Activity started");
-
-        }
-      //});
-      Log.d (LOG_TAG, "this worked");
-
-    }));
   }
 }
