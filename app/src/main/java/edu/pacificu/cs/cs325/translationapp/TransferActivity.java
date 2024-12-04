@@ -43,6 +43,7 @@ public class TransferActivity extends AppCompatActivity {
                 .add(R.id.fragment_container_view, CameraFragment.class, null)
                 .commit();
 
+
         if ("String".equals(recieveIntent.getType())) {
             String username = recieveIntent.getStringExtra("Username");
             String password = recieveIntent.getStringExtra("Password");
@@ -101,5 +102,7 @@ public class TransferActivity extends AppCompatActivity {
             }
             return false;
         });
+
+
     }
 }

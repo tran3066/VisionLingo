@@ -8,6 +8,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -73,6 +74,9 @@ public class PreferenceFragment extends Fragment {
                                @Nullable Bundle savedInstanceState)
     {
         super.onViewCreated (view, savedInstanceState);
+
+        mcLogic = new ViewModelProvider(getActivity()).get(BusinessLogic.class);
+
         String[] languageArray = new String[] { "French", "Spanish" };
         assert getActivity() != null;
         ArrayAdapter<String> languageAdapter = new ArrayAdapter<> (getActivity(),
@@ -122,9 +126,9 @@ public class PreferenceFragment extends Fragment {
             }
         });
 
-        mcUserPref = new UserPreference(selectedColor,selectedLanguage);
+        //mcUserPref = new UserPreference(selectedColor,selectedLanguage);
 
-        mcLogic.getUser().setMcUserPreference(mcUserPref);
+       // mcLogic.getUser().setMcUserPreference(mcUserPref);
 
 
     }

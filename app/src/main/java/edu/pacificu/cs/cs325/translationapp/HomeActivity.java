@@ -155,6 +155,7 @@ public class HomeActivity extends AppCompatActivity
 
   private void login (Intent intent, ExecutorService mcRunner)
   {
+
     mcUsername = mcBinding.ptUsername.getText().toString().trim();
     mcPassword = mcBinding.ptPassword.getText().toString().trim();
 
