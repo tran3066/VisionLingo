@@ -40,13 +40,11 @@ public class User
    * @param mcPassword password associated with the username from screen
    */
 
-  public User (String mcUsername, String mcPassword,
-              UserPreference mcUserPreference, ArrayList<Vocab> mcVocabList)
+  public User (String mcUsername, String mcPassword)
   {
     this.mcUsername = mcUsername;
     this.mcPassword = mcPassword;
-    this.mcVocabList = mcVocabList;
-    this.mcUserPreference = mcUserPreference;
+    mcVocabList = new ArrayList<> ();
   }
 
   /**
