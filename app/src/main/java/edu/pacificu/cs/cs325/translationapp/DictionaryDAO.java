@@ -69,4 +69,9 @@ public interface DictionaryDAO
 
   @Query ("DELETE FROM Word")
   void deleteAll ();
+
+  @Query ("SELECT * FROM Word WHERE mcEnglishWord = :cWord")
+  Word getWordByString (String cWord);
+
+
 }

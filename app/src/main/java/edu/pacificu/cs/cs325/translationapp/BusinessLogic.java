@@ -13,13 +13,26 @@ public class BusinessLogic extends ViewModel
   private User mcUser;
   private String mcWordFromCamera;
 
+  private DictionaryDAO mcDictionaryDAO;
+
+
   public BusinessLogic() {
     mbSignedIn = false;
     mcWordFromCamera = "";
     mbPictureTaken = false;
+    mcDictionaryDAO = null;
     uiState = new MutableLiveData<> (new BusinessLogicUIState (
         new User("",""), null, mcWordFromCamera, mbPictureTaken,
             mbSignedIn));
+  }
+
+  public void setDAO(DictionaryDAO cDictionaryDAO)
+  {
+    mcDictionaryDAO = cDictionaryDAO;
+  }
+  public DictionaryDAO getDAO()
+  {
+    return mcDictionaryDAO;
   }
 
   public void takePicture(byte[] cImage)

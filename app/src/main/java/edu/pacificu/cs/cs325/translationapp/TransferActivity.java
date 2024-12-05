@@ -10,6 +10,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.room.Room;
 
 import edu.pacificu.cs.cs325.translationapp.databinding.ActivityHomeBinding;
 import edu.pacificu.cs.cs325.translationapp.databinding.ActivityTransferBinding;
@@ -36,6 +37,9 @@ public class TransferActivity extends AppCompatActivity {
         mcLogic = new ViewModelProvider(this).get(BusinessLogic.class);
         Intent recieveIntent = getIntent();
 
+        DictionaryDB mcDictionaryDB = Room.databaseBuilder(getApplicationContext(),
+            DictionaryDB.class, "Dictionary-DB").build();
+        mcLogic.setDAO (mcDictionaryDB.dictionaryDao ());
 
         getSupportFragmentManager().beginTransaction()
                 .setReorderingAllowed(true)
