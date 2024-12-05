@@ -23,9 +23,6 @@
             android:name=".TransferActivity"
             android:exported="false" />
         <activity
-            android:name=".PreferenceActivity"
-            android:exported="false" />
-        <activity
             android:name=".ListActivity"
             android:exported="false" />
         <activity

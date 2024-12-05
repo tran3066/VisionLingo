@@ -3,6 +3,7 @@ package edu.pacificu.cs.cs325.translationapp;
 import static androidx.camera.core.impl.utils.ContextUtil.getApplicationContext;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
@@ -42,13 +44,13 @@ public class PreferenceFragment extends Fragment {
     private UserDAO mcUserDAO;
     private UserDB mcUserDB;
     private List<User> usersFromDB;
-
     private String selectedLanguage;
     private ExecutorService mcRunner;
     private String selectedColor;
     private int NUM_THREADS = 1;
     private UserPreference mcUserPref;
     private BusinessLogic mcLogic;
+    protected static int mcColor = 0;
 
     public PreferenceFragment() {
         // Required empty public constructor
@@ -84,9 +86,10 @@ public class PreferenceFragment extends Fragment {
 
         mcRunner = Executors.newFixedThreadPool (NUM_THREADS);
 
+        assert getActivity() != null;
         mcLogic = new ViewModelProvider(getActivity()).get(BusinessLogic.class);
 
-        String[] languageArray = new String[] { "French", "Spanish" };
+        String[] languageArray = new String[] {"","French", "Spanish" };
         assert getActivity() != null;
         ArrayAdapter<String> languageAdapter = new ArrayAdapter<> (getActivity(),
                 android.R.layout.simple_spinner_dropdown_item, languageArray);
@@ -95,7 +98,7 @@ public class PreferenceFragment extends Fragment {
 
         mcBinding.languageSpinner.setAdapter(languageAdapter);
 
-        String[] colorArray = new String[] { "Red", "Green", "Blue" };
+        String[] colorArray = new String[] { "", "Red", "Green", "Blue" , "Purple"};
         ArrayAdapter<String> colorAdapter = new ArrayAdapter<> (getActivity(),
                 android.R.layout.simple_spinner_dropdown_item, colorArray);
         colorAdapter.setDropDownViewResource (
@@ -103,9 +106,58 @@ public class PreferenceFragment extends Fragment {
 
         mcBinding.colorSpinner.setAdapter(colorAdapter);
 
-        mcBinding.languageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        mcBinding.colorSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position,
+                                       long id) {
+                assert getActivity() != null;
+                Toast.makeText(getActivity().getApplicationContext(),
+                        (String) adapterView.getSelectedItem(),
+                        Toast.LENGTH_LONG).show();
+                selectedColor = (String) adapterView.getItemAtPosition(position);
+                Log.d(LOG_TAG, "Color selected: " + selectedColor);
+
+                View rootView = mcBinding.getRoot();
+                switch (selectedColor) {
+                    case "Red":
+                        rootView.setBackgroundResource(R.color.red);
+                        mcColor = R.color.red;
+                        break;
+                    case "Green":
+                        rootView.setBackgroundResource(R.color.darkgreen);
+                        mcColor = R.color.darkgreen;
+                        break;
+                    case "Blue":
+                        rootView.setBackgroundResource(R.color.blue);
+                        mcColor = R.color.blue;
+                        break;
+                    case "Purple":
+                        rootView.setBackgroundResource(R.color.purple);
+                        mcColor = R.color.purple;
+                        break;
+                    case "":
+                        if (mcColor != 0)
+                        {
+                            rootView.setBackgroundResource(mcColor);
+                        }
+                        break;
+                    default:
+                        rootView.setBackgroundResource(R.color.white);
+                        mcColor = R.color.white;
+                        break;
+                }
+                getActivity().findViewById(android.R.id.content).setBackgroundResource(mcColor);
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+            }
+        });
+
+        mcBinding.languageSpinner.setOnItemSelectedListener(new AdapterView
+                .OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view,
+                                       int position, long id) {
                 assert getActivity() != null;
                 Toast.makeText(getActivity().getApplicationContext(),
                         (String) adapterView.getSelectedItem(),
@@ -119,23 +171,8 @@ public class PreferenceFragment extends Fragment {
             }
         });
 
-        mcBinding.colorSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-                assert getActivity() != null;
-                Toast.makeText(getActivity().getApplicationContext(),
-                        (String) adapterView.getSelectedItem(),
-                        Toast.LENGTH_LONG).show();
-                selectedColor = (String) adapterView.getItemAtPosition(position);
-                Log.d(LOG_TAG, "Color selected: " + selectedColor);
-            }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parentView) {
-            }
-        });
         mcUserPref = new UserPreference(selectedColor,selectedLanguage);
-
         mcLogic.getUser().setMcUserPreference(mcUserPref);
 
        mcBinding.btnConfirm.setOnClickListener (v -> {
@@ -156,5 +193,7 @@ public class PreferenceFragment extends Fragment {
                    "Preferences Confirmed: Please Choose Activity Below",
                    Toast.LENGTH_LONG).show();
        });
+
+
     }
 }

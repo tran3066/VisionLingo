@@ -65,6 +65,7 @@ public class TransferActivity extends AppCompatActivity {
         mcBinding.bottomNavigationView.setOnItemSelectedListener(item -> {
             if (item.getItemId() == R.id.camera)
             {
+
                 getSupportFragmentManager().beginTransaction()
                         .setReorderingAllowed(true)
                         .replace(R.id.fragment_container_view, CameraFragment.class, null)

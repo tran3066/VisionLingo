@@ -1,10 +1,13 @@
 package edu.pacificu.cs.cs325.translationapp;
 
+import static edu.pacificu.cs.cs325.translationapp.PreferenceFragment.mcColor;
+
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +39,11 @@ public class ListFragment extends Fragment {
                                @Nullable Bundle savedInstanceState)
     {
         super.onViewCreated (view, savedInstanceState);
+        BusinessLogic mcLogic = new ViewModelProvider(this).get(BusinessLogic.class);
+
+        assert getActivity() != null;
+        getActivity().findViewById(android.R.id.content).setBackgroundResource(mcColor);
+
     }
 
     @Override
