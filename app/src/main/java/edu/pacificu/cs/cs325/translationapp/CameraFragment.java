@@ -1,5 +1,7 @@
 package edu.pacificu.cs.cs325.translationapp;
 
+import static edu.pacificu.cs.cs325.translationapp.PreferenceFragment.mcColor;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -107,7 +109,12 @@ public class CameraFragment extends Fragment {
     {
         super.onViewCreated (view, savedInstanceState);
 
+        assert getActivity() != null;
         mcLogic = new ViewModelProvider(this).get(BusinessLogic.class);
+
+        if (mcColor != 0) {
+            getActivity().findViewById(android.R.id.content).setBackgroundResource(mcColor);
+        }
 
         mcObjectDetector = ObjectDetection.getClient (new ObjectDetectorOptions.Builder
                 ().setDetectorMode (
@@ -140,6 +147,7 @@ public class CameraFragment extends Fragment {
                 throw new RuntimeException (e);
             }
         }, ContextCompat.getMainExecutor (getActivity()));
+
         checkPermissions ();
 
         mcBinding.btnTakePicture.setOnClickListener ((v) -> {

@@ -18,7 +18,8 @@ public class BusinessLogic extends ViewModel
     mcWordFromCamera = "";
     mbPictureTaken = false;
     uiState = new MutableLiveData<> (new BusinessLogicUIState (
-        new User("",""), null, mcWordFromCamera, mbPictureTaken, mbSignedIn));
+        new User("",""), null, mcWordFromCamera, mbPictureTaken,
+            mbSignedIn));
   }
 
   public void takePicture(byte[] cImage)
@@ -48,6 +49,7 @@ public class BusinessLogic extends ViewModel
   public LiveData<BusinessLogicUIState> getUiState() {
     return uiState;
   }
+
 
   public void createUser (String username, String password) {
     mcUser = new User(username,password);

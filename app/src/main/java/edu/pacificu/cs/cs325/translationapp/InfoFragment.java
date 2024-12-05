@@ -1,5 +1,7 @@
 package edu.pacificu.cs.cs325.translationapp;
 
+import static edu.pacificu.cs.cs325.translationapp.PreferenceFragment.mcColor;
+
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -52,7 +54,10 @@ public class InfoFragment extends Fragment
     super.onViewCreated (view, savedInstanceState);
     assert getActivity() != null;
 
+
     mcLogic = new ViewModelProvider (getActivity ()).get(BusinessLogic.class);
+
+    getActivity().findViewById(android.R.id.content).setBackgroundResource(mcColor);
 
     mcObserver = new Observer<BusinessLogicUIState> ()
     {
