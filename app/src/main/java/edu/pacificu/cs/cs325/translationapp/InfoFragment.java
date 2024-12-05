@@ -3,12 +3,14 @@ package edu.pacificu.cs.cs325.translationapp;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -85,22 +87,32 @@ public class InfoFragment extends Fragment
       Log.d (LOG_TAG, "No PICTURE");
     }
 
-    mcBinding.btnSpeak.setOnClickListener (v -> {
-      String cCurrentLanguage = HomeActivity.mcCurrentUser.getLanguage ();
-      String cUpdatedURL;
 
-      // Make sure to update mcTranslatedWord here
-      if (cCurrentLanguage.equals ("French"))
-      {
-        cUpdatedURL = FRENCH_URL.replace ("*", mcTranslatedWord);
-        openURL (cUpdatedURL);
-      }
-      else if (cCurrentLanguage.equals ("Spanish"))
-      {
-        cUpdatedURL = SPANISH_URL.replace ("*", mcTranslatedWord);
-        openURL (cUpdatedURL);
-      }
+    mcLogic.getUiState ().observe ( getActivity (), uistate-> {
+      mcBinding.btnSearch.setBackgroundColor (mcLogic.getUiState ().getValue ().getColorInt ());
+      mcBinding.btnAdd.setBackgroundColor (mcLogic.getUiState ().getValue ().getColorInt ());
+      mcBinding.btnSpeak.setBackgroundColor (mcLogic.getUiState ().getValue ().getColorInt ());
+
+      mcBinding.btnSpeak.setOnClickListener (v -> {
+        String cUpdatedURL;
+        String cCurrentLanguage = mcLogic.getUiState ().getValue ().getLanguage ();
+        if (cCurrentLanguage.equals ("French"))
+        {
+          cUpdatedURL = FRENCH_URL.replace ("*", mcTranslatedWord);
+          openURL (cUpdatedURL);
+        }
+        else if (cCurrentLanguage.equals ("Spanish"))
+        {
+          cUpdatedURL = SPANISH_URL.replace ("*", mcTranslatedWord);
+          openURL (cUpdatedURL);
+        }
+
+      });
+
+
     });
+
+
     mcBinding.btnSearch.setOnClickListener (v ->
     {
       String tempString;
@@ -119,7 +131,6 @@ public class InfoFragment extends Fragment
   public void onCreate (Bundle savedInstanceState)
   {
     super.onCreate (savedInstanceState);
-
   }
 
 

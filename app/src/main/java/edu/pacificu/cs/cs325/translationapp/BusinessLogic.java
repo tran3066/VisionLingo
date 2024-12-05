@@ -1,8 +1,11 @@
 package edu.pacificu.cs.cs325.translationapp;
 
+import static androidx.camera.core.impl.utils.ContextUtil.getApplicationContext;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import androidx.room.Room;
 
 public class BusinessLogic extends ViewModel
 {
@@ -21,8 +24,7 @@ public class BusinessLogic extends ViewModel
     mcWordFromCamera = "";
     mbPictureTaken = false;
     mcDictionaryDAO = null;
-    uiState = new MutableLiveData<> (new BusinessLogicUIState (
-        new User("",""), null, mcWordFromCamera, mbPictureTaken, mbSignedIn));
+    uiState = new MutableLiveData<> (new BusinessLogicUIState ("","", null, mcWordFromCamera, mbPictureTaken, mbSignedIn));
   }
 
   public void setDAO(DictionaryDAO cDictionaryDAO)
@@ -38,8 +40,10 @@ public class BusinessLogic extends ViewModel
   {
     mbPictureTaken = true;
     this.mcImage = cImage;
+
     uiState.setValue(new BusinessLogicUIState (
-        mcUser, mcImage, mcWordFromCamera, mbPictureTaken, mbSignedIn));
+        uiState.getValue ().getLanguage(), uiState.getValue ().getColor(),
+        mcImage, mcWordFromCamera, mbPictureTaken, mbSignedIn));
   }
 
   public byte[] getImage() {
@@ -50,7 +54,8 @@ public class BusinessLogic extends ViewModel
   {
     this.mcWordFromCamera = cWord;
     uiState.setValue(new BusinessLogicUIState (
-            mcUser, mcImage, mcWordFromCamera, mbPictureTaken, mbSignedIn));
+        uiState.getValue ().getLanguage(), uiState.getValue ().getColor(),
+        mcImage, mcWordFromCamera, mbPictureTaken, mbSignedIn));
   }
   
   public String getWordFromCamera ()
@@ -65,8 +70,9 @@ public class BusinessLogic extends ViewModel
   public void createUser (String username, String password) {
     mcUser = new User(username,password);
     mbSignedIn = true;
-    uiState.setValue(new BusinessLogicUIState( mcUser, mcImage, mcWordFromCamera, 
-            mbPictureTaken, mbSignedIn));
+    uiState.setValue(new BusinessLogicUIState(
+        uiState.getValue ().getLanguage(), uiState.getValue ().getColor(),
+        mcImage, mcWordFromCamera, mbPictureTaken, mbSignedIn));
   }
   
 

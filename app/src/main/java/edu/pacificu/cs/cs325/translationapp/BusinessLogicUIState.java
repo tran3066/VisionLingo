@@ -1,8 +1,13 @@
 package edu.pacificu.cs.cs325.translationapp;
 
+import android.graphics.Color;
+
 public class BusinessLogicUIState
 {
-  private User mcUser;
+  //private User mcUser;
+
+  private String mcColor;
+  private String mcLanguage;
   private byte[] mcImage;
 
   private String mcCameraWord;
@@ -11,19 +16,43 @@ public class BusinessLogicUIState
 
   private boolean mbSignedIn;
 
-  public BusinessLogicUIState(User cCurrentUser, byte[] cImage,
+  public BusinessLogicUIState(String cColor, String cLanguage, byte[] cImage,
       String cCameraWord, boolean bPictureTaken, boolean bSignedIn)
   {
-    this.mcUser = cCurrentUser;
+    mcColor = cColor;
+    mcLanguage = cLanguage;
     mcImage = cImage;
     mcCameraWord = cCameraWord;
     mbPictureTaken = bPictureTaken;
     mbSignedIn = bSignedIn;
   }
 
-  public User getUser()
+  public String getLanguage()
   {
-    return mcUser;
+    return mcLanguage;
+  }
+
+  public String getColor()
+  {
+    return mcColor;
+  }
+
+  public int getColorInt()
+  {
+    int colorCode = 0;
+    if(mcColor.equals ("Green"))
+    {
+      colorCode = Color.GREEN;
+    }
+    else if(mcColor.equals ("Red"))
+    {
+      colorCode = Color.RED;
+    }
+    else if(mcColor.equals ("Blue"))
+    {
+      colorCode = Color.BLUE;
+    }
+    return colorCode;
   }
 
   public boolean isPictureTaken()
