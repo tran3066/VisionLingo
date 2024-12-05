@@ -101,6 +101,17 @@ public class InfoFragment extends Fragment
         openURL (cUpdatedURL);
       }
     });
+    mcBinding.btnSearch.setOnClickListener (v ->
+    {
+      String tempString;
+      Word tempWord;
+      DictionaryDAO tempDAO = mcLogic.getDAO();
+      tempString = mcBinding.tvSearch.getText ().toString ();
+      tempWord = tempDAO.getWordByString(tempString);
+      mcBinding.tvWordInfo.setText (tempWord.toString());
+      mcBinding.tvWordTranslate.setText ("spanish");
+    });
+
     mcLogic.getUiState ().observe (getActivity (), mcObserver);
   }
 
