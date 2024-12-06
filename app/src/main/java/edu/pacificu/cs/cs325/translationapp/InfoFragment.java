@@ -92,7 +92,7 @@ public class InfoFragment extends Fragment
       Log.d (LOG_TAG, "No PICTURE");
     }
 
-
+    //testing
     mcLogic.getUiState ().observe ( getActivity (), uistate-> {
       mcBinding.btnSearch.setBackgroundColor (mcLogic.getUiState ().getValue ().getColorInt ());
       mcBinding.btnAdd.setBackgroundColor (mcLogic.getUiState ().getValue ().getColorInt ());
