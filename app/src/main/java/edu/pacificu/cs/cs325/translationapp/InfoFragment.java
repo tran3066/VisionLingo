@@ -61,6 +61,29 @@ public class InfoFragment extends Fragment
 
     getActivity().findViewById(android.R.id.content).setBackgroundResource(mcColor);
 
+    if (mcLogic.getWordFromCamera() != null)
+    {
+      mcBinding.tvWordTranslate.setText (mcLogic.getWordFromCamera());
+      Log.d (LOG_TAG, "Text RECEIVED");
+    }
+    else
+    {
+      Log.d (LOG_TAG, "No TEXT");
+    }
+
+    if (mcLogic.getImage() != null)
+    {
+      Bitmap cBitmap = BitmapFactory.decodeByteArray (mcLogic.getImage(), 0,
+              mcLogic.getImage().length);
+      mcBinding.imgWord.setImageBitmap (cBitmap);
+      Log.d (LOG_TAG, "Picture RECEIVED");
+    }
+    else
+    {
+      Log.d (LOG_TAG, "No PICTURE");
+    }
+
+
     mcObserver = new Observer<BusinessLogicUIState> ()
     {
       @Override
@@ -92,27 +115,6 @@ public class InfoFragment extends Fragment
     mcLogic.getUiState ().observe (getActivity (), mcObserver);
 
 
-    if (mcLogic.getWordFromCamera() != null)
-    {
-      mcBinding.tvWordTranslate.setText (mcLogic.getWordFromCamera());
-      Log.d (LOG_TAG, "Text RECEIVED");
-    }
-    else
-    {
-      Log.d (LOG_TAG, "No TEXT");
-    }
-
-    if (mcLogic.getImage() != null)
-    {
-      Bitmap cBitmap = BitmapFactory.decodeByteArray (mcLogic.getImage(), 0,
-              mcLogic.getImage().length);
-      mcBinding.imgWord.setImageBitmap (cBitmap);
-      Log.d (LOG_TAG, "Picture RECEIVED");
-    }
-    else
-    {
-      Log.d (LOG_TAG, "No PICTURE");
-    }
 
 
 

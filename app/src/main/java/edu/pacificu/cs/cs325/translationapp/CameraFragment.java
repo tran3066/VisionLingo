@@ -3,18 +3,15 @@ package edu.pacificu.cs.cs325.translationapp;
 import static edu.pacificu.cs.cs325.translationapp.PreferenceFragment.mcColor;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Rect;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.camera.core.Camera;
 import androidx.camera.core.CameraSelector;
 import androidx.camera.core.ImageCapture;
 import androidx.camera.core.ImageCaptureException;
@@ -30,6 +27,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -47,7 +45,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
-import edu.pacificu.cs.cs325.translationapp.databinding.ActivityCameraBinding;
 import edu.pacificu.cs.cs325.translationapp.databinding.FragmentCameraBinding;
 
 /**
@@ -194,18 +191,14 @@ public class CameraFragment extends Fragment {
                                                     "Detection Success: Detected "
                                                             + cDetectedObjects.size() + " objects.");
 
-                                            //StringBuilder detectedWords = new StringBuilder();
-
                                             for (DetectedObject cDetectedObject : cDetectedObjects)
                                             {
-                                                //tell user to get close
                                                 for (DetectedObject.Label cLabel : cDetectedObject.getLabels ())
                                                 {
                                                     String text = cLabel.getText ();
                                                     Log.d (LOG_TAG, "Label: "
                                                             + text);
                                                     mcWordFromObject = text;
-                                                    //detectedWords.append(text).append(" ,");
                                                 }
                                             }
                                             assert getActivity() != null;
@@ -214,14 +207,18 @@ public class CameraFragment extends Fragment {
                                                         && !mcWordFromObject.isEmpty ())
                                                 {
                                                     Log.d ("Object Word:", mcWordFromObject);
-                                                    //mcBinding.txtTextView.setText (detectedWords);
-
-                                                    mcBinding.txtTextView.setText (mcWordFromObject);
+                                                    mcBinding.txtTextView
+                                                            .setText (mcWordFromObject);
                                                 }
                                                 else
                                                 {
                                                     mcBinding.txtTextView.setText
                                                             ("No Object Detected");
+                                                    Toast.makeText(getActivity()
+                                                                    .getApplicationContext(),
+                                                            "Get Closer to Object " +
+                                                                    "and Try again",
+                                                            Toast.LENGTH_LONG).show();
                                                 }
                                             });
                                         }

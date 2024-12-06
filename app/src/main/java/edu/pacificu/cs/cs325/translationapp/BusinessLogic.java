@@ -39,7 +39,7 @@ public class BusinessLogic extends ViewModel
   public void takePicture(byte[] cImage)
   {
     mbPictureTaken = true;
-    this.mcImage = cImage;
+    mcImage = cImage;
 
     uiState.setValue(new BusinessLogicUIState (
         uiState.getValue ().getLanguage(), uiState.getValue ().getColor(),
@@ -52,7 +52,7 @@ public class BusinessLogic extends ViewModel
   
   public void detectWord (String cWord)
   {
-    this.mcWordFromCamera = cWord;
+    mcWordFromCamera = cWord;
     uiState.setValue(new BusinessLogicUIState (
         uiState.getValue ().getLanguage(), uiState.getValue ().getColor(),
         mcImage, mcWordFromCamera, mbPictureTaken, mbSignedIn));

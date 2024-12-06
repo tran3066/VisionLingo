@@ -47,14 +47,11 @@ public class TransferActivity extends AppCompatActivity {
                 .commit();
 
 
-        if ("String".equals(recieveIntent.getType())) {
+        if ("String".equals(recieveIntent.getType()))
+        {
             String username = recieveIntent.getStringExtra("Username");
             String password = recieveIntent.getStringExtra("Password");
             mcLogic.createUser(username,password);
-
-//            mcLogic.getUiState().observe(this, uisate -> {
-//                mcBinding
-//            });
 
             getSupportFragmentManager().beginTransaction()
                     .setReorderingAllowed(true)
@@ -62,7 +59,8 @@ public class TransferActivity extends AppCompatActivity {
                     .commit();
         }
 
-        mcBinding.bottomNavigationView.setOnItemSelectedListener(item -> {
+        mcBinding.bottomNavigationView.setOnItemSelectedListener(item ->
+        {
             if (item.getItemId() == R.id.camera)
             {
 
@@ -106,7 +104,5 @@ public class TransferActivity extends AppCompatActivity {
             }
             return false;
         });
-
-
     }
 }
