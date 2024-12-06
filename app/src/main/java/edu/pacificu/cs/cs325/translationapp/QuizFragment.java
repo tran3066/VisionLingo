@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.Random;
 
 import edu.pacificu.cs.cs325.translationapp.databinding.FragmentQuizBinding;
 
@@ -22,6 +23,9 @@ public class QuizFragment extends Fragment {
     private Observer<BusinessLogicUIState> mcObserver;
     private FragmentQuizBinding mcBinding;
 
+    private BusinessLogic mcLogic;
+
+    private DictionaryDAO mcDictionaryDAO;
 
     public QuizFragment ()
     {
@@ -42,9 +46,10 @@ public class QuizFragment extends Fragment {
     public void onViewCreated (@NonNull View view,
                                @Nullable Bundle savedInstanceState)
     {
+        DictionaryDAO tempDAO;
         super.onViewCreated (view, savedInstanceState);
-        BusinessLogic mcLogic = new ViewModelProvider(this).get(BusinessLogic.class);
-
+        mcLogic = new ViewModelProvider(this).get(BusinessLogic.class);
+        tempDAO = mcLogic.getDAO ();
         assert getActivity() != null;
         getActivity().findViewById(android.R.id.content).setBackgroundResource(mcColor);
 
@@ -60,6 +65,25 @@ public class QuizFragment extends Fragment {
 
             }
         };
+        //need to change to language
+        mcBinding.tvQuestionWord.setText (getRandomWord().getMcEnglishWord ());
+
+        mcLogic.getUiState ().observe (getActivity (), mcObserver);
+        mcBinding.btnSubmit.setOnClickListener (v->
+        {
+            if(mcBinding.tvAnswerWord.toString ()
+                .equals (mcBinding.tvQuestionWord.toString ()))
+            {
+                //correct
+            }
+            else {
+                //wrong
+            }
+        });
+        mcBinding.btnNewWord.setOnClickListener (v-> {
+            mcBinding.tvQuestionWord.setText (getRandomWord ()
+                .getMcEnglishWord ());
+        });
 
 
     }
@@ -75,6 +99,18 @@ public class QuizFragment extends Fragment {
     public void onDestroyView ()
     {
         super.onDestroyView ();
+    }
+
+    public int generateRandomNumber()
+    {
+        int size = mcLogic.getDAO ().getSize ();
+        Random temp = new Random ();
+        return temp.nextInt (size - 1) + 1;
+    }
+
+    public Word getRandomWord()
+    {
+        return  mcDictionaryDAO.getWord (generateRandomNumber ());
     }
 
 }
