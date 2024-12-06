@@ -26,6 +26,19 @@ import java.util.Random;
 
 import edu.pacificu.cs.cs325.translationapp.databinding.FragmentQuizBinding;
 
+/**
+ * Creates a QuizActivity class that tests the user's knowledge on the
+ * collection of words that they received from the app so far. The user is able
+ * to shake the phone to display a new word from the translated dictionary or
+ * simply press the "New Word" button. The "New Word" button will grab words
+ * from the Vocabulary list, to display the translated word in the first text
+ * box. The user must then correctly put that word in English in the box below.
+ * Once the user clicks submit, we will then show a toast to tell the user if
+ * what they entered is the correct English word or not.
+ *
+ * @author AaJanae Henry, Jason Tran, Christian Flores
+ */
+
 public class QuizFragment extends Fragment {
 
     private Observer<BusinessLogicUIState> mcObserver;
