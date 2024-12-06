@@ -95,22 +95,22 @@ public class InfoActivity extends AppCompatActivity
       }
     }
 
-    mcBinding.btnSpeak.setOnClickListener (v -> {
-      String cCurrentLanguage = HomeActivity.mcCurrentUser.getLanguage ();
-      String cUpdatedURL;
-
-      // Make sure to update mcTranslatedWord here
-      if (cCurrentLanguage.equals ("French"))
-      {
-        cUpdatedURL = FRENCH_URL.replace ("*", mcTranslatedWord);
-        openURL (cUpdatedURL);
-      }
-      else if (cCurrentLanguage.equals ("Spanish"))
-      {
-        cUpdatedURL = SPANISH_URL.replace ("*", mcTranslatedWord);
-        openURL (cUpdatedURL);
-      }
-    });
+//    mcBinding.btnSpeak.setOnClickListener (v -> {
+//      //String cCurrentLanguage = HomeActivity.mcCurrentUser.getLanguage ();
+//      String cUpdatedURL;
+//
+//      // Make sure to update mcTranslatedWord here
+//      if (cCurrentLanguage.equals ("French"))
+//      {
+//        cUpdatedURL = FRENCH_URL.replace ("*", mcTranslatedWord);
+//        openURL (cUpdatedURL);
+//      }
+//      else if (cCurrentLanguage.equals ("Spanish"))
+//      {
+//        cUpdatedURL = SPANISH_URL.replace ("*", mcTranslatedWord);
+//        openURL (cUpdatedURL);
+//      }
+//    });
 
   }
 
