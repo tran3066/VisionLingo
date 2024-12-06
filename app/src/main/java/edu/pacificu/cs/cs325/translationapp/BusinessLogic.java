@@ -74,6 +74,17 @@ public class BusinessLogic extends ViewModel
         uiState.getValue ().getColor(), uiState.getValue ().getLanguage(),
         mcImage, mcWordFromCamera, mbPictureTaken, mbSignedIn));
   }
+
+  public void setColor(int cColor)
+  {
+    uiState.setValue (new BusinessLogicUIState(cColor, uiState.getValue ().getLanguage (),
+        mcImage, mcWordFromCamera, mbPictureTaken, mbSignedIn));
+  }
+
+  public int getColor()
+  {
+    return uiState.getValue ().getColor ();
+  }
   
 
   public User getUser () {
