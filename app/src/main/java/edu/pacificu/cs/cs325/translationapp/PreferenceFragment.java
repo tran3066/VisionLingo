@@ -91,7 +91,6 @@ public class PreferenceFragment extends Fragment {
 
         assert getActivity() != null;
         mcLogic = new ViewModelProvider(getActivity()).get(BusinessLogic.class);
-        mcUiLogic = new BusinessLogicUIState()
 
 
         String[] languageArray = new String[] {"French", "Spanish" };
@@ -142,6 +141,8 @@ public class PreferenceFragment extends Fragment {
                         break;
                 }
             }
+
+
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {
             }
@@ -164,6 +165,11 @@ public class PreferenceFragment extends Fragment {
             public void onNothingSelected(AdapterView<?> parentView) {
             }
         });
+
+        mcUiLogic = new BusinessLogicUIState
+                (mcColor, selectedLanguage,mcLogic.getImage(),
+                        mcLogic.getWordFromCamera(),mcLogic.isMbPictureTaken(),
+                        mcLogic.isMbSignedIn());
 
 
         mcUserPref = new UserPreference(selectedColor,selectedLanguage);

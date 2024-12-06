@@ -24,7 +24,8 @@ public class BusinessLogic extends ViewModel
     mcWordFromCamera = "";
     mbPictureTaken = false;
     mcDictionaryDAO = null;
-    uiState = new MutableLiveData<> (new BusinessLogicUIState (0,"", null, mcWordFromCamera, mbPictureTaken, mbSignedIn));
+    uiState = new MutableLiveData<> (new BusinessLogicUIState (0,"",
+            null, mcWordFromCamera, mbPictureTaken, mbSignedIn));
   }
 
   public void setDAO(DictionaryDAO cDictionaryDAO)
@@ -49,7 +50,15 @@ public class BusinessLogic extends ViewModel
   public byte[] getImage() {
     return mcImage;
   }
-  
+
+  public boolean isMbPictureTaken() {
+    return mbPictureTaken;
+  }
+
+  public boolean isMbSignedIn() {
+    return mbSignedIn;
+  }
+
   public void detectWord (String cWord)
   {
     mcWordFromCamera = cWord;
