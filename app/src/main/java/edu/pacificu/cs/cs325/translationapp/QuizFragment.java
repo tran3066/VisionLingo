@@ -170,5 +170,7 @@ public class QuizFragment extends Fragment {
                     });
                 }
             });
+
+        //translation
     }
 }
