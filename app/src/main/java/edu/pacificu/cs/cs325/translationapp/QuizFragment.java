@@ -83,13 +83,12 @@ public class QuizFragment extends Fragment {
 
         mcTempWord = getRandomWord ();
 
-        String tempString;
         Task<String> result = translator.translate(mcTempWord.getMcEnglishWord ())
             .addOnSuccessListener (new OnSuccessListener<String>() {
                 @Override
                 public void onSuccess(String s) {
                     getActivity ().runOnUiThread (() -> {
-                        tempString = s;
+                        final String tempString = s;
 
                     });
                 }

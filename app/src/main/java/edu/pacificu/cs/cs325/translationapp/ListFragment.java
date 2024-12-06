@@ -61,8 +61,7 @@ public class ListFragment extends Fragment
       @Nullable Bundle savedInstanceState)
   {
     super.onViewCreated (view, savedInstanceState);
-    BusinessLogic mcLogic = new ViewModelProvider (this).get (
-        BusinessLogic.class);
+    mcLogic = new ViewModelProvider (this).get (BusinessLogic.class);
 
     assert getActivity () != null;
     getActivity ().findViewById (android.R.id.content)
