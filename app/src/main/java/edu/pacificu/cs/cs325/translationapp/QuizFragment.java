@@ -10,9 +10,17 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.mlkit.nl.translate.Translation;
+import com.google.mlkit.nl.translate.Translator;
+import com.google.mlkit.nl.translate.TranslatorOptions;
 
 import java.util.Random;
 
@@ -22,7 +30,7 @@ public class QuizFragment extends Fragment {
 
     private Observer<BusinessLogicUIState> mcObserver;
     private FragmentQuizBinding mcBinding;
-
+    private Word mcTempWord;
     private BusinessLogic mcLogic;
 
     private DictionaryDAO mcDictionaryDAO;
@@ -66,7 +74,28 @@ public class QuizFragment extends Fragment {
             }
         };
         //need to change to language
-        mcBinding.tvQuestionWord.setText (getRandomWord().getMcEnglishWord ());
+        TranslatorOptions options = new TranslatorOptions.Builder()
+            .setTargetLanguage (mcLogic.getUiState ().getValue ().getLanguage ())
+            .setSourceLanguage ("en")
+            .build();
+        Translator translator = Translation.getClient (options);
+        translator.downloadModelIfNeeded ();
+
+        mcTempWord = getRandomWord ();
+
+        String tempString;
+        Task<String> result = translator.translate(mcTempWord.getMcEnglishWord ())
+            .addOnSuccessListener (new OnSuccessListener<String>() {
+                @Override
+                public void onSuccess(String s) {
+                    getActivity ().runOnUiThread (() -> {
+                        tempString = s;
+
+                    });
+                }
+            });
+
+
 
         mcLogic.getUiState ().observe (getActivity (), mcObserver);
         mcBinding.btnSubmit.setOnClickListener (v->
@@ -75,6 +104,7 @@ public class QuizFragment extends Fragment {
                 .equals (mcBinding.tvQuestionWord.toString ()))
             {
                 //correct
+
             }
             else {
                 //wrong
