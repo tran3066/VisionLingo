@@ -111,6 +111,8 @@ public class HomeActivity extends AppCompatActivity
       newUser (intent, mcRunner, usersFromDB);
 
       mcRunner.execute (() -> {
+        UserPreference cDefault = new UserPreference ("DefaultColor", "DefaultLang");
+        mcCurrentUser.setMcUserPreference (cDefault);
         mcUserDAO.insert (mcCurrentUser);
       });
     }));
