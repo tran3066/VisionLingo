@@ -1,6 +1,5 @@
 package edu.pacificu.cs.cs325.translationapp;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -9,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import edu.pacificu.cs.cs325.translationapp.databinding.ActivityListBinding;
@@ -32,6 +32,9 @@ public class ListActivity extends AppCompatActivity
 {
   private VocabRecyclerViewAdapter mcAdapter;
   private ActivityListBinding mcBinding;
+  private DividerItemDecoration mcDivider;
+  private LinearLayoutManager mcLayoutManager;
+  private BusinessLogic mcLogic;
 
   /**
    * onCreate method that starts the activity
@@ -42,7 +45,6 @@ public class ListActivity extends AppCompatActivity
    */
 
   //needs to update the DB as the user adds on to the vocab list
-
   @Override
   protected void onCreate (Bundle cSavedInstanceState)
   {
@@ -62,8 +64,10 @@ public class ListActivity extends AppCompatActivity
 
     mcBinding.rvWords.setHasFixedSize (true);
     mcBinding.rvWords.setLayoutManager (new LinearLayoutManager (this));
-
-
+    mcLayoutManager = new LinearLayoutManager (this);
+    mcDivider = new DividerItemDecoration (this,
+        mcLayoutManager.getOrientation ());
+    mcBinding.rvWords.addItemDecoration (mcDivider);
   }
 
   /**
@@ -76,7 +80,7 @@ public class ListActivity extends AppCompatActivity
   {
     super.onResume ();
     mcAdapter = new VocabRecyclerViewAdapter (
-        HomeActivity.mcCurrentUser.getMcVocabList ());
+        mcLogic.getUser ().getMcVocabList ());
     mcBinding.rvWords.setAdapter (mcAdapter);
   }
 }

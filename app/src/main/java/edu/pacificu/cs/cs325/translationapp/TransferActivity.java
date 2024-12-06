@@ -2,6 +2,8 @@ package edu.pacificu.cs.cs325.translationapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import androidx.activity.EdgeToEdge;
@@ -19,6 +21,7 @@ public class TransferActivity extends AppCompatActivity {
 
     private ActivityTransferBinding mcBinding;
     private BusinessLogic mcLogic;
+    private MenuItem item;
 
 
     @Override

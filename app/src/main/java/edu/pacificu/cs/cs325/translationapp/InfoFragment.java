@@ -90,7 +90,7 @@ public class InfoFragment extends Fragment
       public void onChanged (BusinessLogicUIState businessLogicUIState)
       {
         //update changes here
-        int colorInt = mcLogic.getUiState ().getValue ().getColor();
+        int colorInt = mcLogic.getUiState ().getValue ().getColor ();
         mcBinding.btnSearch.setBackgroundColor (colorInt);
         mcBinding.btnAdd.setBackgroundColor (colorInt);
         mcBinding.btnSpeak.setBackgroundColor (colorInt);
@@ -146,6 +146,12 @@ public class InfoFragment extends Fragment
     mcBinding = null;
     mcLogic.getUiState ().removeObserver (mcObserver);
   }
+
+  /**
+   * Opens the URL specified by the parameter
+   *
+   * @param cURL URL to open
+   */
 
   public void openURL (String cURL)
   {
