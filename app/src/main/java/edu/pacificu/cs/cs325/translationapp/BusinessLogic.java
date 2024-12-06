@@ -84,6 +84,7 @@ public class BusinessLogic extends ViewModel
   public int getColor()
   {
     return uiState.getValue ().getColor ();
+    //test
   }
   
 
