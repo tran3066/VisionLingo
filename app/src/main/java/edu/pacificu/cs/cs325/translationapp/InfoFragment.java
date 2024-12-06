@@ -147,6 +147,12 @@ public class InfoFragment extends Fragment
     mcLogic.getUiState ().removeObserver (mcObserver);
   }
 
+  /**
+   * Opens the URL specified by the parameter
+   *
+   * @param cURL URL to open
+   */
+
   public void openURL (String cURL)
   {
     Uri cUrl = Uri.parse (cURL);
