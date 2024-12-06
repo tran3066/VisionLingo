@@ -68,4 +68,9 @@ public interface UserDAO
 
   @Query ("DELETE FROM User")
   void deleteAll ();
+
+  //@Update
+  //void update (User cUser);
+
 }
+
