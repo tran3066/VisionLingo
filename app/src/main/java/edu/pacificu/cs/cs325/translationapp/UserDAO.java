@@ -4,6 +4,7 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import java.util.List;
 
@@ -68,4 +69,13 @@ public interface UserDAO
 
   @Query ("DELETE FROM User")
   void deleteAll ();
+
+  /**
+   * Update the user based on the user id
+   *
+   * @param cUser user to update
+   */
+  @Update
+  void update (User cUser);
 }
+
