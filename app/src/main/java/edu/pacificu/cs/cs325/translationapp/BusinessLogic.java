@@ -9,6 +9,7 @@ import androidx.room.Room;
 
 public class BusinessLogic extends ViewModel
 {
+  private int mcColor = 0;
   private final MutableLiveData<BusinessLogicUIState> uiState;
   private boolean mbPictureTaken;
   private boolean mbSignedIn;
@@ -84,15 +85,16 @@ public class BusinessLogic extends ViewModel
         mcImage, mcWordFromCamera, mbPictureTaken, mbSignedIn));
   }
 
-  public void setColor(int cColor)
+  public void setColor (int cColor)
   {
+    mcColor = cColor;
     uiState.setValue (new BusinessLogicUIState(cColor, uiState.getValue ().getLanguage (),
         mcImage, mcWordFromCamera, mbPictureTaken, mbSignedIn));
   }
 
-  public int getColor()
+  public int getColor ()
   {
-    return uiState.getValue ().getColor ();
+    return mcColor;
     //test.....
   }
   

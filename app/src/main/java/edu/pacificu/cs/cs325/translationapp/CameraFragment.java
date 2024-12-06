@@ -110,11 +110,10 @@ public class CameraFragment extends Fragment {
         mcLogic = new ViewModelProvider(getActivity()).get(BusinessLogic.class);
 
 
-        if (mcColor != 0) {
-            mcBinding.btnTakePicture.setBackgroundColor(mcLogic.getUiState().getValue().getColor());
-            Log.d(LOG_TAG, String.valueOf(mcLogic.getUiState().getValue().getColor()));
-            mcBinding.btnTranslate.setBackgroundColor(mcColor);
+        if (mcLogic.getColor() != 0) {
+            mcBinding.btnTakePicture.setBackgroundColor(mcLogic.getColor());
 
+            mcBinding.btnTranslate.setBackgroundColor(mcLogic.getColor());
         }
 
         mcObjectDetector = ObjectDetection.getClient (new ObjectDetectorOptions.Builder
