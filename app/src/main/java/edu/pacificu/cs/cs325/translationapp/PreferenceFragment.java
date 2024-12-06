@@ -169,10 +169,10 @@ public class PreferenceFragment extends Fragment {
         });
 
        mcBinding.btnConfirm.setOnClickListener (v -> {
-
-           mcUserPref = new UserPreference(selectedColor,selectedLanguage);
-           mcLogic.getUser().setMcUserPreference(mcUserPref);
            mcRunner.execute(() -> {
+               mcUserPref = new UserPreference(selectedColor,selectedLanguage);
+               mcLogic.getUser().setMcUserPreference(mcUserPref);
+
                try {
                    mcUserDB = Room.databaseBuilder (getActivity().getApplicationContext (),
                            UserDB.class,
@@ -180,7 +180,7 @@ public class PreferenceFragment extends Fragment {
                    mcUserDAO = mcUserDB.userDao ();
                    usersFromDB = mcUserDAO.getAll ();
 
-                   mcUserDAO.insert(mcLogic.getUser());
+                   mcUserDAO.update (mcLogic.getUser());
                    Log.d(LOG_TAG, "Updated Users: " + mcUserDAO.getAll().toString());
                } catch (Exception e) {
                    throw new RuntimeException(e);

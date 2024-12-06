@@ -24,6 +24,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.mlkit.nl.translate.Translation;
@@ -53,6 +54,8 @@ public class QuizFragment extends Fragment {
     private FragmentQuizBinding mcBinding;
     private Word mcTempWord;
     private BusinessLogic mcLogic;
+    TranslatorOptions mcOptions;
+    Translator mcTranslator;
     private DictionaryDAO mcDictionaryDAO;
 
     public QuizFragment ()
@@ -115,6 +118,14 @@ public class QuizFragment extends Fragment {
 
         sensorManager.registerListener(sensorEventListener, sensorShake,
                 SensorManager.SENSOR_DELAY_NORMAL);
+        assert getActivity() != null;
+        mcOptions = new TranslatorOptions.Builder()
+            .setTargetLanguage (mcLogic.getUiState ().getValue ().getLanguage ())
+            .setSourceLanguage ("en")
+            .build();
+        mcTranslator = Translation.getClient (mcOptions);
+        mcTranslator.downloadModelIfNeeded ();
+        getActivity().findViewById(android.R.id.content).setBackgroundResource(mcColor);
 
         mcObserver = new Observer<BusinessLogicUIState>()
         {
@@ -125,32 +136,18 @@ public class QuizFragment extends Fragment {
                 int colorInt = mcLogic.getUiState ().getValue ().getColor ();
                 mcBinding.btnNewWord.setBackgroundColor (colorInt);
                 mcBinding.btnSubmit.setBackgroundColor (colorInt);
-
+                mcOptions = new TranslatorOptions.Builder()
+                    .setTargetLanguage (mcLogic.getLanguage ())
+                    .setSourceLanguage ("en")
+                    .build();
+                mcTranslator.downloadModelIfNeeded ();
             }
         };
         //need to change to language
-        TranslatorOptions options = new TranslatorOptions.Builder()
-            .setTargetLanguage (mcLogic.getUiState ().getValue ().getLanguage ())
-            .setSourceLanguage ("en")
-            .build();
-        Translator translator = Translation.getClient (options);
-        translator.downloadModelIfNeeded ();
-
-        mcTempWord = getRandomWord ();
-
-        Task<String> result = translator.translate(mcTempWord.getMcEnglishWord ())
-            .addOnSuccessListener (new OnSuccessListener<String>() {
-                @Override
-                public void onSuccess(String s) {
-                    getActivity ().runOnUiThread (() -> {
-                        mcBinding.tvQuestionWord.setText (s);
-                    });
-                }
-            });
-
 
 
         mcLogic.getUiState ().observe (getActivity (), mcObserver);
+        setRandomWord ();
         mcBinding.btnSubmit.setOnClickListener (v->
         {
             if(mcBinding.tvAnswerWord.toString ()
@@ -164,8 +161,7 @@ public class QuizFragment extends Fragment {
             }
         });
         mcBinding.btnNewWord.setOnClickListener (v-> {
-            mcBinding.tvQuestionWord.setText (getRandomWord ()
-                .getMcEnglishWord ());
+            setRandomWord ();
         });
 
 
@@ -195,4 +191,28 @@ public class QuizFragment extends Fragment {
         return  mcDictionaryDAO.getWord (generateRandomNumber ());
     }
 
+    public void setRandomWord()
+    {
+        mcTempWord = getRandomWord ();
+        Task<String> result = mcTranslator.translate(mcTempWord.getMcEnglishWord ())
+            .addOnSuccessListener (new OnSuccessListener<String>() {
+                @Override
+                public void onSuccess(String s) {
+                    getActivity ().runOnUiThread (() -> {
+                        mcBinding.tvQuestionWord.setText (s);
+                    });
+                }
+            }).addOnFailureListener (new OnFailureListener ()
+            {
+                @Override
+                public void onFailure (@NonNull Exception e)
+                {
+                    getActivity ().runOnUiThread (() -> {
+                        mcBinding.tvQuestionWord.setText(mcTempWord.getMcEnglishWord ());
+                    });
+                }
+            });
+
+        //translation
+    }
 }
