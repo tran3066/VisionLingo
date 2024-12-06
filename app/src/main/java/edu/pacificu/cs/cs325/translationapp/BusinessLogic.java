@@ -88,7 +88,7 @@ public class BusinessLogic extends ViewModel
   public void setColor (int cColor)
   {
     mcColor = cColor;
-    uiState.setValue (new BusinessLogicUIState(cColor, uiState.getValue ().getLanguage (),
+    uiState.setValue (new BusinessLogicUIState(cColor, getLanguage (),
         mcImage, mcWordFromCamera, mbPictureTaken, mbSignedIn));
   }
 
@@ -97,7 +97,17 @@ public class BusinessLogic extends ViewModel
     return mcColor;
     //test.....
   }
-  
+
+  public String getLanguage()
+  {
+    return uiState.getValue ().getLanguage ();
+  }
+
+  public void setLanguage(String language)
+  {
+    uiState.setValue (new BusinessLogicUIState (getColor (), language,
+        mcImage, mcWordFromCamera, mbPictureTaken, mbSignedIn));
+  }
 
   public User getUser () {
     return mcUser;
