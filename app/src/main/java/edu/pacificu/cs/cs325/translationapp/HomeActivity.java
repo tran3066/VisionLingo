@@ -16,6 +16,7 @@ import androidx.room.Room;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -39,7 +40,7 @@ public class HomeActivity extends AppCompatActivity
 {
   private final String LOG_TAG = "HomeActivity";
   private final int SIZE_DATABASE = 36657;
-  private final int NUM_THREADS = 4;
+  private final int NUM_THREADS = 5;
 
   private ActivityHomeBinding mcBinding;
   private ExecutorService mcRunner;
@@ -47,7 +48,7 @@ public class HomeActivity extends AppCompatActivity
   private UserDB mcUserDB;
   private String mcUsername;
   private String mcPassword;
-  private List<User> usersFromDB;
+  private ArrayList<User> usersFromDB;
   private DictionaryDAO mcDictionaryDAO;
   private BusinessLogic mcLogic;
   private User mcCurrentUser;
@@ -61,7 +62,6 @@ public class HomeActivity extends AppCompatActivity
    *                            UI
    */
 
-  //
   @Override
   protected void onCreate (Bundle cSavedInstanceState)
   {
@@ -89,7 +89,7 @@ public class HomeActivity extends AppCompatActivity
         mcUserDB = Room.databaseBuilder (getApplicationContext (), UserDB.class,
             "User-DB").fallbackToDestructiveMigrationOnDowngrade ().build ();
         mcUserDAO = mcUserDB.userDao ();
-        usersFromDB = mcUserDAO.getAll ();
+        usersFromDB = (ArrayList<User>) mcUserDAO.getAll ();
       }
       catch (Exception e)
       {
@@ -110,6 +110,11 @@ public class HomeActivity extends AppCompatActivity
 
       newUser (intent, mcRunner, usersFromDB);
 
+      mcRunner.execute (() -> {
+        UserPreference cDefault = new UserPreference ("defaultCol", "defaultLang");
+        mcCurrentUser.setMcUserPreference (cDefault);
+        mcUserDAO.insert (mcCurrentUser);
+      });
     }));
   }
 
@@ -180,6 +185,8 @@ public class HomeActivity extends AppCompatActivity
           if (mcUsername.equals (check.getMcUsername ()))
           {
             bUserFound = true;
+            Log.d (LOG_TAG, "Hi");
+
             if (mcPassword.equals (check.getMcPassword ()))
             {
               mcCurrentUser = check;
@@ -209,6 +216,8 @@ public class HomeActivity extends AppCompatActivity
     }
     else if (!bUserFound)
     {
+      Log.d (LOG_TAG, "Hello");
+
       runOnUiThread (() -> {
         int time = Toast.LENGTH_SHORT;
         StringBuilder wordMessage = new StringBuilder ();
