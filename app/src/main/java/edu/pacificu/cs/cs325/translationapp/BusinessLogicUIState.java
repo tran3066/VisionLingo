@@ -6,7 +6,7 @@ public class BusinessLogicUIState
 {
   //private User mcUser;
 
-  private String mcColor;
+  private int mcColor;
   private String mcLanguage;
   private byte[] mcImage;
 
@@ -16,7 +16,7 @@ public class BusinessLogicUIState
 
   private boolean mbSignedIn;
 
-  public BusinessLogicUIState(String cColor, String cLanguage, byte[] cImage,
+  public BusinessLogicUIState(int cColor, String cLanguage, byte[] cImage,
       String cCameraWord, boolean bPictureTaken, boolean bSignedIn)
   {
     mcColor = cColor;
@@ -32,27 +32,9 @@ public class BusinessLogicUIState
     return mcLanguage;
   }
 
-  public String getColor()
+  public int getColor()
   {
     return mcColor;
-  }
-
-  public int getColorInt()
-  {
-    int colorCode = 0;
-    if(mcColor.equals ("Green"))
-    {
-      colorCode = Color.GREEN;
-    }
-    else if(mcColor.equals ("Red"))
-    {
-      colorCode = Color.RED;
-    }
-    else if(mcColor.equals ("Blue"))
-    {
-      colorCode = Color.BLUE;
-    }
-    return colorCode;
   }
 
   public boolean isPictureTaken()

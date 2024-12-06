@@ -82,5 +82,4 @@ dependencies {
 
     // For storing mcVocabList in a database using JSON files
     implementation 'com.google.code.gson:gson:2.11.0'
-
 }
