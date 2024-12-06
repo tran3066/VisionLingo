@@ -24,7 +24,7 @@ public class BusinessLogic extends ViewModel
     mcWordFromCamera = "";
     mbPictureTaken = false;
     mcDictionaryDAO = null;
-    uiState = new MutableLiveData<> (new BusinessLogicUIState ("","", null, mcWordFromCamera, mbPictureTaken, mbSignedIn));
+    uiState = new MutableLiveData<> (new BusinessLogicUIState (0,"", null, mcWordFromCamera, mbPictureTaken, mbSignedIn));
   }
 
   public void setDAO(DictionaryDAO cDictionaryDAO)
@@ -42,7 +42,7 @@ public class BusinessLogic extends ViewModel
     mcImage = cImage;
 
     uiState.setValue(new BusinessLogicUIState (
-        uiState.getValue ().getLanguage(), uiState.getValue ().getColor(),
+        uiState.getValue ().getColor(), uiState.getValue ().getLanguage(),
         mcImage, mcWordFromCamera, mbPictureTaken, mbSignedIn));
   }
 
@@ -54,7 +54,7 @@ public class BusinessLogic extends ViewModel
   {
     mcWordFromCamera = cWord;
     uiState.setValue(new BusinessLogicUIState (
-        uiState.getValue ().getLanguage(), uiState.getValue ().getColor(),
+        uiState.getValue ().getColor(), uiState.getValue ().getLanguage(),
         mcImage, mcWordFromCamera, mbPictureTaken, mbSignedIn));
   }
   
@@ -71,7 +71,7 @@ public class BusinessLogic extends ViewModel
     mcUser = new User(username,password);
     mbSignedIn = true;
     uiState.setValue(new BusinessLogicUIState(
-        uiState.getValue ().getLanguage(), uiState.getValue ().getColor(),
+        uiState.getValue ().getColor(), uiState.getValue ().getLanguage(),
         mcImage, mcWordFromCamera, mbPictureTaken, mbSignedIn));
   }
   
