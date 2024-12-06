@@ -101,8 +101,7 @@ public class QuizFragment extends Fragment {
                 @Override
                 public void onSuccess(String s) {
                     getActivity ().runOnUiThread (() -> {
-                        final String tempString = s;
-
+                        mcBinding.tvQuestionWord.setText (s);
                     });
                 }
             });

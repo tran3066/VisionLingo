@@ -40,6 +40,7 @@ public class HomeActivity extends AppCompatActivity
   private final String LOG_TAG = "HomeActivity";
   private final int SIZE_DATABASE = 36657;
   private final int NUM_THREADS = 4;
+
   private ActivityHomeBinding mcBinding;
   private ExecutorService mcRunner;
   private UserDAO mcUserDAO;
