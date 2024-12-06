@@ -39,7 +39,7 @@ public class HomeActivity extends AppCompatActivity
 {
   private final String LOG_TAG = "HomeActivity";
   private final int SIZE_DATABASE = 36657;
-  private final int NUM_THREADS = 4;
+  private final int NUM_THREADS = 5;
 
   private ActivityHomeBinding mcBinding;
   private ExecutorService mcRunner;
@@ -110,6 +110,9 @@ public class HomeActivity extends AppCompatActivity
 
       newUser (intent, mcRunner, usersFromDB);
 
+      mcRunner.execute (() -> {
+        mcUserDAO.insert (mcCurrentUser);
+      });
     }));
   }
 
@@ -154,14 +157,12 @@ public class HomeActivity extends AppCompatActivity
       intent.setType ("String");
       startActivity (intent);
       Log.d (LOG_TAG, "User Preferences Activity started");
-
     }
   }
 
   private void login (Intent intent, ExecutorService mcRunner,
       List<User> usersFromDB)
   {
-
     mcUsername = mcBinding.ptUsername.getText ().toString ().trim ();
     mcPassword = mcBinding.ptPassword.getText ().toString ().trim ();
 
