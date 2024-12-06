@@ -181,26 +181,8 @@ public class PreferenceFragment extends Fragment {
             public void onChanged (BusinessLogicUIState businessLogicUIState)
             {
                 //update changes here
-                int colorInt = mcLogic.getUiState ().getValue ().getColorInt ();
-                mcBinding.btnSearch.setBackgroundColor (colorInt);
-                mcBinding.btnAdd.setBackgroundColor (colorInt);
-                mcBinding.btnSpeak.setBackgroundColor (colorInt);
-
-                mcBinding.btnSpeak.setOnClickListener (v -> {
-                    String cUpdatedURL;
-                    String cCurrentLanguage = mcLogic.getUiState ().getValue ().getLanguage ();
-                    if (cCurrentLanguage.equals ("French"))
-                    {
-                        cUpdatedURL = FRENCH_URL.replace ("*", mcTranslatedWord);
-                        openURL (cUpdatedURL);
-                    }
-                    else if (cCurrentLanguage.equals ("Spanish"))
-                    {
-                        cUpdatedURL = SPANISH_URL.replace ("*", mcTranslatedWord);
-                        openURL (cUpdatedURL);
-                    }
-
-                });
+                int colorInt = mcLogic.getUiState ().getValue ().getColor ();
+                mcBinding.btnConfirm.setBackgroundColor (colorInt);
             }
         };
         mcLogic.getUiState ().observe (getActivity (), mcObserver);
