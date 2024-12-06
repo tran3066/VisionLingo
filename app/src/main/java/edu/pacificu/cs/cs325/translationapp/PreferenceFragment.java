@@ -169,6 +169,7 @@ public class PreferenceFragment extends Fragment {
         });
 
        mcBinding.btnConfirm.setOnClickListener (v -> {
+
            mcUserPref = new UserPreference(selectedColor,selectedLanguage);
            mcLogic.getUser().setMcUserPreference(mcUserPref);
            mcRunner.execute(() -> {
