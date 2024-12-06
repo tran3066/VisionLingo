@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import edu.pacificu.cs.cs325.translationapp.databinding.ActivityListBinding;
 import edu.pacificu.cs.cs325.translationapp.databinding.FragmentListBinding;
 
 /**
@@ -35,8 +36,11 @@ import edu.pacificu.cs.cs325.translationapp.databinding.FragmentListBinding;
 
 public class ListFragment extends Fragment
 {
-  private FragmentListBinding mcBinding;
   private VocabRecyclerViewAdapter mcAdapter;
+  private FragmentListBinding mcBinding;
+  private DividerItemDecoration mcDivider;
+  private LinearLayoutManager mcLayoutManager;
+  private BusinessLogic mcLogic;
 
   public ListFragment ()
   {
@@ -65,8 +69,11 @@ public class ListFragment extends Fragment
         .setBackgroundResource (mcColor);
 
     mcBinding.rvWords.setHasFixedSize (true);
-    mcBinding.rvWords.setLayoutManager (
-        new LinearLayoutManager (getActivity ()));
+    mcBinding.rvWords.setLayoutManager (new LinearLayoutManager (getActivity ()));
+    mcLayoutManager = new LinearLayoutManager (getActivity ());
+    mcDivider = new DividerItemDecoration (getActivity (),
+        mcLayoutManager.getOrientation ());
+    mcBinding.rvWords.addItemDecoration (mcDivider);
   }
 
   @Override
@@ -92,7 +99,7 @@ public class ListFragment extends Fragment
   {
     super.onResume ();
     mcAdapter = new VocabRecyclerViewAdapter (
-        HomeActivity.mcCurrentUser.getMcVocabList ());
+        mcLogic.getUser ().getMcVocabList ());
     mcBinding.rvWords.setAdapter (mcAdapter);
   }
 }
