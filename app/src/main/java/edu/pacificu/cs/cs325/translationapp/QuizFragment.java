@@ -4,12 +4,16 @@ import static android.content.Context.SENSOR_SERVICE;
 import static androidx.core.content.ContextCompat.getSystemService;
 import static edu.pacificu.cs.cs325.translationapp.PreferenceFragment.mcColor;
 
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+
+import android.app.ProgressDialog;
+
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -124,7 +128,23 @@ public class QuizFragment extends Fragment {
             .setSourceLanguage ("en")
             .build();
         mcTranslator = Translation.getClient (mcOptions);
-        mcTranslator.downloadModelIfNeeded ();
+        getLifecycle().addObserver(mcTranslator);
+        mcTranslator.downloadModelIfNeeded ().addOnSuccessListener (new OnSuccessListener<Void> ()
+        {
+            @Override
+            public void onSuccess (Void unused)
+            {
+                getActivity ().runOnUiThread (()->
+                {
+                    int duration = Toast.LENGTH_SHORT;
+                    Toast cToast = Toast.makeText (getActivity (),
+                        "Model Downloaded",
+                        duration);
+                    cToast.show ();
+                });
+            }
+        });
+
         getActivity().findViewById(android.R.id.content).setBackgroundResource(mcColor);
 
         mcObserver = new Observer<BusinessLogicUIState>()

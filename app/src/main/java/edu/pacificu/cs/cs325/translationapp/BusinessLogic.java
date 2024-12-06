@@ -2,6 +2,8 @@ package edu.pacificu.cs.cs325.translationapp;
 
 import static androidx.camera.core.impl.utils.ContextUtil.getApplicationContext;
 
+import android.graphics.Color;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -112,4 +114,31 @@ public class BusinessLogic extends ViewModel
   public User getUser () {
     return mcUser;
   }
+
+  public void setUser(User cUser)
+  {
+    int tempColor;
+
+    switch (cUser.getColor ()) {
+      case "Pink":
+        tempColor = Color.MAGENTA;
+        break;
+      case "Red":
+        tempColor = Color.RED;
+        break;
+      case "Green":
+        tempColor = Color.GREEN;
+        break;
+      case "Blue":
+        tempColor = Color.BLUE;
+        break;
+      default:
+        tempColor = 0;
+        break;
+    }
+    mcUser = cUser;
+    uiState.setValue (new BusinessLogicUIState (tempColor, cUser.getLanguage (),
+        mcImage, mcWordFromCamera, mbPictureTaken, mbSignedIn));
+  }
+
 }
