@@ -102,7 +102,7 @@ public class PreferenceFragment extends Fragment {
 
         mcBinding.languageSpinner.setAdapter(languageAdapter);
 
-        String[] colorArray = new String[] { "Pink", "Red", "Green", "Blue"};
+        String[] colorArray = new String[] { "Red", "Green", "Blue"};
         ArrayAdapter<String> colorAdapter = new ArrayAdapter<> (getActivity(),
                 android.R.layout.simple_spinner_dropdown_item, colorArray);
         colorAdapter.setDropDownViewResource (
@@ -121,28 +121,27 @@ public class PreferenceFragment extends Fragment {
                 selectedColor = (String) adapterView.getItemAtPosition(position);
                 Log.d(LOG_TAG, "Color selected: " + selectedColor);
 
+                View rootView = mcBinding.getRoot();
                 switch (selectedColor) {
-                    case "Pink":
-                        mcBinding.btnConfirm.setBackgroundColor(Color.MAGENTA);
-                        mcColor = Color.MAGENTA;
-
                     case "Red":
                         mcBinding.btnConfirm.setBackgroundColor(Color.RED);
-                        mcColor = Color.RED;
+                        mcColor = R.color.red;
                         break;
                     case "Green":
-                        mcBinding.btnConfirm.setBackgroundColor(Color.GREEN);
-                        mcColor = Color.GREEN;
+                        mcBinding.btnConfirm.setBackgroundResource(R.color.darkgreen);
+                        mcColor = R.color.darkgreen;
                         break;
                     case "Blue":
-                        mcBinding.btnConfirm.setBackgroundColor(Color.BLUE);
-                        mcColor = Color.BLUE;
+                        mcBinding.btnConfirm.setBackgroundResource(R.color.blue);
+                        mcColor = R.color.blue;
                         break;
                     default:
-                        mcColor = 0;
+                        mcBinding.btnConfirm.setBackgroundResource(R.color.purple);
+                        mcColor = R.color.purple;
                         break;
                 }
             }
+
 
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {
@@ -166,12 +165,27 @@ public class PreferenceFragment extends Fragment {
             public void onNothingSelected(AdapterView<?> parentView) {
             }
         });
-        Log.d(LOG_TAG, String.valueOf(mcColor));
+
+        mcUiLogic = new BusinessLogicUIState
+                (mcColor, selectedLanguage,mcLogic.getImage(),
+                        mcLogic.getWordFromCamera(),mcLogic.isMbPictureTaken(),
+                        mcLogic.isMbSignedIn());
 
 
         mcUserPref = new UserPreference(selectedColor,selectedLanguage);
         mcLogic.getUser().setMcUserPreference(mcUserPref);
 
+        mcObserver = new Observer<BusinessLogicUIState> ()
+        {
+            @Override
+            public void onChanged (BusinessLogicUIState businessLogicUIState)
+            {
+                //update changes here
+                int colorInt = mcLogic.getUiState ().getValue ().getColor ();
+                mcBinding.btnConfirm.setBackgroundColor (colorInt);
+            }
+        };
+        mcLogic.getUiState ().observe (getActivity (), mcObserver);
 
        mcBinding.btnConfirm.setOnClickListener (v -> {
 //           mcRunner.execute(() -> {
