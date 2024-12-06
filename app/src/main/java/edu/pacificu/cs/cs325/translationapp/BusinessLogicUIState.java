@@ -9,11 +9,8 @@ public class BusinessLogicUIState
   private int mcColor;
   private String mcLanguage;
   private byte[] mcImage;
-
   private String mcCameraWord;
-
   private boolean mbPictureTaken;
-
   private boolean mbSignedIn;
 
   public BusinessLogicUIState(int cColor, String cLanguage, byte[] cImage,

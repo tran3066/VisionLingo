@@ -90,7 +90,7 @@ public class InfoFragment extends Fragment
       public void onChanged (BusinessLogicUIState businessLogicUIState)
       {
         //update changes here
-        int colorInt = mcLogic.getUiState ().getValue ().getColorInt ();
+        int colorInt = mcLogic.getUiState ().getValue ().getColor();
         mcBinding.btnSearch.setBackgroundColor (colorInt);
         mcBinding.btnAdd.setBackgroundColor (colorInt);
         mcBinding.btnSpeak.setBackgroundColor (colorInt);
