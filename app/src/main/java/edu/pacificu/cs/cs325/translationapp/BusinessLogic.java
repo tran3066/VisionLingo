@@ -15,7 +15,6 @@ public class BusinessLogic extends ViewModel
   private byte[] mcImage;
   private User mcUser;
   private String mcWordFromCamera;
-
   private DictionaryDAO mcDictionaryDAO;
 
 
@@ -24,7 +23,8 @@ public class BusinessLogic extends ViewModel
     mcWordFromCamera = "";
     mbPictureTaken = false;
     mcDictionaryDAO = null;
-    uiState = new MutableLiveData<> (new BusinessLogicUIState ("","", null, mcWordFromCamera, mbPictureTaken, mbSignedIn));
+    uiState = new MutableLiveData<> (new BusinessLogicUIState
+            ("","", null, mcWordFromCamera, mbPictureTaken, mbSignedIn));
   }
 
   public void setDAO(DictionaryDAO cDictionaryDAO)

@@ -107,7 +107,7 @@ public class CameraFragment extends Fragment {
         super.onViewCreated (view, savedInstanceState);
 
         assert getActivity() != null;
-        mcLogic = new ViewModelProvider(this).get(BusinessLogic.class);
+        mcLogic = new ViewModelProvider(getActivity()).get(BusinessLogic.class);
 
         if (mcColor != 0) {
             getActivity().findViewById(android.R.id.content).setBackgroundResource(mcColor);
@@ -285,7 +285,6 @@ public class CameraFragment extends Fragment {
                     .commit();
             Log.d (LOG_TAG, "Info Activity started");
         });
-
     }
 
     /**

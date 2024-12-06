@@ -9,6 +9,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.room.Room;
 
@@ -41,6 +42,7 @@ public class PreferenceFragment extends Fragment {
 
     private FragmentPreferenceBinding mcBinding;
     private final String LOG_TAG = "PreferenceFragment";
+    private Observer<BusinessLogicUIState> mcObserver;
     private UserDAO mcUserDAO;
     private UserDB mcUserDB;
     private List<User> usersFromDB;
@@ -50,6 +52,7 @@ public class PreferenceFragment extends Fragment {
     private int NUM_THREADS = 1;
     private UserPreference mcUserPref;
     private BusinessLogic mcLogic;
+    private BusinessLogicUIState mcUiLogic;
     protected static int mcColor = 0;
 
     public PreferenceFragment() {
@@ -88,8 +91,10 @@ public class PreferenceFragment extends Fragment {
 
         assert getActivity() != null;
         mcLogic = new ViewModelProvider(getActivity()).get(BusinessLogic.class);
+        mcUiLogic = new BusinessLogicUIState()
 
-        String[] languageArray = new String[] {"","French", "Spanish" };
+
+        String[] languageArray = new String[] {"French", "Spanish" };
         assert getActivity() != null;
         ArrayAdapter<String> languageAdapter = new ArrayAdapter<> (getActivity(),
                 android.R.layout.simple_spinner_dropdown_item, languageArray);
@@ -98,7 +103,7 @@ public class PreferenceFragment extends Fragment {
 
         mcBinding.languageSpinner.setAdapter(languageAdapter);
 
-        String[] colorArray = new String[] { "", "Red", "Green", "Blue" , "Purple"};
+        String[] colorArray = new String[] { "Red", "Green", "Blue"};
         ArrayAdapter<String> colorAdapter = new ArrayAdapter<> (getActivity(),
                 android.R.layout.simple_spinner_dropdown_item, colorArray);
         colorAdapter.setDropDownViewResource (
@@ -120,33 +125,22 @@ public class PreferenceFragment extends Fragment {
                 View rootView = mcBinding.getRoot();
                 switch (selectedColor) {
                     case "Red":
-                        rootView.setBackgroundResource(R.color.red);
+                        mcBinding.btnConfirm.setBackgroundColor(Color.RED);
                         mcColor = R.color.red;
                         break;
                     case "Green":
-                        rootView.setBackgroundResource(R.color.darkgreen);
+                        mcBinding.btnConfirm.setBackgroundResource(R.color.darkgreen);
                         mcColor = R.color.darkgreen;
                         break;
                     case "Blue":
-                        rootView.setBackgroundResource(R.color.blue);
+                        mcBinding.btnConfirm.setBackgroundResource(R.color.blue);
                         mcColor = R.color.blue;
                         break;
-                    case "Purple":
-                        rootView.setBackgroundResource(R.color.purple);
+                    default:
+                        mcBinding.btnConfirm.setBackgroundResource(R.color.purple);
                         mcColor = R.color.purple;
                         break;
-                    case "":
-                        if (mcColor != 0)
-                        {
-                            rootView.setBackgroundResource(mcColor);
-                        }
-                        break;
-                    default:
-                        rootView.setBackgroundResource(R.color.white);
-                        mcColor = R.color.white;
-                        break;
                 }
-                getActivity().findViewById(android.R.id.content).setBackgroundResource(mcColor);
             }
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {
@@ -174,6 +168,36 @@ public class PreferenceFragment extends Fragment {
 
         mcUserPref = new UserPreference(selectedColor,selectedLanguage);
         mcLogic.getUser().setMcUserPreference(mcUserPref);
+
+        mcObserver = new Observer<BusinessLogicUIState> ()
+        {
+            @Override
+            public void onChanged (BusinessLogicUIState businessLogicUIState)
+            {
+                //update changes here
+                int colorInt = mcLogic.getUiState ().getValue ().getColorInt ();
+                mcBinding.btnSearch.setBackgroundColor (colorInt);
+                mcBinding.btnAdd.setBackgroundColor (colorInt);
+                mcBinding.btnSpeak.setBackgroundColor (colorInt);
+
+                mcBinding.btnSpeak.setOnClickListener (v -> {
+                    String cUpdatedURL;
+                    String cCurrentLanguage = mcLogic.getUiState ().getValue ().getLanguage ();
+                    if (cCurrentLanguage.equals ("French"))
+                    {
+                        cUpdatedURL = FRENCH_URL.replace ("*", mcTranslatedWord);
+                        openURL (cUpdatedURL);
+                    }
+                    else if (cCurrentLanguage.equals ("Spanish"))
+                    {
+                        cUpdatedURL = SPANISH_URL.replace ("*", mcTranslatedWord);
+                        openURL (cUpdatedURL);
+                    }
+
+                });
+            }
+        };
+        mcLogic.getUiState ().observe (getActivity (), mcObserver);
 
        mcBinding.btnConfirm.setOnClickListener (v -> {
 //           mcRunner.execute(() -> {
