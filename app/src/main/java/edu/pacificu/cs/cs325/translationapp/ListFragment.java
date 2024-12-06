@@ -61,11 +61,8 @@ public class ListFragment extends Fragment
       @Nullable Bundle savedInstanceState)
   {
     super.onViewCreated (view, savedInstanceState);
-    mcLogic = new ViewModelProvider (this).get (BusinessLogic.class);
-
-    assert getActivity () != null;
-    getActivity ().findViewById (android.R.id.content)
-        .setBackgroundResource (mcColor);
+    BusinessLogic mcLogic = new ViewModelProvider (getActivity()).get (
+        BusinessLogic.class);
 
     mcBinding.rvWords.setHasFixedSize (true);
     mcBinding.rvWords.setLayoutManager (new LinearLayoutManager (getActivity ()));

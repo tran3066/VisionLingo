@@ -117,7 +117,7 @@ public class PreferenceFragment extends Fragment {
                 assert getActivity() != null;
                 Toast.makeText(getActivity().getApplicationContext(),
                         (String) adapterView.getSelectedItem(),
-                        Toast.LENGTH_LONG).show();
+                        Toast.LENGTH_SHORT).show();
                 selectedColor = (String) adapterView.getItemAtPosition(position);
                 Log.d(LOG_TAG, "Color selected: " + selectedColor);
 
@@ -158,7 +158,7 @@ public class PreferenceFragment extends Fragment {
                 assert getActivity() != null;
                 Toast.makeText(getActivity().getApplicationContext(),
                         (String) adapterView.getSelectedItem(),
-                        Toast.LENGTH_LONG).show();
+                        Toast.LENGTH_SHORT).show();
                 selectedLanguage = (String) adapterView.getItemAtPosition(position);
                 Log.d(LOG_TAG, "Language selected: " + selectedLanguage);
             }
@@ -168,40 +168,28 @@ public class PreferenceFragment extends Fragment {
             }
         });
 
-        mcUserPref = new UserPreference(selectedColor,selectedLanguage);
-        mcLogic.getUser().setMcUserPreference(mcUserPref);
-
-        mcObserver = new Observer<BusinessLogicUIState> ()
-        {
-            @Override
-            public void onChanged (BusinessLogicUIState businessLogicUIState)
-            {
-                //update changes here
-                int colorInt = mcLogic.getUiState ().getValue ().getColor ();
-                mcBinding.btnConfirm.setBackgroundColor (colorInt);
-            }
-        };
-        mcLogic.getUiState ().observe (getActivity (), mcObserver);
-
        mcBinding.btnConfirm.setOnClickListener (v -> {
-//           mcRunner.execute(() -> {
-//               try {
-//                   mcUserDB = Room.databaseBuilder(getActivity().getApplicationContext(),
-//                           UserDB.class,
-//                           "User-DB").fallbackToDestructiveMigrationOnDowngrade().build();
-//                   mcUserDAO = mcUserDB.userDao();
-//                   usersFromDB = mcUserDAO.getAll();
-//                   mcUserDAO.insert(mcLogic.getUser());
-//               } catch (Exception e) {
-//                   throw new RuntimeException(e);
-//               }
-//           });
+
+           mcUserPref = new UserPreference(selectedColor,selectedLanguage);
+           mcLogic.getUser().setMcUserPreference(mcUserPref);
+           mcRunner.execute(() -> {
+               try {
+                   mcUserDB = Room.databaseBuilder (getActivity().getApplicationContext (),
+                           UserDB.class,
+                           "User-DB").fallbackToDestructiveMigrationOnDowngrade ().build ();
+                   mcUserDAO = mcUserDB.userDao ();
+                   usersFromDB = mcUserDAO.getAll ();
+
+                   mcUserDAO.insert(mcLogic.getUser());
+                   Log.d(LOG_TAG, "Updated Users: " + mcUserDAO.getAll().toString());
+               } catch (Exception e) {
+                   throw new RuntimeException(e);
+               }
+           });
 
            Toast.makeText(getActivity().getApplicationContext(),
                    "Preferences Confirmed: Please Choose Activity Below",
-                   Toast.LENGTH_LONG).show();
+                   Toast.LENGTH_SHORT).show();
        });
-
-
     }
 }
