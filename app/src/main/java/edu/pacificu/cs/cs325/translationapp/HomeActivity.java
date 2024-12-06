@@ -206,28 +206,28 @@ public class HomeActivity extends AppCompatActivity
           }
         }
       }
+
+      if (mcCurrentUser != null && bUserFound)
+      {
+        Log.d (LOG_TAG, "Launch CameraActivity from Login");
+        startActivity (intent);
+        Log.d (LOG_TAG, "Camera Activity started");
+      }
+      else if (!bUserFound)
+      {
+        Log.d (LOG_TAG, "Hello");
+
+        runOnUiThread (() -> {
+          int time = Toast.LENGTH_SHORT;
+          StringBuilder wordMessage = new StringBuilder ();
+          wordMessage.append ("User: ").append (mcUsername)
+              .append (" not found. Please create a new account");
+          Toast toast = Toast.makeText (this, wordMessage, time);
+          toast.show ();
+          Log.d (LOG_TAG, "User not Found Toast was shown");
+        });
+      }
     });
-
-    if (mcCurrentUser != null && bUserFound)
-    {
-      Log.d (LOG_TAG, "Launch CameraActivity from Login");
-      startActivity (intent);
-      Log.d (LOG_TAG, "Camera Activity started");
-    }
-    else if (!bUserFound)
-    {
-      Log.d (LOG_TAG, "Hello");
-
-      runOnUiThread (() -> {
-        int time = Toast.LENGTH_SHORT;
-        StringBuilder wordMessage = new StringBuilder ();
-        wordMessage.append ("User: ").append (mcUsername)
-            .append (" not found. Please create a new account");
-        Toast toast = Toast.makeText (this, wordMessage, time);
-        toast.show ();
-        Log.d (LOG_TAG, "User not Found Toast was shown");
-      });
-    }
   }
 
   private void buildDictionary (ExecutorService mcRunner)
