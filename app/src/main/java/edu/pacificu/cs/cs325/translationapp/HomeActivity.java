@@ -111,7 +111,8 @@ public class HomeActivity extends AppCompatActivity
       newUser (intent, mcRunner, usersFromDB);
 
       mcRunner.execute (() -> {
-        UserPreference cDefault = new UserPreference ("defaultCol", "defaultLang");
+        UserPreference cDefault = new UserPreference ("defaultCol",
+            "defaultLang");
         mcCurrentUser.setMcUserPreference (cDefault);
         mcUserDAO.insert (mcCurrentUser);
       });
@@ -209,6 +210,7 @@ public class HomeActivity extends AppCompatActivity
 
       if (mcCurrentUser != null && bUserFound)
       {
+        // setuser
         Log.d (LOG_TAG, "Launch CameraActivity from Login");
         startActivity (intent);
         Log.d (LOG_TAG, "Camera Activity started");
