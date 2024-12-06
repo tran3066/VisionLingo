@@ -67,8 +67,30 @@ public class InfoFragment extends Fragment
       public void onChanged (BusinessLogicUIState businessLogicUIState)
       {
         //update changes here
+        int colorInt = mcLogic.getUiState ().getValue ().getColorInt ();
+        mcBinding.btnSearch.setBackgroundColor (colorInt);
+        mcBinding.btnAdd.setBackgroundColor (colorInt);
+        mcBinding.btnSpeak.setBackgroundColor (colorInt);
+
+        mcBinding.btnSpeak.setOnClickListener (v -> {
+          String cUpdatedURL;
+          String cCurrentLanguage = mcLogic.getUiState ().getValue ().getLanguage ();
+          if (cCurrentLanguage.equals ("French"))
+          {
+            cUpdatedURL = FRENCH_URL.replace ("*", mcTranslatedWord);
+            openURL (cUpdatedURL);
+          }
+          else if (cCurrentLanguage.equals ("Spanish"))
+          {
+            cUpdatedURL = SPANISH_URL.replace ("*", mcTranslatedWord);
+            openURL (cUpdatedURL);
+          }
+
+        });
       }
     };
+    mcLogic.getUiState ().observe (getActivity (), mcObserver);
+
 
     if (mcLogic.getWordFromCamera() != null)
     {
@@ -92,30 +114,6 @@ public class InfoFragment extends Fragment
       Log.d (LOG_TAG, "No PICTURE");
     }
 
-    //testing
-    mcLogic.getUiState ().observe ( getActivity (), uistate-> {
-      mcBinding.btnSearch.setBackgroundColor (mcLogic.getUiState ().getValue ().getColorInt ());
-      mcBinding.btnAdd.setBackgroundColor (mcLogic.getUiState ().getValue ().getColorInt ());
-      mcBinding.btnSpeak.setBackgroundColor (mcLogic.getUiState ().getValue ().getColorInt ());
-
-      mcBinding.btnSpeak.setOnClickListener (v -> {
-        String cUpdatedURL;
-        String cCurrentLanguage = mcLogic.getUiState ().getValue ().getLanguage ();
-        if (cCurrentLanguage.equals ("French"))
-        {
-          cUpdatedURL = FRENCH_URL.replace ("*", mcTranslatedWord);
-          openURL (cUpdatedURL);
-        }
-        else if (cCurrentLanguage.equals ("Spanish"))
-        {
-          cUpdatedURL = SPANISH_URL.replace ("*", mcTranslatedWord);
-          openURL (cUpdatedURL);
-        }
-
-      });
-
-
-    });
 
 
     mcBinding.btnSearch.setOnClickListener (v ->
