@@ -157,4 +157,19 @@ public class User
   {
     this.mUid = mUid;
   }
+
+  public void setLanguage(String cLanguage)
+  {
+    mcUserPreference.setMcLanguage (cLanguage);
+  }
+
+  public void setColor(String cColor)
+  {
+    mcUserPreference.setMcColor (cColor);
+  }
+
+  public void addToVocab(Vocab cNewVocab)
+  {
+    mcVocabList.add (cNewVocab);
+  }
 }

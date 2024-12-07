@@ -1,6 +1,6 @@
 package edu.pacificu.cs.cs325.translationapp;
 
-import static edu.pacificu.cs.cs325.translationapp.PreferenceFragment.mcColor;
+//import static edu.pacificu.cs.cs325.translationapp.PreferenceFragment.mcColor;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -57,7 +57,7 @@ public class InfoFragment extends Fragment
 
     mcLogic = new ViewModelProvider (getActivity ()).get(BusinessLogic.class);
 
-    getActivity().findViewById(android.R.id.content).setBackgroundResource(mcColor);
+    //getActivity().findViewById(android.R.id.content).setBackgroundResource(mcColor);
 
     if (mcLogic.getWordFromCamera() != null)
     {
