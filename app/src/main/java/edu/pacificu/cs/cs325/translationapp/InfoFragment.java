@@ -18,18 +18,30 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.mlkit.nl.translate.Translation;
+import com.google.mlkit.nl.translate.Translator;
+import com.google.mlkit.nl.translate.TranslatorOptions;
+
 import edu.pacificu.cs.cs325.translationapp.databinding.FragmentInfoBinding;
 
 public class InfoFragment extends Fragment
 {
 
   private final String LOG_TAG = "InfoActivity";
+  private final String FRENCH = "fr";
+  private final String SPANISH = "es";
   private final String FRENCH_URL = "https://forvo.com/word/*/#fr";
   private final String SPANISH_URL = "https://forvo.com/word/*/#es";
   private Observer<BusinessLogicUIState> mcObserver;
   private BusinessLogic mcLogic;
   private FragmentInfoBinding mcBinding;
   private String mcTranslatedWord;
+
+  private TranslatorOptions mcOptions;
+  private Translator mcTranslator;
 
   public InfoFragment ()
   {
@@ -93,15 +105,21 @@ public class InfoFragment extends Fragment
         mcBinding.btnAdd.setBackgroundColor (colorInt);
         mcBinding.btnSpeak.setBackgroundColor (colorInt);
 
+        mcOptions = new TranslatorOptions.Builder()
+            .setTargetLanguage (mcLogic.getLanguage ())
+            .setSourceLanguage ("en")
+            .build();
+        mcTranslator = Translation.getClient (mcOptions);
+
         mcBinding.btnSpeak.setOnClickListener (v -> {
           String cUpdatedURL;
-          String cCurrentLanguage = mcLogic.getMcUiState ().getValue ().getLanguage ();
-          if (cCurrentLanguage.equals ("French"))
+          String cCurrentLanguage = mcLogic.getLanguage ();
+          if (cCurrentLanguage.equals (FRENCH))
           {
             cUpdatedURL = FRENCH_URL.replace ("*", mcTranslatedWord);
             openURL (cUpdatedURL);
           }
-          else if (cCurrentLanguage.equals ("Spanish"))
+          else if (cCurrentLanguage.equals (SPANISH))
           {
             cUpdatedURL = SPANISH_URL.replace ("*", mcTranslatedWord);
             openURL (cUpdatedURL);
@@ -124,7 +142,25 @@ public class InfoFragment extends Fragment
       tempString = mcBinding.tvSearch.getText ().toString ();
       tempWord = tempDAO.getWordByString(tempString);
       mcBinding.tvWordInfo.setText (tempWord.toString());
-      mcBinding.tvWordTranslate.setText ("spanish");
+
+      Task<String> result = mcTranslator.translate(tempWord.getMcEnglishWord ())
+          .addOnSuccessListener (new OnSuccessListener<String> () {
+            @Override
+            public void onSuccess(String s) {
+              getActivity ().runOnUiThread (() -> {
+                mcBinding.tvWordTranslate.setText (s);
+              });
+            }
+          }).addOnFailureListener (new OnFailureListener ()
+          {
+            @Override
+            public void onFailure (@NonNull Exception e)
+            {
+              getActivity ().runOnUiThread (() -> {
+                mcBinding.tvWordTranslate.setText(tempWord.getMcEnglishWord ());
+              });
+            }
+          });
     });
 
     mcLogic.getMcUiState ().observe (getActivity (), mcObserver);
