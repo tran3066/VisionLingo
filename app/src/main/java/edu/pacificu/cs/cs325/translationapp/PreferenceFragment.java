@@ -18,9 +18,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.translation.Translator;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
+
+import com.google.mlkit.nl.translate.TranslatorOptions;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -42,6 +45,8 @@ public class PreferenceFragment extends Fragment {
 
     private FragmentPreferenceBinding mcBinding;
     private final String LOG_TAG = "PreferenceFragment";
+    private final String FRENCH = "fr";
+    private final String SPANISH = "es";
     private Observer<BusinessLogicUIState> mcObserver;
     private UserDAO mcUserDAO;
     private UserDB mcUserDB;
@@ -142,7 +147,9 @@ public class PreferenceFragment extends Fragment {
                         mcColor = 0;
                         break;
                 }
-                mcLogic.setColor(mcColor);
+
+
+
             }
 
             @Override
@@ -169,8 +176,21 @@ public class PreferenceFragment extends Fragment {
         });
 
        mcBinding.btnConfirm.setOnClickListener (v -> {
-           mcUserPref = new UserPreference(selectedColor,selectedLanguage);
-           mcLogic.getUser().setMcUserPreference(mcUserPref);
+           mcLogic.setColor(mcColor);
+           mcLogic.getUser ().setColor (selectedColor);
+           if(selectedLanguage.equals("French"))
+           {
+               mcLogic.setLanguage (FRENCH);
+               mcLogic.getUser ().setLanguage (FRENCH);
+           }
+           else if(selectedLanguage.equals ("Spanish"))
+           {
+               mcLogic.setLanguage(SPANISH);
+               mcLogic.getUser ().setLanguage (SPANISH);
+           }
+
+           //mcUserPref = new UserPreference(selectedColor, selectedLanguage);
+           //mcLogic.getUser().setMcUserPreference(mcUserPref);
 
            mcRunner.execute(() -> {
                try {
@@ -178,11 +198,11 @@ public class PreferenceFragment extends Fragment {
                            UserDB.class,
                            "User-DB").fallbackToDestructiveMigrationOnDowngrade ().build ();
                    mcUserDAO = mcUserDB.userDao ();
-                   usersFromDB = mcUserDAO.getAll ();
-
+                   //usersFromDB = mcUserDAO.getAll ();
                    mcUserDAO.update (mcLogic.getUser());
+
                    Log.d (LOG_TAG, String.valueOf (mcLogic.getUser().getMUid ()));
-                   Log.d(LOG_TAG, "Updated Users: " + mcUserDAO.getAll().toString());
+                   Log.d(LOG_TAG, "Updated Users: " + mcLogic.getUser ().toString ());
                } catch (Exception e) {
                    throw new RuntimeException(e);
                }
