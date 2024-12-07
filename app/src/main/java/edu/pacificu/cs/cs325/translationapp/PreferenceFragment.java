@@ -169,10 +169,10 @@ public class PreferenceFragment extends Fragment {
         });
 
        mcBinding.btnConfirm.setOnClickListener (v -> {
-           mcRunner.execute(() -> {
-               mcUserPref = new UserPreference(selectedColor,selectedLanguage);
-               mcLogic.getUser().setMcUserPreference(mcUserPref);
+           mcUserPref = new UserPreference(selectedColor,selectedLanguage);
+           mcLogic.getUser().setMcUserPreference(mcUserPref);
 
+           mcRunner.execute(() -> {
                try {
                    mcUserDB = Room.databaseBuilder (getActivity().getApplicationContext (),
                            UserDB.class,

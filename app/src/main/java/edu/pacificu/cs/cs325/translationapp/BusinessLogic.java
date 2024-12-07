@@ -137,7 +137,8 @@ public class BusinessLogic extends ViewModel
         break;
     }
     mcUser = cUser;
-    uiState.setValue (new BusinessLogicUIState (tempColor, cUser.getLanguage (),
+
+    uiState.setValue (new BusinessLogicUIState(tempColor, cUser.getLanguage(),
         mcImage, mcWordFromCamera, mbPictureTaken, mbSignedIn));
   }
 

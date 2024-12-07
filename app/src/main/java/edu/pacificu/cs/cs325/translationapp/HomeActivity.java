@@ -115,7 +115,6 @@ public class HomeActivity extends AppCompatActivity
     Intent intent = new Intent (this, TransferActivity.class);
 
     mcBinding.btnLogin.setOnClickListener (v -> {
-
       login (intent, mcRunner, usersFromDB);
     });
 
@@ -199,11 +198,15 @@ public class HomeActivity extends AppCompatActivity
           if (mcUsername.equals (check.getMcUsername ()))
           {
             bUserFound = true;
-            Log.d (LOG_TAG, "Hi");
 
             if (mcPassword.equals (check.getMcPassword ()))
             {
               mcCurrentUser = check;
+
+              runOnUiThread (() -> {
+                mcLogic.setUser (mcCurrentUser);
+                Log.d (LOG_TAG, mcLogic.getUser().getMcUserPreference ().getColor () + " " + mcLogic.getUser().getMcUserPreference ().getLanguage ());
+              });
             }
             else
             {
@@ -223,15 +226,12 @@ public class HomeActivity extends AppCompatActivity
 
       if (mcCurrentUser != null && bUserFound)
       {
-        // setuser
         Log.d (LOG_TAG, "Launch CameraActivity from Login");
         startActivity (intent);
         Log.d (LOG_TAG, "Camera Activity started");
       }
       else if (!bUserFound)
       {
-        Log.d (LOG_TAG, "Hello");
-
         runOnUiThread (() -> {
           int time = Toast.LENGTH_SHORT;
           StringBuilder wordMessage = new StringBuilder ();
