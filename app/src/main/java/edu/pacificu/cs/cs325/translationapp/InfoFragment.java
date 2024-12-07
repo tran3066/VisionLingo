@@ -5,14 +5,12 @@ import static edu.pacificu.cs.cs325.translationapp.PreferenceFragment.mcColor;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -90,14 +88,14 @@ public class InfoFragment extends Fragment
       public void onChanged (BusinessLogicUIState businessLogicUIState)
       {
         //update changes here
-        int colorInt = mcLogic.getUiState ().getValue ().getColor();
+        int colorInt = mcLogic.getMcUiState ().getValue ().getColor();
         mcBinding.btnSearch.setBackgroundColor (colorInt);
         mcBinding.btnAdd.setBackgroundColor (colorInt);
         mcBinding.btnSpeak.setBackgroundColor (colorInt);
 
         mcBinding.btnSpeak.setOnClickListener (v -> {
           String cUpdatedURL;
-          String cCurrentLanguage = mcLogic.getUiState ().getValue ().getLanguage ();
+          String cCurrentLanguage = mcLogic.getMcUiState ().getValue ().getLanguage ();
           if (cCurrentLanguage.equals ("French"))
           {
             cUpdatedURL = FRENCH_URL.replace ("*", mcTranslatedWord);
@@ -112,7 +110,7 @@ public class InfoFragment extends Fragment
         });
       }
     };
-    mcLogic.getUiState ().observe (getActivity (), mcObserver);
+    mcLogic.getMcUiState ().observe (getActivity (), mcObserver);
 
 
 
@@ -129,7 +127,7 @@ public class InfoFragment extends Fragment
       mcBinding.tvWordTranslate.setText ("spanish");
     });
 
-    mcLogic.getUiState ().observe (getActivity (), mcObserver);
+    mcLogic.getMcUiState ().observe (getActivity (), mcObserver);
   }
 
   @Override
@@ -144,7 +142,7 @@ public class InfoFragment extends Fragment
   {
     super.onDestroyView ();
     mcBinding = null;
-    mcLogic.getUiState ().removeObserver (mcObserver);
+    mcLogic.getMcUiState ().removeObserver (mcObserver);
   }
 
   /**

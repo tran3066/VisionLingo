@@ -98,7 +98,7 @@ public class CameraFragment extends Fragment {
     {
         super.onDestroyView ();
         mcBinding = null;
-        //mcLogic.getUiState ().removeObserver (mcObserver);
+        //mcLogic.getMcUiState ().removeObserver (mcObserver);
     }
     @Override
     public void onViewCreated (@NonNull View view,
