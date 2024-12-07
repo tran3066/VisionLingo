@@ -181,6 +181,7 @@ public class PreferenceFragment extends Fragment {
                    usersFromDB = mcUserDAO.getAll ();
 
                    mcUserDAO.update (mcLogic.getUser());
+                   Log.d (LOG_TAG, String.valueOf (mcLogic.getUser().getMUid ()));
                    Log.d(LOG_TAG, "Updated Users: " + mcUserDAO.getAll().toString());
                } catch (Exception e) {
                    throw new RuntimeException(e);

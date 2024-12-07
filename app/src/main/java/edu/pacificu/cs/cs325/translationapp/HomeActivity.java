@@ -63,7 +63,6 @@ public class HomeActivity extends AppCompatActivity
   private User mcCurrentUser;
   private boolean bUserFound;
 
-
   /**
    * onCreate method that starts the activity
    *

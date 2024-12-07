@@ -110,7 +110,7 @@ public class CameraFragment extends Fragment {
         mcLogic = new ViewModelProvider(getActivity()).get(BusinessLogic.class);
 
         // for testing
-        Log.d (LOG_TAG, mcLogic.getUser().getMcUserPreference ().getColor () + " " + mcLogic.getUser().getMcUserPreference ().getLanguage ());
+        //Log.d (LOG_TAG, mcLogic.getUser().getMcUserPreference ().getColor () + " " + mcLogic.getUser().getMcUserPreference ().getLanguage ());
 
         if (mcLogic.getColor() != 0) {
             mcBinding.btnTakePicture.setBackgroundColor(mcLogic.getColor());
