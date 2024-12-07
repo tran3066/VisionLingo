@@ -20,7 +20,7 @@ public class BusinessLogic extends ViewModel
   private int mColor = 0;
   private boolean mbPictureTaken;
   private boolean mbSignedIn;
-  private byte[] mImage;
+  private byte[] mcImage;
   private User mcUser;
   private String mcWordFromCamera;
   private DictionaryDAO mcDictionaryDAO;
@@ -72,23 +72,23 @@ public class BusinessLogic extends ViewModel
   public void takePicture (byte[] cImage)
   {
     mbPictureTaken = true;
-    mImage = cImage;
+    mcImage = cImage;
 
     mcUiState.setValue (
         new BusinessLogicUIState (mcUiState.getValue ().getColor (),
-            mcUiState.getValue ().getLanguage (), mImage, mcWordFromCamera,
+            mcUiState.getValue ().getLanguage (), mcImage, mcWordFromCamera,
             mbPictureTaken, mbSignedIn));
   }
 
   /**
    * Obtains the image
    *
-   * @return the image
+   * @return the image as a byte array
    */
 
   public byte[] getImage ()
   {
-    return mImage;
+    return mcImage;
   }
 
   /**
@@ -124,7 +124,7 @@ public class BusinessLogic extends ViewModel
     mcWordFromCamera = cWord;
     mcUiState.setValue (
         new BusinessLogicUIState (mcUiState.getValue ().getColor (),
-            mcUiState.getValue ().getLanguage (), mImage, mcWordFromCamera,
+            mcUiState.getValue ().getLanguage (), mcImage, mcWordFromCamera,
             mbPictureTaken, mbSignedIn));
   }
 
@@ -164,7 +164,7 @@ public class BusinessLogic extends ViewModel
     mbSignedIn = true;
     mcUiState.setValue (
         new BusinessLogicUIState (mcUiState.getValue ().getColor (),
-            mcUiState.getValue ().getLanguage (), mImage, mcWordFromCamera,
+            mcUiState.getValue ().getLanguage (), mcImage, mcWordFromCamera,
             mbPictureTaken, mbSignedIn));
   }
 
@@ -189,8 +189,9 @@ public class BusinessLogic extends ViewModel
   public void setColor (int color)
   {
     mColor = color;
-    mcUiState.setValue (new BusinessLogicUIState (color, getLanguage (), mImage,
-        mcWordFromCamera, mbPictureTaken, mbSignedIn));
+    mcUiState.setValue (
+        new BusinessLogicUIState (color, getLanguage (), mcImage,
+            mcWordFromCamera, mbPictureTaken, mbSignedIn));
   }
 
   /**
@@ -225,7 +226,7 @@ public class BusinessLogic extends ViewModel
   public void setLanguage (String cLanguage)
   {
     mcUiState.setValue (
-        new BusinessLogicUIState (getColor (), cLanguage, mImage,
+        new BusinessLogicUIState (getColor (), cLanguage, mcImage,
             mcWordFromCamera, mbPictureTaken, mbSignedIn));
   }
 
@@ -268,10 +269,10 @@ public class BusinessLogic extends ViewModel
         tempColor = 0;
         break;
     }
-    mcUser = cUser;
 
+    mcUser = cUser;
     mcUiState.setValue (
-        new BusinessLogicUIState (tempColor, cUser.getLanguage (), mImage,
+        new BusinessLogicUIState (tempColor, cUser.getLanguage (), mcImage,
             mcWordFromCamera, mbPictureTaken, mbSignedIn));
   }
 }
