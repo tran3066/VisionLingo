@@ -1,8 +1,19 @@
 package edu.pacificu.cs.cs325.translationapp;
 
+import static android.content.Context.SENSOR_SERVICE;
+import static androidx.core.content.ContextCompat.getSystemService;
 import static edu.pacificu.cs.cs325.translationapp.PreferenceFragment.mcColor;
 
+
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
+
 import android.app.ProgressDialog;
+
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -47,9 +58,7 @@ public class QuizFragment extends Fragment {
     private FragmentQuizBinding mcBinding;
     private Word mcTempWord;
     private BusinessLogic mcLogic;
-
     TranslatorOptions mcOptions;
-
     Translator mcTranslator;
     private DictionaryDAO mcDictionaryDAO;
 
@@ -72,10 +81,47 @@ public class QuizFragment extends Fragment {
     public void onViewCreated (@NonNull View view,
                                @Nullable Bundle savedInstanceState)
     {
-        DictionaryDAO tempDAO;
         super.onViewCreated (view, savedInstanceState);
+        DictionaryDAO tempDAO;
         mcLogic = new ViewModelProvider(this).get(BusinessLogic.class);
         tempDAO = mcLogic.getDAO ();
+
+        SensorManager sensorManager = (SensorManager) requireContext().getSystemService
+                (Context.SENSOR_SERVICE);
+
+        Sensor sensorShake = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        SensorEventListener sensorEventListener = new SensorEventListener() {
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onSensorChanged(SensorEvent sensorEvent) {
+
+                if (sensorEvent != null)
+                {
+                    float x_accl = sensorEvent.values[0];
+                    float y_accl = sensorEvent.values[1];
+                    float z_accl = sensorEvent.values[2];
+
+                    float floatSum = Math.abs(x_accl) + Math.abs(y_accl) + Math.abs(z_accl);
+
+                    if (floatSum > 14)
+                    {
+                        mcBinding.tvQuestionWord.setText("Word from Shake");
+                    }
+                    else {
+                        mcBinding.tvQuestionWord.setText("No shake");
+                    }
+
+                }
+            }
+
+            @Override
+            public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+            }
+        };
+
+        sensorManager.registerListener(sensorEventListener, sensorShake,
+                SensorManager.SENSOR_DELAY_NORMAL);
         assert getActivity() != null;
         mcOptions = new TranslatorOptions.Builder()
             .setTargetLanguage (mcLogic.getUiState ().getValue ().getLanguage ())
@@ -145,7 +191,6 @@ public class QuizFragment extends Fragment {
     public void onCreate (Bundle savedInstanceState)
     {
         super.onCreate (savedInstanceState);
-
     }
 
     @Override
