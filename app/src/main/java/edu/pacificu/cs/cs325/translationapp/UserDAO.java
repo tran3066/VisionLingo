@@ -78,4 +78,7 @@ public interface UserDAO
 
   @Update
   void update (User cUser);
+
+  @Query ("SELECT * FROM User WHERE mcUsername=:mcUsername AND mcPassword =:mcPassword")
+  User findUserByNamePass(String mcUsername, String mcPassword);
 }

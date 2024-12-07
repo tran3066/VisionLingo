@@ -109,7 +109,7 @@ public class HomeActivity extends AppCompatActivity
 
     buildDictionary (mcRunner);
     buildLanguageModel (mcRunner, FRENCH);
-    buildLanguageModel (mcRunner, ENGLISH);
+    buildLanguageModel (mcRunner, SPANISH);
 
     Intent intent = new Intent (this, TransferActivity.class);
 
@@ -168,7 +168,7 @@ public class HomeActivity extends AppCompatActivity
       intent.setAction (Intent.ACTION_SEND);
       intent.putExtra ("Username", mcCurrentUser.getMcUsername ());
       intent.putExtra ("Password", mcCurrentUser.getMcPassword ());
-      intent.setType ("String");
+      intent.setType ("NewUser");
       startActivity (intent);
       Log.d (LOG_TAG, "User Preferences Activity started");
 
@@ -201,8 +201,11 @@ public class HomeActivity extends AppCompatActivity
             if (mcPassword.equals (check.getMcPassword ()))
             {
               mcCurrentUser = check;
-
+              intent.putExtra ("Username", mcUsername);
+              intent.putExtra ("Password", mcPassword);
+              intent.setType ("Login");
               runOnUiThread (() -> {
+
                 mcLogic.setUser (mcCurrentUser);
                 Log.d (LOG_TAG, mcLogic.getUser().getMcUserPreference ().getColor () + " " + mcLogic.getUser().getMcUserPreference ().getLanguage ());
               });

@@ -87,6 +87,11 @@ public class BusinessLogic extends ViewModel
         mcImage, mcWordFromCamera, mbPictureTaken, mbSignedIn));
   }
 
+  public void setUser (String username, String password)
+  {
+
+  }
+
   public void setColor (int cColor)
   {
     mcColor = cColor;

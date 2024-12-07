@@ -23,6 +23,10 @@ public class TransferActivity extends AppCompatActivity {
     private BusinessLogic mcLogic;
     private MenuItem item;
 
+    private UserDAO mcUserDAO;
+
+    private UserDB mcUserDB;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,28 +42,40 @@ public class TransferActivity extends AppCompatActivity {
         });
 
         mcLogic = new ViewModelProvider(this).get(BusinessLogic.class);
-        Intent recieveIntent = getIntent();
+        Intent receiveIntent = getIntent();
 
         DictionaryDB mcDictionaryDB = Room.databaseBuilder(getApplicationContext(),
             DictionaryDB.class, "Dictionary-DB").build();
         mcLogic.setDAO (mcDictionaryDB.dictionaryDao ());
 
-        getSupportFragmentManager().beginTransaction()
-                .setReorderingAllowed(true)
-                .add(R.id.fragment_container_view, CameraFragment.class, null)
-                .commit();
+
+        mcUserDB = Room.databaseBuilder (getApplicationContext (), UserDB.class,
+            "User-DB").fallbackToDestructiveMigrationOnDowngrade ().build ();
+        mcUserDAO = mcUserDB.userDao ();
 
 
-        if ("String".equals(recieveIntent.getType()))
+        if ("NewUser".equals(receiveIntent.getType()))
         {
-            String username = recieveIntent.getStringExtra("Username");
-            String password = recieveIntent.getStringExtra("Password");
-            mcLogic.createUser(username,password);
+            String username = receiveIntent.getStringExtra("Username");
+            String password = receiveIntent.getStringExtra("Password");
+            mcLogic.setUser (mcUserDAO.findUserByNamePass (username, password));
 
             getSupportFragmentManager().beginTransaction()
                     .setReorderingAllowed(true)
                     .replace(R.id.fragment_container_view, PreferenceFragment.class, null)
                     .commit();
+        }
+        else if("Login".equals(receiveIntent.getType()))
+        {
+            String username = receiveIntent.getStringExtra("Username");
+            String password = receiveIntent.getStringExtra("Password");
+            mcLogic.setUser (mcUserDAO.findUserByNamePass (username, password));
+
+            getSupportFragmentManager().beginTransaction()
+                .setReorderingAllowed(true)
+                .add(R.id.fragment_container_view, CameraFragment.class, null)
+                .commit();
+
         }
 
         mcBinding.bottomNavigationView.setOnItemSelectedListener(item ->
