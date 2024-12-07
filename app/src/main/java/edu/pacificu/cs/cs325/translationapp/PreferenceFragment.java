@@ -50,15 +50,15 @@ public class PreferenceFragment extends Fragment {
     private Observer<BusinessLogicUIState> mcObserver;
     private UserDAO mcUserDAO;
     private UserDB mcUserDB;
-    private List<User> usersFromDB;
+    //private List<User> usersFromDB;
     private String selectedLanguage;
     private ExecutorService mcRunner;
     private String selectedColor;
     private int NUM_THREADS = 1;
-    private UserPreference mcUserPref;
+    //private UserPreference mcUserPref;
     private BusinessLogic mcLogic;
-    private BusinessLogicUIState mcUiLogic;
-    protected static int mcColor;
+    //private BusinessLogicUIState mcUiLogic;
+    private int mcColor;
 
     public PreferenceFragment() {
         // Required empty public constructor

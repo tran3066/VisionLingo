@@ -1,6 +1,6 @@
 package edu.pacificu.cs.cs325.translationapp;
 
-import static edu.pacificu.cs.cs325.translationapp.PreferenceFragment.mcColor;
+//import static edu.pacificu.cs.cs325.translationapp.PreferenceFragment.mcColor;
 
 import android.os.Bundle;
 

@@ -1,7 +1,7 @@
 package edu.pacificu.cs.cs325.translationapp;
 
 import static androidx.core.content.ContextCompat.getSystemService;
-import static edu.pacificu.cs.cs325.translationapp.PreferenceFragment.mcColor;
+//import static edu.pacificu.cs.cs325.translationapp.PreferenceFragment.mcColor;
 
 
 import android.annotation.SuppressLint;
@@ -141,7 +141,7 @@ public class QuizFragment extends Fragment {
             }
         });
 
-        getActivity().findViewById(android.R.id.content).setBackgroundResource(mcColor);
+        //getActivity().findViewById(android.R.id.content).setBackgroundResource(mcColor);
 
         mcObserver = new Observer<BusinessLogicUIState>()
         {
