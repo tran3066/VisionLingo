@@ -14,6 +14,11 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.room.Room;
 
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.mlkit.nl.translate.Translation;
+import com.google.mlkit.nl.translate.Translator;
+import com.google.mlkit.nl.translate.TranslatorOptions;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -39,6 +44,10 @@ import edu.pacificu.cs.cs325.translationapp.databinding.ActivityHomeBinding;
 public class HomeActivity extends AppCompatActivity
 {
   private final String LOG_TAG = "HomeActivity";
+
+  private final String FRENCH = "fr";
+  private final String SPANISH = "es";
+  private final String ENGLISH = "en";
   private final int SIZE_DATABASE = 36657;
   private final int NUM_THREADS = 5;
 
@@ -53,6 +62,7 @@ public class HomeActivity extends AppCompatActivity
   private BusinessLogic mcLogic;
   private User mcCurrentUser;
   private boolean bUserFound;
+
 
   /**
    * onCreate method that starts the activity
@@ -83,6 +93,7 @@ public class HomeActivity extends AppCompatActivity
     mcRunner = Executors.newFixedThreadPool (NUM_THREADS);
     mcLogic = new ViewModelProvider (this).get (BusinessLogic.class);
 
+
     mcRunner.execute (() -> {
       try
       {
@@ -98,6 +109,8 @@ public class HomeActivity extends AppCompatActivity
     });
 
     buildDictionary (mcRunner);
+    buildLanguageModel (mcRunner, FRENCH);
+    buildLanguageModel (mcRunner, ENGLISH);
 
     Intent intent = new Intent (this, TransferActivity.class);
 
@@ -229,6 +242,31 @@ public class HomeActivity extends AppCompatActivity
           Log.d (LOG_TAG, "User not Found Toast was shown");
         });
       }
+    });
+  }
+
+  private void buildLanguageModel(ExecutorService mcRunner, String language)
+  {
+
+    mcRunner.execute(() ->
+    {
+      TranslatorOptions mcOptions = new TranslatorOptions.Builder()
+          .setTargetLanguage(language)
+          .setSourceLanguage ("en")
+          .build();
+      Translator mcTranslator = Translation.getClient (mcOptions);
+      mcTranslator.downloadModelIfNeeded ().addOnSuccessListener (new OnSuccessListener<Void> ()
+      {
+        @Override
+        public void onSuccess (Void unused)
+        {
+          int duration = Toast.LENGTH_SHORT;
+          Toast cToast = Toast.makeText (HomeActivity.this,
+              "Model Downloaded",
+              duration);
+          cToast.show ();
+        }
+      });
     });
   }
 
