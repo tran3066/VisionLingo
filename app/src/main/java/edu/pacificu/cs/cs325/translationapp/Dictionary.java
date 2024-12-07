@@ -1,6 +1,5 @@
 package edu.pacificu.cs.cs325.translationapp;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 /**

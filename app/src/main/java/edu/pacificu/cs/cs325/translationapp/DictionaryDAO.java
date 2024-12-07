@@ -27,7 +27,7 @@ public interface DictionaryDAO
   List<Word> getAll ();
 
   /**
-   * Search for a specific word in the dictionary database
+   * Search for a specific word in the dictionary database by ID
    *
    * @param id the id associated with the word
    * @return word if found in the dictionary database
@@ -70,8 +70,13 @@ public interface DictionaryDAO
   @Query ("DELETE FROM Word")
   void deleteAll ();
 
+  /**
+   * Search for a specific word in the dictionary database by English word
+   *
+   * @param cWord the English word associated with the word
+   * @return word if found in the dictionary database
+   */
+
   @Query ("SELECT * FROM Word WHERE mcEnglishWord = :cWord")
   Word getWordByString (String cWord);
-
-
 }
