@@ -1,6 +1,5 @@
 package edu.pacificu.cs.cs325.translationapp;
 
-import static android.content.Context.SENSOR_SERVICE;
 import static androidx.core.content.ContextCompat.getSystemService;
 import static edu.pacificu.cs.cs325.translationapp.PreferenceFragment.mcColor;
 
@@ -12,8 +11,6 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 
-import android.app.ProgressDialog;
-
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -22,7 +19,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -124,7 +120,7 @@ public class QuizFragment extends Fragment {
                 SensorManager.SENSOR_DELAY_NORMAL);
         assert getActivity() != null;
         mcOptions = new TranslatorOptions.Builder()
-            .setTargetLanguage (mcLogic.getUiState ().getValue ().getLanguage ())
+            .setTargetLanguage (mcLogic.getMcUiState ().getValue ().getLanguage ())
             .setSourceLanguage ("en")
             .build();
         mcTranslator = Translation.getClient (mcOptions);
@@ -153,7 +149,7 @@ public class QuizFragment extends Fragment {
             public void onChanged(BusinessLogicUIState businessLogicUIState)
             {
                 //update changes here
-                int colorInt = mcLogic.getUiState ().getValue ().getColor ();
+                int colorInt = mcLogic.getMcUiState ().getValue ().getColor ();
                 mcBinding.btnNewWord.setBackgroundColor (colorInt);
                 mcBinding.btnSubmit.setBackgroundColor (colorInt);
                 mcOptions = new TranslatorOptions.Builder()
@@ -166,7 +162,7 @@ public class QuizFragment extends Fragment {
         //need to change to language
 
 
-        mcLogic.getUiState ().observe (getActivity (), mcObserver);
+        mcLogic.getMcUiState ().observe (getActivity (), mcObserver);
         setRandomWord ();
         mcBinding.btnSubmit.setOnClickListener (v->
         {
