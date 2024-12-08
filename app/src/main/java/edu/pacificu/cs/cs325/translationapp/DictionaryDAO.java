@@ -81,8 +81,14 @@ public interface DictionaryDAO
   List<Word> getWordByString (String cWord);
 
   @Query ("SELECT * FROM Word WHERE mcEnglishWord LIKE 'White'")
-  List<Word> getWordWhite();
+  List<Word> getWordWhite ();
 
-  @Query("SELECT * FROM Word ORDER BY RANDOM() LIMIT 1")
-  Word getRandomWord();
+  /**
+   * Return a random word from the Dictionary database
+   *
+   * @return a random word from the Dictionary database
+   */
+
+  @Query ("SELECT * FROM Word ORDER BY RANDOM() LIMIT 1")
+  Word getRandomWord ();
 }
