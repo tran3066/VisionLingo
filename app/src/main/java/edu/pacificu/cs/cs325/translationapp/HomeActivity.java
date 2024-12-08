@@ -1,5 +1,6 @@
 package edu.pacificu.cs.cs325.translationapp;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -7,6 +8,10 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -59,6 +64,7 @@ public class HomeActivity extends AppCompatActivity
   private BusinessLogic mcLogic;
   private User mcCurrentUser;
   private Intent mcIntent;
+  private ActivityResultLauncher<Intent> mcActivityLauncher;
   private boolean bUserFound;
 
   /**
@@ -84,6 +90,26 @@ public class HomeActivity extends AppCompatActivity
           v.setPadding (cSystemBars.left, cSystemBars.top, cSystemBars.right,
               cSystemBars.bottom);
           return insets;
+        });
+
+    mcActivityLauncher = registerForActivityResult (
+        new ActivityResultContracts.StartActivityForResult (),
+        new ActivityResultCallback<ActivityResult> ()
+        {
+          /**
+           * Initializes ActivityResultLauncher (mcActivityLauncher)
+           *
+           * @param cResult result of activity launched
+           */
+
+          @Override
+          public void onActivityResult (ActivityResult cResult)
+          {
+            if (cResult.getResultCode () == Activity.RESULT_OK)
+            {
+              Log.d (LOG_TAG, "ActivityResultLauncher initialized");
+            }
+          }
         });
 
     bUserFound = false;
@@ -170,7 +196,7 @@ public class HomeActivity extends AppCompatActivity
       mcIntent.putExtra ("Username", mcCurrentUser.getMcUsername ());
       mcIntent.putExtra ("Password", mcCurrentUser.getMcPassword ());
       mcIntent.setType ("New User");
-      startActivity (mcIntent);
+      mcActivityLauncher.launch (mcIntent);
       Log.d (LOG_TAG, "User Preferences Activity started");
     }
   }
@@ -233,7 +259,7 @@ public class HomeActivity extends AppCompatActivity
         mcIntent.putExtra ("Username", mcCurrentUser.getMcUsername ());
         mcIntent.putExtra ("Password", mcCurrentUser.getMcPassword ());
         mcIntent.setType ("Login");
-        startActivity (mcIntent);
+        mcActivityLauncher.launch (mcIntent);
         Log.d (LOG_TAG, "Camera Activity started");
       }
       else if (!bUserFound)
