@@ -133,7 +133,7 @@ public class CameraFragment extends Fragment
   {
     super.onDestroyView ();
     mcBinding = null;
-    //mcLogic.getMcUiState ().removeObserver (mcObserver);
+    mcLogic.getMcUiState ().removeObserver (mcObserver);
   }
 
   /**
@@ -153,12 +153,19 @@ public class CameraFragment extends Fragment
 
     assert getActivity () != null;
     mcLogic = new ViewModelProvider (getActivity ()).get (BusinessLogic.class);
-
-    if (mcLogic.getColor () != 0)
+    mcObserver = new Observer<BusinessLogicUIState> ()
     {
-      mcBinding.btnTakePicture.setBackgroundColor (mcLogic.getColor ());
-      mcBinding.btnTranslate.setBackgroundColor (mcLogic.getColor ());
-    }
+      @Override
+      public void onChanged (BusinessLogicUIState businessLogicUIState)
+      {
+        // update changes here
+        int colorInt = mcLogic.getColor ();
+        mcBinding.btnTranslate.setBackgroundColor (colorInt);
+        mcBinding.btnTakePicture.setBackgroundColor (colorInt);
+      }
+    };
+    mcLogic.getMcUiState ().observe (getActivity (), mcObserver);
+
 
     mcObjectDetector = ObjectDetection.getClient (
         new ObjectDetectorOptions.Builder ().setDetectorMode (

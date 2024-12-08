@@ -150,12 +150,12 @@ public class PreferenceFragment extends Fragment
       public void onChanged (BusinessLogicUIState businessLogicUIState)
       {
         // update changes here
-        int colorInt = mcLogic.getMcUiState ().getValue ().getColor ();
+        int colorInt = mcLogic.getColor ();
         mcBinding.btnConfirm.setBackgroundColor (colorInt);
       }
     };
     mcLogic.getMcUiState ().observe (getActivity (), mcObserver);
-
+    mcBinding.btnConfirm.setBackgroundColor (mcLogic.getColor ());
     String[] cColorArray = new String[] { "Pink", "Red", "Green", "Blue" };
     ArrayAdapter<String> cColorAdapter = new ArrayAdapter<> (getActivity (),
         android.R.layout.simple_spinner_dropdown_item, cColorArray);
