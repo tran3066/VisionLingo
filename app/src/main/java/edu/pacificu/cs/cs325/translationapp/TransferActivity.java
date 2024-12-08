@@ -78,6 +78,7 @@ public class TransferActivity extends AppCompatActivity
       mcRunner.execute (() -> {
         mcLogic.setUser (mcUserDAO.findUserByNamePass (cUsername, cPassword));
         Log.d (LOG_TAG, mcLogic.getUser ().getMcUsername ());
+        Log.d(LOG_TAG, String.valueOf (mcLogic.getColor ()));
       });
 
       getSupportFragmentManager ().beginTransaction ()
@@ -97,7 +98,7 @@ public class TransferActivity extends AppCompatActivity
         mcLogic.setUser (mcUserDAO.findUserByNamePass (cUsername, cPassword));
 
           Log.d (LOG_TAG, mcLogic.getUser ().getMcUsername ());
-
+          Log.d(LOG_TAG, String.valueOf (mcLogic.getColor ()));
       });
 
       getSupportFragmentManager ().beginTransaction ()
