@@ -48,7 +48,7 @@ public class HomeActivity extends AppCompatActivity
   private final String SPANISH = "es";
   private final String ENGLISH = "en";
   private final int SIZE_DATABASE = 36657;
-  private final int NUM_THREADS = 6;
+  private final int NUM_THREADS = 5;
   private ActivityHomeBinding mcBinding;
   private ExecutorService mcRunner;
   protected static UserDAO mcUserDAO;
@@ -135,9 +135,9 @@ public class HomeActivity extends AppCompatActivity
 
     if (mcPassword.isEmpty () || mcUsername.isEmpty ())
     {
-      runOnUiThread(() -> {
-      Toast.makeText (this, "Username and password cannot be empty",
-          Toast.LENGTH_SHORT).show ();
+      runOnUiThread (() -> {
+        Toast.makeText (this, "Username and password cannot be empty",
+            Toast.LENGTH_SHORT).show ();
       });
 
       return;
@@ -148,10 +148,10 @@ public class HomeActivity extends AppCompatActivity
       {
         if (mcUsername.equals (check.getMcUsername ()))
         {
-          runOnUiThread(() -> {
+          runOnUiThread (() -> {
             Toast.makeText (this,
-                    "Username taken: Please login or Choose a new Username",
-                    Toast.LENGTH_SHORT).show ();
+                "Username taken: Please login or Choose a new Username",
+                Toast.LENGTH_SHORT).show ();
           });
           return;
         }
@@ -185,10 +185,10 @@ public class HomeActivity extends AppCompatActivity
     if (mcPassword.isEmpty () || mcUsername.isEmpty ())
     {
       runOnUiThread (() -> {
-        Toast.makeText(this, "Username and password cannot be empty",
-                Toast.LENGTH_SHORT).show();
+        Toast.makeText (this, "Username and password cannot be empty",
+            Toast.LENGTH_SHORT).show ();
       });
-        return;
+      return;
     }
 
     mcRunner.execute (() -> {
@@ -206,7 +206,10 @@ public class HomeActivity extends AppCompatActivity
 
               runOnUiThread (() -> {
                 mcLogic.setUser (mcCurrentUser);
-                Log.d (LOG_TAG, mcLogic.getUser().getMcUserPreference ().getColor () + " " + mcLogic.getUser().getMcUserPreference ().getLanguage ());
+                Log.d (LOG_TAG,
+                    mcLogic.getUser ().getMcUserPreference ().getColor () + " "
+                        + mcLogic.getUser ().getMcUserPreference ()
+                        .getLanguage ());
               });
             }
             else
@@ -250,35 +253,34 @@ public class HomeActivity extends AppCompatActivity
     });
   }
 
-  private void buildLanguageModel(ExecutorService mcRunner, String language)
+  private void buildLanguageModel (ExecutorService mcRunner, String language)
   {
 
-    mcRunner.execute(() ->
-    {
-      TranslatorOptions mcOptions = new TranslatorOptions.Builder()
-          .setTargetLanguage(language)
-          .setSourceLanguage ("en")
-          .build();
+    mcRunner.execute (() -> {
+      TranslatorOptions mcOptions = new TranslatorOptions.Builder ().setTargetLanguage (
+          language).setSourceLanguage ("en").build ();
       Translator mcTranslator = Translation.getClient (mcOptions);
-      mcTranslator.downloadModelIfNeeded ().addOnSuccessListener (new OnSuccessListener<Void> ()
-      {
-        @Override
-        public void onSuccess (Void unused)
-        {
-          int duration = Toast.LENGTH_SHORT;
-          Toast cToast = Toast.makeText (HomeActivity.this,
-              "Model Downloaded",
-              duration);
-          cToast.show ();
-        }
-      });
+      mcTranslator.downloadModelIfNeeded ()
+          .addOnSuccessListener (new OnSuccessListener<Void> ()
+          {
+            @Override
+            public void onSuccess (Void unused)
+            {
+              int duration = Toast.LENGTH_SHORT;
+              Toast cToast = Toast.makeText (HomeActivity.this,
+                  "Model Downloaded", duration);
+              cToast.show ();
+            }
+          });
     });
   }
 
   private void buildDictionary (ExecutorService mcRunner)
   {
+    // Added allowMainThreadQueries here to make making our app easier
     DictionaryDB mcDictionaryDB = Room.databaseBuilder (
-        getApplicationContext (), DictionaryDB.class, "Dictionary-DB").build ();
+            getApplicationContext (), DictionaryDB.class, "Dictionary-DB")
+        .allowMainThreadQueries ().build ();
     mcDictionaryDAO = mcDictionaryDB.dictionaryDao ();
 
     mcRunner.execute (() -> {

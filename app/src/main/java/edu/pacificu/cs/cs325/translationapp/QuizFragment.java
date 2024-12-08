@@ -3,6 +3,8 @@ package edu.pacificu.cs.cs325.translationapp;
 import static androidx.core.content.ContextCompat.getSystemService;
 //import static edu.pacificu.cs.cs325.translationapp.PreferenceFragment.mcColor;
 
+import static edu.pacificu.cs.cs325.translationapp.HomeActivity.mcDictionaryDAO;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.hardware.Sensor;
@@ -54,6 +56,7 @@ public class QuizFragment extends Fragment
   private final int POS_TWO = 1;
   private final int POS_THREE = 2;
   private final int SHAKE_THRESHOLD = 14;
+  private final int SIZE_DATABASE = 36657;
 
   private Observer<BusinessLogicUIState> mcObserver;
   private FragmentQuizBinding mcBinding;
@@ -61,7 +64,6 @@ public class QuizFragment extends Fragment
   private BusinessLogic mcLogic;
   private TranslatorOptions mcOptions;
   private Translator mcTranslator;
-  private DictionaryDAO mcDictionaryDAO;
 
   /**
    * Initializes QuizFragment (required empty public constructor)
@@ -109,9 +111,6 @@ public class QuizFragment extends Fragment
 
     mcLogic = new ViewModelProvider (getActivity ()).get (BusinessLogic.class);
 
-    mcDictionaryDAO = mcLogic.getDAO ();
-    Log.d ("Quiz", String.valueOf (mcDictionaryDAO == null)); // true
-
     SensorManager cSensorManager = (SensorManager) requireContext ().getSystemService (
         Context.SENSOR_SERVICE);
     Sensor cSensorShake = cSensorManager.getDefaultSensor (
@@ -135,7 +134,6 @@ public class QuizFragment extends Fragment
 
           if (floatSum > SHAKE_THRESHOLD)
           {
-            setRandomWord ();
             mcBinding.tvQuestionWord.setText ("Word from Shake");
           }
           else
@@ -156,6 +154,30 @@ public class QuizFragment extends Fragment
         SensorManager.SENSOR_DELAY_NORMAL);
     assert getActivity () != null;
 
+    //        mcOptions = new TranslatorOptions.Builder()
+    //            .setTargetLanguage (mcLogic.getMcUiState ().getValue ().getLanguage ())
+    //            .setSourceLanguage ("en")
+    //            .build();
+    //        mcTranslator = Translation.getClient (mcOptions);
+    //        getLifecycle().addObserver(mcTranslator);
+    //        mcTranslator.downloadModelIfNeeded ().addOnSuccessListener (new OnSuccessListener<Void> ()
+    //        {
+    //            @Override
+    //            public void onSuccess (Void unused)
+    //            {
+    //                getActivity ().runOnUiThread (()->
+    //                {
+    //                    int duration = Toast.LENGTH_SHORT;
+    //                    Toast cToast = Toast.makeText (getActivity (),
+    //                        "Model Downloaded",
+    //                        duration);
+    //                    cToast.show ();
+    //                });
+    //            }
+    //        });
+
+    //getActivity().findViewById(android.R.id.content).setBackgroundResource(mcColor);
+
     mcObserver = new Observer<BusinessLogicUIState> ()
     {
       @Override
@@ -172,7 +194,8 @@ public class QuizFragment extends Fragment
     };
     //need to change to language
 
-
+    mcLogic.getMcUiState ().observe (getActivity (), mcObserver);
+    setRandomWord ();
     mcBinding.btnSubmit.setOnClickListener (v -> {
       if (mcBinding.tvAnswerWord.toString ()
           .equals (mcTempWord.getMcEnglishWord ()))
@@ -195,9 +218,6 @@ public class QuizFragment extends Fragment
     mcBinding.btnNewWord.setOnClickListener (v -> {
       setRandomWord ();
     });
-
-    mcLogic.getMcUiState ().observe (getActivity (), mcObserver);
-    setRandomWord ();
   }
 
   /**
@@ -232,9 +252,8 @@ public class QuizFragment extends Fragment
 
   public int generateRandomNumber ()
   {
-    int size = mcDictionaryDAO.getSize ();
     Random cTemp = new Random ();
-    return cTemp.nextInt (size - 1) + 1;
+    return cTemp.nextInt (SIZE_DATABASE - 1) + 1;
   }
 
   /**
@@ -278,5 +297,6 @@ public class QuizFragment extends Fragment
           }
         });
 
+    //translation
   }
 }

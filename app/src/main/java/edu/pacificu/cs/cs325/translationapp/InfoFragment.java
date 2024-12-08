@@ -54,7 +54,7 @@ public class InfoFragment extends Fragment
   private final String FRENCH_URL = "https://forvo.com/word/*/#fr";
   private final String SPANISH_URL = "https://forvo.com/word/*/#es";
 
-    private Observer<BusinessLogicUIState> mcObserver;
+  private Observer<BusinessLogicUIState> mcObserver;
   private BusinessLogic mcLogic;
   private FragmentInfoBinding mcBinding;
   private TranslatorOptions mcOptions;
