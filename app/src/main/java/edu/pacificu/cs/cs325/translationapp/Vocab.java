@@ -55,7 +55,8 @@ public class Vocab
    * @return translated word
    */
 
-  public String getTranslatedWord() {
+  public String getTranslatedWord ()
+  {
     return mcTranslatedWord;
   }
 }
