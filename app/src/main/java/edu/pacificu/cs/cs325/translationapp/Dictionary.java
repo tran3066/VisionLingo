@@ -1,6 +1,7 @@
 package edu.pacificu.cs.cs325.translationapp;
 
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Creates a Dictionary class that stores a HashMap containing the Oxford
@@ -12,18 +13,21 @@ import java.util.HashMap;
 public class Dictionary
 {
   private HashMap<String, Word> mcDictionary;
-  private String mcLanguage;
+  //private String mcLanguage;
 
   /**
    * Initializes Dictionary by initializing HashMap and language
    *
-   * @param cLanguage the language used to translate the word to
+   *
    */
 
-  public Dictionary (String cLanguage)
+  public Dictionary (List<Word> mcListOfWords)
   {
     mcDictionary = new HashMap<> ();
-    mcLanguage = cLanguage;
+    for(Word cWord: mcListOfWords)
+    {
+      mcDictionary.put (cWord.getMcEnglishWord (), cWord);
+    }
   }
 
   /**
@@ -56,14 +60,7 @@ public class Dictionary
   //    return mcDictionary.values ();
   //  }
 
-  /**
-   * Get the language needed to translate a word to another language
-   *
-   * @return language needed to translate a word
-   */
 
-  public String getLanguage ()
-  {
-    return this.mcLanguage;
-  }
+
+
 }

@@ -204,15 +204,9 @@ public class InfoFragment extends Fragment
       mcRunner.execute (()-> {
         String cTempString;
         Word cTempWord;
-        DictionaryDAO cTempDAO = mcLogic.getDAO ();
-        Log.d(LOG_TAG, String.valueOf (cTempDAO.getSize ()));
-
         cTempString = mcBinding.tvSearch.getText ().toString ();
-        Log.d (LOG_TAG, cTempString);
-        Log.d (LOG_TAG, String.valueOf (cTempDAO.getAll ().size ()));
-        Log.d (LOG_TAG, String.valueOf (cTempDAO.getAll ().get(0).getMcEnglishWord ()));
-        //cTempWord = cTempDAO.getWordByString (cTempString);
-        cTempWord = cTempDAO.getAll ().get(0);
+        cTempWord = mcLogic.getWord (cTempString);
+
 
 
         getActivity ().runOnUiThread (() ->

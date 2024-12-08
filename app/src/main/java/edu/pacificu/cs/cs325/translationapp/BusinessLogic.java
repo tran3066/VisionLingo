@@ -22,6 +22,8 @@ public class BusinessLogic extends ViewModel
   private User mcUser;
   private DictionaryDAO mcDictionaryDAO;
 
+  private Dictionary mcDictionary;
+
   /**
    * Initializes BusinessLogic by assigning its member variables default values
    */
@@ -32,6 +34,7 @@ public class BusinessLogic extends ViewModel
     mcDictionaryDAO = null;
     mcUiState = new MutableLiveData<> (
         new BusinessLogicUIState (0, "", null, "", mbPictureTaken));
+    mcDictionary = null;
   }
 
   /**
@@ -43,6 +46,7 @@ public class BusinessLogic extends ViewModel
   public void setDAO (DictionaryDAO cDictionaryDAO)
   {
     mcDictionaryDAO = cDictionaryDAO;
+    mcDictionary = new  Dictionary(mcDictionaryDAO.getAll ());
   }
 
   /**
@@ -50,6 +54,11 @@ public class BusinessLogic extends ViewModel
    *
    * @return the DictionaryDAO object
    */
+
+  public Word getWord(String cWord)
+  {
+    return mcDictionary.getWord (cWord);
+  }
 
   public DictionaryDAO getDAO ()
   {
