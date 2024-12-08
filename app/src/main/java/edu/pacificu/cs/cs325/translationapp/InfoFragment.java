@@ -64,6 +64,8 @@ public class InfoFragment extends Fragment
 
   private UserDAO mcUserDAO;
 
+  private boolean bSearched;
+
   /**
    * Initializes InfoFragment (required empty public constructor)
    */
@@ -110,6 +112,7 @@ public class InfoFragment extends Fragment
   {
     super.onViewCreated (cView, cSavedInstanceState);
     assert getActivity () != null;
+    bSearched = false;
     ExecutorService mcRunner = Executors.newFixedThreadPool (1);
     mcRunner.execute(() -> {
       try {
@@ -186,21 +189,26 @@ public class InfoFragment extends Fragment
 
       mcRunner.execute (()->
       {
-//        Vocab newVocab;
-//        Word newWord = mcLogic.getDAO ()
-//            .getWordByString (mcBinding.tvSearch.getText ().toString ());
-//        newVocab = new Vocab (newWord,
-//            mcLogic.getImage (),
-//            mcBinding.tvWordTranslate.getText().toString ());
-//        mcLogic.getUser ().addToVocab (newVocab);
-//        mcUserDAO.update (mcLogic.getUser ());
+        if(bSearched)
+        {
+          String tempString = mcBinding.tvSearch.getText().toString ();
+          Vocab newVocab = new Vocab (
+              mcLogic.getWord (tempString),
+              mcLogic.getImage (),
+              mcBinding.tvWordTranslate.getText ().toString ()
+          );
+
+          mcLogic.getUser ().addToVocab (newVocab);
+          mcUserDAO.update (mcLogic.getUser ());
+        }
+
       });
 
     });
 
     mcBinding.btnSearch.setOnClickListener (v -> {
       Log.d (LOG_TAG, "btnSearch Pressed");
-
+      bSearched = true;
       mcRunner.execute (()-> {
         String cTempString;
         Word cTempWord;
