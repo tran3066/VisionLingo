@@ -48,7 +48,7 @@ public class HomeActivity extends AppCompatActivity
   private final String SPANISH = "es";
   private final String ENGLISH = "en";
   private final int SIZE_DATABASE = 36657;
-  private final int NUM_THREADS = 6;
+  private final int NUM_THREADS = 5;
   private ActivityHomeBinding mcBinding;
   private ExecutorService mcRunner;
   protected static UserDAO mcUserDAO;
