@@ -27,53 +27,91 @@ import com.google.mlkit.nl.translate.TranslatorOptions;
 
 import edu.pacificu.cs.cs325.translationapp.databinding.FragmentInfoBinding;
 
+/**
+ * Creates a InfoFragment class that opens after the user presses the translate
+ * button from CameraFragment. The user is provided a translation of the word
+ * detected from the image, the word type (e.g., noun, verb, adjective),
+ * a definition of the word, and the picture of the item from CameraFragment.
+ * The user can click the button “Speak Word” to learn how to say the word
+ * phonetically. The user then has the option to add this word to the vocabulary
+ * list (ListFragment) or to search for a completely new word by entering text
+ * in the “Search for a word…” box. Searching for a word allows the user to add
+ * their own custom words they want to find the translations for, which we will
+ * use the network (Oxford Dictionary) to access a dictionary to get this word.
+ *
+ * @author AaJanae Henry, Jason Tran, Christian Flores
+ */
+
 public class InfoFragment extends Fragment
 {
-
-  private final String LOG_TAG = "InfoActivity";
+  private final String LOG_TAG = "InfoFragment";
   private final String FRENCH = "fr";
   private final String SPANISH = "es";
   private final String FRENCH_URL = "https://forvo.com/word/*/#fr";
   private final String SPANISH_URL = "https://forvo.com/word/*/#es";
+
   private Observer<BusinessLogicUIState> mcObserver;
   private BusinessLogic mcLogic;
   private FragmentInfoBinding mcBinding;
-  private String mcTranslatedWord;
-
   private TranslatorOptions mcOptions;
   private Translator mcTranslator;
+  // Make sure to actually set this variable
+  private String mcTranslatedWord;
+
+  /**
+   * Initializes InfoFragment (required empty public constructor)
+   */
 
   public InfoFragment ()
   {
-    // Required empty public constructor
   }
 
+  /**
+   * onCreateView method that creates and returns the root view of the fragment
+   *
+   * @param cInflater           LayoutInflater object used to inflate the
+   *                            fragment's view
+   * @param cContainer          ViewGroup object that contains the fragment's UI
+   * @param cSavedInstanceState Stores a small amount of data needed to reload
+   *                            UI state if the system stops and then recreates
+   *                            UI
+   * @return the root view of the fragment
+   */
+
   @Override
-  public View onCreateView (LayoutInflater inflater, ViewGroup container,
-      Bundle savedInstanceState)
+  public View onCreateView (LayoutInflater cInflater, ViewGroup cContainer,
+      Bundle cSavedInstanceState)
   {
     mcBinding = edu.pacificu.cs.cs325.translationapp.databinding.FragmentInfoBinding.inflate (
         getLayoutInflater ());
-    View view = mcBinding.getRoot ();
+    View cView = mcBinding.getRoot ();
 
-    return view;
+    return cView;
   }
 
+  /**
+   * onViewCreated method that is called after the fragment is created
+   *
+   * @param cView               the root view of the fragment
+   * @param cSavedInstanceState Stores a small amount of data needed to reload
+   *                            UI state if the system stops and then recreates
+   *                            UI
+   */
+
   @Override
-  public void onViewCreated (@NonNull View view,
-      @Nullable Bundle savedInstanceState)
+  public void onViewCreated (@NonNull View cView,
+      @Nullable Bundle cSavedInstanceState)
   {
-    super.onViewCreated (view, savedInstanceState);
-    assert getActivity() != null;
+    super.onViewCreated (cView, cSavedInstanceState);
+    assert getActivity () != null;
 
-
-    mcLogic = new ViewModelProvider (getActivity ()).get(BusinessLogic.class);
+    mcLogic = new ViewModelProvider (getActivity ()).get (BusinessLogic.class);
 
     //getActivity().findViewById(android.R.id.content).setBackgroundResource(mcColor);
 
-    if (mcLogic.getWordFromCamera() != null)
+    if (mcLogic.getWordFromCamera () != null)
     {
-      mcBinding.tvWordTranslate.setText (mcLogic.getWordFromCamera());
+      mcBinding.tvWordTranslate.setText (mcLogic.getWordFromCamera ());
       Log.d (LOG_TAG, "Text RECEIVED");
     }
     else
@@ -81,10 +119,10 @@ public class InfoFragment extends Fragment
       Log.d (LOG_TAG, "No TEXT");
     }
 
-    if (mcLogic.getImage() != null)
+    if (mcLogic.getImage () != null)
     {
-      Bitmap cBitmap = BitmapFactory.decodeByteArray (mcLogic.getImage(), 0,
-              mcLogic.getImage().length);
+      Bitmap cBitmap = BitmapFactory.decodeByteArray (mcLogic.getImage (), 0,
+          mcLogic.getImage ().length);
       mcBinding.imgWord.setImageBitmap (cBitmap);
       Log.d (LOG_TAG, "Picture RECEIVED");
     }
@@ -93,27 +131,25 @@ public class InfoFragment extends Fragment
       Log.d (LOG_TAG, "No PICTURE");
     }
 
-
     mcObserver = new Observer<BusinessLogicUIState> ()
     {
       @Override
       public void onChanged (BusinessLogicUIState businessLogicUIState)
       {
-        //update changes here
-        int colorInt = mcLogic.getMcUiState ().getValue ().getColor();
+        // update changes here
+        int colorInt = mcLogic.getMcUiState ().getValue ().getColor ();
         mcBinding.btnSearch.setBackgroundColor (colorInt);
         mcBinding.btnAdd.setBackgroundColor (colorInt);
         mcBinding.btnSpeak.setBackgroundColor (colorInt);
 
-        mcOptions = new TranslatorOptions.Builder()
-            .setTargetLanguage (mcLogic.getLanguage ())
-            .setSourceLanguage ("en")
-            .build();
+        mcOptions = new TranslatorOptions.Builder ().setTargetLanguage (
+            mcLogic.getLanguage ()).setSourceLanguage ("en").build ();
         mcTranslator = Translation.getClient (mcOptions);
 
         mcBinding.btnSpeak.setOnClickListener (v -> {
           String cUpdatedURL;
           String cCurrentLanguage = mcLogic.getLanguage ();
+
           if (cCurrentLanguage.equals (FRENCH))
           {
             cUpdatedURL = FRENCH_URL.replace ("*", mcTranslatedWord);
@@ -124,40 +160,39 @@ public class InfoFragment extends Fragment
             cUpdatedURL = SPANISH_URL.replace ("*", mcTranslatedWord);
             openURL (cUpdatedURL);
           }
-
         });
       }
     };
+
     mcLogic.getMcUiState ().observe (getActivity (), mcObserver);
 
+    mcBinding.btnSearch.setOnClickListener (v -> {
+      String cTempString;
+      Word cTempWord;
+      DictionaryDAO cTempDAO = mcLogic.getDAO ();
+      cTempString = mcBinding.tvSearch.getText ().toString ();
+      cTempWord = cTempDAO.getWordByString (cTempString);
+      mcBinding.tvWordInfo.setText (cTempWord.toString ());
 
-
-
-
-    mcBinding.btnSearch.setOnClickListener (v ->
-    {
-      String tempString;
-      Word tempWord;
-      DictionaryDAO tempDAO = mcLogic.getDAO();
-      tempString = mcBinding.tvSearch.getText ().toString ();
-      tempWord = tempDAO.getWordByString(tempString);
-      mcBinding.tvWordInfo.setText (tempWord.toString());
-
-      Task<String> result = mcTranslator.translate(tempWord.getMcEnglishWord ())
-          .addOnSuccessListener (new OnSuccessListener<String> () {
+      Task<String> cResult = mcTranslator.translate (
+              cTempWord.getMcEnglishWord ())
+          .addOnSuccessListener (new OnSuccessListener<String> ()
+          {
             @Override
-            public void onSuccess(String s) {
+            public void onSuccess (String cS)
+            {
               getActivity ().runOnUiThread (() -> {
-                mcBinding.tvWordTranslate.setText (s);
+                mcBinding.tvWordTranslate.setText (cS);
               });
             }
           }).addOnFailureListener (new OnFailureListener ()
           {
             @Override
-            public void onFailure (@NonNull Exception e)
+            public void onFailure (@NonNull Exception cException)
             {
               getActivity ().runOnUiThread (() -> {
-                mcBinding.tvWordTranslate.setText(tempWord.getMcEnglishWord ());
+                mcBinding.tvWordTranslate.setText (
+                    cTempWord.getMcEnglishWord ());
               });
             }
           });
@@ -166,12 +201,23 @@ public class InfoFragment extends Fragment
     mcLogic.getMcUiState ().observe (getActivity (), mcObserver);
   }
 
+  /**
+   * onCreate method that starts the fragment
+   *
+   * @param cSavedInstanceState Stores a small amount of data needed to reload
+   *                            UI state if the system stops and then recreates
+   *                            UI
+   */
+
   @Override
-  public void onCreate (Bundle savedInstanceState)
+  public void onCreate (Bundle cSavedInstanceState)
   {
-    super.onCreate (savedInstanceState);
+    super.onCreate (cSavedInstanceState);
   }
 
+  /**
+   * onDestroyView method that is called when the fragment is destroyed
+   */
 
   @Override
   public void onDestroyView ()
@@ -194,5 +240,4 @@ public class InfoFragment extends Fragment
     cBrowserIntent.addCategory (Intent.CATEGORY_BROWSABLE);
     startActivity (cBrowserIntent);
   }
-
 }

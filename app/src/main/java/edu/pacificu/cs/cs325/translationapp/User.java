@@ -45,6 +45,7 @@ public class User
     this.mcUsername = mcUsername;
     this.mcPassword = mcPassword;
     mcVocabList = new ArrayList<> ();
+    mcUserPreference = new UserPreference ("DefaultCol", "DefaultLang");
   }
 
   /**
@@ -158,17 +159,17 @@ public class User
     this.mUid = mUid;
   }
 
-  public void setLanguage(String cLanguage)
+  public void setLanguage (String cLanguage)
   {
     mcUserPreference.setMcLanguage (cLanguage);
   }
 
-  public void setColor(String cColor)
+  public void setColor (String cColor)
   {
     mcUserPreference.setMcColor (cColor);
   }
 
-  public void addToVocab(Vocab cNewVocab)
+  public void addToVocab (Vocab cNewVocab)
   {
     mcVocabList.add (cNewVocab);
   }
