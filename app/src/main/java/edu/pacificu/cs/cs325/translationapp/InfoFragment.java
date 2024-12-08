@@ -17,6 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.room.Room;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -24,6 +25,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.mlkit.nl.translate.Translation;
 import com.google.mlkit.nl.translate.Translator;
 import com.google.mlkit.nl.translate.TranslatorOptions;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import edu.pacificu.cs.cs325.translationapp.databinding.FragmentInfoBinding;
 
@@ -57,6 +61,8 @@ public class InfoFragment extends Fragment
   private Translator mcTranslator;
   // Make sure to actually set this variable
   private String mcTranslatedWord;
+
+  private UserDAO mcUserDAO;
 
   /**
    * Initializes InfoFragment (required empty public constructor)
@@ -104,6 +110,20 @@ public class InfoFragment extends Fragment
   {
     super.onViewCreated (cView, cSavedInstanceState);
     assert getActivity () != null;
+    ExecutorService mcRunner = Executors.newFixedThreadPool (1);
+    mcRunner.execute(() -> {
+      try {
+        UserDB mcUserDB = Room.databaseBuilder (getActivity().getApplicationContext (),
+            UserDB.class,
+            "User-DB").fallbackToDestructiveMigrationOnDowngrade ().build ();
+        mcUserDAO = mcUserDB.userDao ();
+        //usersFromDB = mcUserDAO.getAll ();
+        Log.d (LOG_TAG, String.valueOf (mcLogic.getUser().getMUid ()));
+        Log.d(LOG_TAG, "Updated Users: " + mcLogic.getUser ().toString ());
+      } catch (Exception e) {
+        throw new RuntimeException(e);
+      }
+    });
 
     mcLogic = new ViewModelProvider (getActivity ()).get (BusinessLogic.class);
 
@@ -142,6 +162,7 @@ public class InfoFragment extends Fragment
         mcBinding.btnAdd.setBackgroundColor (colorInt);
         mcBinding.btnSpeak.setBackgroundColor (colorInt);
 
+
         mcOptions = new TranslatorOptions.Builder ().setTargetLanguage (
             mcLogic.getLanguage ()).setSourceLanguage ("en").build ();
         mcTranslator = Translation.getClient (mcOptions);
@@ -163,6 +184,16 @@ public class InfoFragment extends Fragment
         });
       }
     };
+    mcBinding.btnAdd.setOnClickListener (v -> {
+      Vocab newVocab;
+      Word newWord = mcLogic.getDAO ()
+          .getWordByString (mcBinding.tvSearch.getText ().toString ());
+      newVocab = new Vocab (newWord,
+                            mcLogic.getImage (),
+                            mcBinding.tvWordTranslate.getText().toString ());
+      mcLogic.getUser ().addToVocab (newVocab);
+      mcUserDAO.update (mcLogic.getUser ());
+    });
 
     mcLogic.getMcUiState ().observe (getActivity (), mcObserver);
 
@@ -173,7 +204,7 @@ public class InfoFragment extends Fragment
       cTempString = mcBinding.tvSearch.getText ().toString ();
       cTempWord = cTempDAO.getWordByString (cTempString);
       mcBinding.tvWordInfo.setText (cTempWord.toString ());
-
+      mcLogic.resetImg ();
       Task<String> cResult = mcTranslator.translate (
               cTempWord.getMcEnglishWord ())
           .addOnSuccessListener (new OnSuccessListener<String> ()

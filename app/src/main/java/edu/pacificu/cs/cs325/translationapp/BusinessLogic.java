@@ -255,4 +255,12 @@ public class BusinessLogic extends ViewModel
         new BusinessLogicUIState (tempColor, cUser.getLanguage (), getImage (),
             getWordFromCamera (), mbPictureTaken));
   }
+
+  public void resetImg()
+  {
+    mbPictureTaken = false;
+    mcUiState.setValue (
+        new BusinessLogicUIState (getColor(), getLanguage (), null,
+            null, mbPictureTaken));
+  }
 }
