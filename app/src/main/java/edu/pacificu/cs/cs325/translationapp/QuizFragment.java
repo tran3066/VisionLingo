@@ -116,7 +116,7 @@ public class QuizFragment extends Fragment
     Sensor cSensorShake = cSensorManager.getDefaultSensor (
         Sensor.TYPE_ACCELEROMETER);
 
-    SensorEventListener sensorEventListener = new SensorEventListener ()
+    SensorEventListener cSensorEventListener = new SensorEventListener ()
     {
       @SuppressLint ("SetTextI18n")
       @Override
@@ -150,7 +150,7 @@ public class QuizFragment extends Fragment
       }
     };
 
-    cSensorManager.registerListener (sensorEventListener, cSensorShake,
+    cSensorManager.registerListener (cSensorEventListener, cSensorShake,
         SensorManager.SENSOR_DELAY_NORMAL);
     assert getActivity () != null;
 
