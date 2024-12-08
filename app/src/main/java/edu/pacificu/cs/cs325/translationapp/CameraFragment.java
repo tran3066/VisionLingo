@@ -73,6 +73,9 @@ public class CameraFragment extends Fragment
   private ObjectDetector mcObjectDetector;
   private byte[] mcByteArray;
   private BusinessLogic mcLogic;
+  private ProcessCameraProvider mcCameraProvider;
+  private Preview mcPreview;
+  private CameraSelector mcCameraSelector;
 
   /**
    * Initializes CameraFragment (required empty public constructor)
@@ -178,8 +181,8 @@ public class CameraFragment extends Fragment
     mcCameraProviderFuture.addListener (() -> {
       try
       {
-        ProcessCameraProvider cCameraProvider = mcCameraProviderFuture.get ();
-        bindPreview (cCameraProvider);
+        mcCameraProvider = mcCameraProviderFuture.get ();
+        bindPreview (mcCameraProvider);
       }
       catch (ExecutionException | InterruptedException e)
       {
@@ -353,12 +356,46 @@ public class CameraFragment extends Fragment
         .getRotation ();
     mcImageCapture = new ImageCapture.Builder ().setTargetRotation (rotation)
         .build ();
-    Preview cPreview = new Preview.Builder ().build ();
-    CameraSelector cCameraSelector = new CameraSelector.Builder ().requireLensFacing (
+    mcPreview = new Preview.Builder ().build ();
+    mcCameraSelector = new CameraSelector.Builder ().requireLensFacing (
         CameraSelector.LENS_FACING_BACK).build ();
-    cPreview.setSurfaceProvider (mcBinding.cameraPreview.getSurfaceProvider ());
+    mcPreview.setSurfaceProvider (
+        mcBinding.cameraPreview.getSurfaceProvider ());
     assert getActivity () != null;
-    cCameraProvider.bindToLifecycle (getActivity (), cCameraSelector, cPreview,
-        mcImageCapture);
+    cCameraProvider.bindToLifecycle (getActivity (), mcCameraSelector,
+        mcPreview, mcImageCapture);
+  }
+
+  /**
+   * onPause method that unbinds the lifecycle of the camera when the fragment
+   * is paused
+   */
+
+  @Override
+  public void onPause ()
+  {
+    super.onPause ();
+
+    if (mcCameraProvider != null)
+    {
+      mcCameraProvider.unbindAll ();
+    }
+  }
+
+  /**
+   * onResume method that rebinds the lifecycle of the camera when the fragment
+   * is resumed
+   */
+
+  @Override
+  public void onResume ()
+  {
+    super.onResume ();
+
+    if (mcCameraProvider != null)
+    {
+      mcCameraProvider.bindToLifecycle (getActivity (), mcCameraSelector,
+          mcPreview, mcImageCapture);
+    }
   }
 }
