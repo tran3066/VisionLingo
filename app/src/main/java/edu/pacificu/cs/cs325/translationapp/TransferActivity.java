@@ -39,6 +39,7 @@ public class TransferActivity extends AppCompatActivity
   private MenuItem mcItem;
   private ExecutorService mcRunner;
 
+
   /**
    * onCreate method that starts the activity
    *
@@ -95,12 +96,12 @@ public class TransferActivity extends AppCompatActivity
       String cPassword = cReceiveIntent.getStringExtra ("Password");
 
       mcRunner.execute (() -> {
+        User tempUser = mcUserDAO.findUserByNamePass (cUsername, cPassword);
         runOnUiThread (() ->
         {
-          mcLogic.setUser (mcUserDAO.findUserByNamePass (cUsername, cPassword));
+          mcLogic.setUser (tempUser);
           Log.d (LOG_TAG, mcLogic.getUser ().getMcUsername ());
           Log.d(LOG_TAG, String.valueOf (mcLogic.getColor ()));
-          Log.d(LOG_TAG, mcUserDAO.findUserByNamePass (cUsername, cPassword).getColor ());
         });
 
 
