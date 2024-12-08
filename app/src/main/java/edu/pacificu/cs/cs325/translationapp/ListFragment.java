@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -89,8 +90,10 @@ public class ListFragment extends Fragment
       @Nullable Bundle cSavedInstanceState)
   {
     super.onViewCreated (cView, cSavedInstanceState);
+
     mcLogic = new ViewModelProvider (getActivity ()).get (BusinessLogic.class);
     mcRunner = Executors.newFixedThreadPool (NUM_THREADS);
+
     mcBinding.rvWords.setHasFixedSize (true);
     mcBinding.rvWords.setLayoutManager (
         new LinearLayoutManager (getActivity ()));
@@ -98,6 +101,27 @@ public class ListFragment extends Fragment
     mcDivider = new DividerItemDecoration (getActivity (),
         mcLayoutManager.getOrientation ());
     mcBinding.rvWords.addItemDecoration (mcDivider);
+
+    loadVocabList ();
+  }
+
+  /**
+   * onViewCreated method that obtains the vocab list and displays it to the
+   * RecyclerView
+   */
+
+  public void loadVocabList ()
+  {
+    mcRunner.execute (() -> {
+      if (null != mcLogic.getUser ().getMcVocabList ())
+      {
+        getActivity ().runOnUiThread (() -> {
+          mcAdapter = new VocabRecyclerViewAdapter (
+              mcLogic.getUser ().getMcVocabList ());
+          mcBinding.rvWords.setAdapter (mcAdapter);
+        });
+      }
+    });
   }
 
   /**
@@ -135,12 +159,6 @@ public class ListFragment extends Fragment
   public void onResume ()
   {
     super.onResume ();
-
-    mcRunner.execute (() -> {
-      mcAdapter = new VocabRecyclerViewAdapter (
-          mcLogic.getUser ().getMcVocabList ());
-    });
-
-    mcBinding.rvWords.setAdapter (mcAdapter);
+    loadVocabList ();
   }
 }
