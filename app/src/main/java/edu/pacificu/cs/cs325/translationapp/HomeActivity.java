@@ -169,7 +169,7 @@ public class HomeActivity extends AppCompatActivity
       intent.setAction (Intent.ACTION_SEND);
       intent.putExtra ("Username", mcCurrentUser.getMcUsername ());
       intent.putExtra ("Password", mcCurrentUser.getMcPassword ());
-      intent.setType ("String");
+      intent.setType ("New User");
       startActivity (intent);
       Log.d (LOG_TAG, "User Preferences Activity started");
     }
@@ -228,6 +228,10 @@ public class HomeActivity extends AppCompatActivity
       if (mcCurrentUser != null && bUserFound)
       {
         Log.d (LOG_TAG, "Launch CameraActivity from Login");
+        intent.setAction (Intent.ACTION_SEND);
+        intent.putExtra ("Username", mcCurrentUser.getMcUsername ());
+        intent.putExtra ("Password", mcCurrentUser.getMcPassword ());
+        intent.setType ("Login");
         startActivity (intent);
         Log.d (LOG_TAG, "Camera Activity started");
       }

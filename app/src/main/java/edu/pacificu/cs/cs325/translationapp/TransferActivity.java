@@ -32,7 +32,6 @@ import edu.pacificu.cs.cs325.translationapp.databinding.ActivityTransferBinding;
 public class TransferActivity extends AppCompatActivity
 {
   private final int NUM_THREADS = 2;
-
   private ActivityTransferBinding mcBinding;
   private BusinessLogic mcLogic;
   private MenuItem mcItem;
@@ -68,7 +67,7 @@ public class TransferActivity extends AppCompatActivity
     mcRunner = Executors.newFixedThreadPool (NUM_THREADS);
     mcLogic.setDAO (mcDictionaryDAO);
 
-    if ("NewUser".equals (cReceiveIntent.getStringExtra ("Type")))
+    if ("New User".equals (cReceiveIntent.getType()))
     {
       String cUsername = cReceiveIntent.getStringExtra ("Username");
       String cPassword = cReceiveIntent.getStringExtra ("Password");
@@ -83,7 +82,7 @@ public class TransferActivity extends AppCompatActivity
               null).commit ();
     }
 
-    else if ("Login".equals (cReceiveIntent.getStringExtra ("Type")))
+    else if ("Login".equals (cReceiveIntent.getType()))
     {
       String cUsername = cReceiveIntent.getStringExtra ("Username");
       String cPassword = cReceiveIntent.getStringExtra ("Password");

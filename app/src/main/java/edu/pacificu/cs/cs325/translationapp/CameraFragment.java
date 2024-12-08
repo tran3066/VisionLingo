@@ -27,6 +27,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -285,6 +286,8 @@ public class CameraFragment extends Fragment
 
               assert getActivity () != null;
               getActivity ().runOnUiThread (() -> {
+                int rotation = 90;
+                mcBinding.cptIMG.setRotation(rotation);
                 mcBinding.cptIMG.setImageBitmap (BitmapFactory.decodeByteArray (
                     cByteArrayStream.toByteArray (), 0,
                     cByteArrayStream.toByteArray ().length));
