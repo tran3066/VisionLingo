@@ -253,7 +253,10 @@ public class PreferenceFragment extends Fragment
               .fallbackToDestructiveMigrationOnDowngrade ().build ();
           mcUserDAO = mcUserDB.userDao ();
           //usersFromDB = mcUserDAO.getAll ();
+
           mcUserDAO.update (mcLogic.getUser ());
+
+
 
           Log.d (LOG_TAG, String.valueOf (mcLogic.getUser ().getMUid ()));
           Log.d (LOG_TAG, "Updated Users: " + mcLogic.getUser ().toString ());

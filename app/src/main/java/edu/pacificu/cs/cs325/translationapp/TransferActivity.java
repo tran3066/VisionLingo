@@ -99,6 +99,7 @@ public class TransferActivity extends AppCompatActivity
 
           Log.d (LOG_TAG, mcLogic.getUser ().getMcUsername ());
           Log.d(LOG_TAG, String.valueOf (mcLogic.getColor ()));
+          Log.d(LOG_TAG, mcUserDAO.findUserByNamePass (cUsername, cPassword).getColor ());
       });
 
       getSupportFragmentManager ().beginTransaction ()
