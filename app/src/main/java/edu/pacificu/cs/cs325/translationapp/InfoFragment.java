@@ -129,7 +129,7 @@ public class InfoFragment extends Fragment
 
     if (mcLogic.getWordFromCamera () != null)
     {
-      mcBinding.tvWordTranslate.setText (mcLogic.getWordFromCamera ());
+      mcBinding.tvSearch.setText (mcLogic.getWordFromCamera ());
       Log.d (LOG_TAG, "Text RECEIVED");
       mcRunner.execute (() -> {
         String cTempString;
