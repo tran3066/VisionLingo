@@ -131,6 +131,42 @@ public class InfoFragment extends Fragment
     {
       mcBinding.tvWordTranslate.setText (mcLogic.getWordFromCamera ());
       Log.d (LOG_TAG, "Text RECEIVED");
+      mcRunner.execute (() -> {
+        String cTempString;
+        Word cTempWord;
+        cTempString = mcBinding.tvSearch.getText ().toString ();
+        cTempWord = mcLogic.getWord (cTempString);
+
+        getActivity ().runOnUiThread (() -> {
+          mcBinding.tvWordInfo.setText (cTempWord.toString ());
+          Log.d (LOG_TAG, "btnSearch Pressed");
+        });
+        Task<String> cResult = mcTranslator.translate (
+                cTempWord.getMcEnglishWord ())
+            .addOnSuccessListener (new OnSuccessListener<String> ()
+            {
+              @Override
+              public void onSuccess (String cS)
+              {
+                Log.d (LOG_TAG, "translation successful");
+                Log.d (LOG_TAG, cS);
+                getActivity ().runOnUiThread (() -> {
+                  mcBinding.tvWordTranslate.setText (cS);
+                });
+              }
+            }).addOnFailureListener (new OnFailureListener ()
+            {
+              @Override
+              public void onFailure (@NonNull Exception cException)
+              {
+                Log.d (LOG_TAG, "translation unsuccessful");
+                getActivity ().runOnUiThread (() -> {
+                  mcBinding.tvWordTranslate.setText (
+                      cTempWord.getMcEnglishWord ());
+                });
+              }
+            });
+      });
 
     }
     else
