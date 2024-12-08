@@ -13,6 +13,9 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.room.Room;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import edu.pacificu.cs.cs325.translationapp.databinding.ActivityTransferBinding;
 
 /**
@@ -30,6 +33,8 @@ public class TransferActivity extends AppCompatActivity
   private MenuItem item;
   private UserDAO mcUserDAO;
   private UserDB mcUserDB;
+
+  private ExecutorService mcRunner;
 
   /**
    * onCreate method that starts the activity
@@ -58,14 +63,21 @@ public class TransferActivity extends AppCompatActivity
 
     mcLogic = new ViewModelProvider (this).get (BusinessLogic.class);
     Intent receiveIntent = getIntent ();
+    mcRunner = Executors.newFixedThreadPool (2);
+    mcRunner.execute (() ->
+    {
+        DictionaryDB mcDictionaryDB = Room.databaseBuilder (
+            getApplicationContext (), DictionaryDB.class, "Dictionary-DB").build ();
+        mcLogic.setDAO (mcDictionaryDB.dictionaryDao ());
+    });
 
-    DictionaryDB mcDictionaryDB = Room.databaseBuilder (
-        getApplicationContext (), DictionaryDB.class, "Dictionary-DB").build ();
-    mcLogic.setDAO (mcDictionaryDB.dictionaryDao ());
+    mcRunner.execute (() ->
+    {
+        mcUserDB = Room.databaseBuilder (getApplicationContext (), UserDB.class,
+            "User-DB").fallbackToDestructiveMigrationOnDowngrade ().build ();
+        mcUserDAO = mcUserDB.userDao ();
+    });
 
-    mcUserDB = Room.databaseBuilder (getApplicationContext (), UserDB.class,
-        "User-DB").fallbackToDestructiveMigrationOnDowngrade ().build ();
-    mcUserDAO = mcUserDB.userDao ();
 
     if ("NewUser".equals (receiveIntent.getStringExtra ("Type")))
     {
