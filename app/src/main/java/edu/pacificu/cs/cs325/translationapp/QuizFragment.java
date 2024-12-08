@@ -199,20 +199,24 @@ public class QuizFragment extends Fragment
     mcLogic.getMcUiState ().observe (getActivity (), mcObserver);
     setRandomWord ();
     mcBinding.btnSubmit.setOnClickListener (v -> {
-      if (mcBinding.tvAnswerWord.toString ()
+      if (mcBinding.tvAnswerWord.getText ().toString ()
           .equals (mcTempWord.getMcEnglishWord ()))
       {
         getActivity ().runOnUiThread (() -> {
+          Log.d (LOG_TAG, "Correct");
           Toast.makeText (getActivity ().getApplicationContext (),
-              "Answered Correctly", Toast.LENGTH_LONG);
+              "Answered Correctly", Toast.LENGTH_LONG).show();
         });
 
       }
       else
       {
         getActivity ().runOnUiThread (() -> {
+          Log.d (LOG_TAG, "Incorrect");
+          Log.d (LOG_TAG, "Correct answer:" + mcTempWord.getMcEnglishWord ());
+          Log.d (LOG_TAG, "Incorrect answer:" + mcBinding.tvAnswerWord.toString ());
           Toast.makeText (getActivity ().getApplicationContext (),
-              "Answered Incorrectly", Toast.LENGTH_LONG);
+              "Answered Incorrectly", Toast.LENGTH_LONG).show();
         });
       }
     });
