@@ -77,7 +77,7 @@ public class TransferActivity extends AppCompatActivity
             "User-DB").fallbackToDestructiveMigrationOnDowngrade ().build ();
         mcUserDAO = mcUserDB.userDao ();
     });
-
+//test
 
     if ("NewUser".equals (receiveIntent.getStringExtra ("Type")))
     {
