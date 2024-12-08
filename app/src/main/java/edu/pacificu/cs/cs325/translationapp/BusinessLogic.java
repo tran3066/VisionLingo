@@ -19,10 +19,8 @@ public class BusinessLogic extends ViewModel
   private final MutableLiveData<BusinessLogicUIState> mcUiState;
   private int mColor = 0;
   private boolean mbPictureTaken;
-  private boolean mbSignedIn;
-  private byte[] mcImage;
+
   private User mcUser;
-  private String mcWordFromCamera;
   private DictionaryDAO mcDictionaryDAO;
 
   /**
@@ -31,13 +29,11 @@ public class BusinessLogic extends ViewModel
 
   public BusinessLogic ()
   {
-    mbSignedIn = false;
-    mcWordFromCamera = "";
     mbPictureTaken = false;
     mcDictionaryDAO = null;
     mcUiState = new MutableLiveData<> (
-        new BusinessLogicUIState (0, "", null, mcWordFromCamera, mbPictureTaken,
-            mbSignedIn));
+        new BusinessLogicUIState (0, "", null,
+            "", mbPictureTaken));
   }
 
   /**
@@ -72,12 +68,11 @@ public class BusinessLogic extends ViewModel
   public void takePicture (byte[] cImage)
   {
     mbPictureTaken = true;
-    mcImage = cImage;
 
     mcUiState.setValue (
         new BusinessLogicUIState (mcUiState.getValue ().getColor (),
-            mcUiState.getValue ().getLanguage (), mcImage, mcWordFromCamera,
-            mbPictureTaken, mbSignedIn));
+            mcUiState.getValue ().getLanguage (), cImage, getWordFromCamera (),
+            mbPictureTaken));
   }
 
   /**
@@ -88,7 +83,7 @@ public class BusinessLogic extends ViewModel
 
   public byte[] getImage ()
   {
-    return mcImage;
+    return mcUiState.getValue ().getImage ();
   }
 
   /**
@@ -102,16 +97,14 @@ public class BusinessLogic extends ViewModel
     return mbPictureTaken;
   }
 
+
+
   /**
    * Obtains a boolean variable that tells whether the user is signed in
    *
    * @return the boolean variable
    */
 
-  public boolean isMbSignedIn ()
-  {
-    return mbSignedIn;
-  }
 
   /**
    * Updates the BusinessLogic class by storing the word detected from the image
@@ -121,11 +114,11 @@ public class BusinessLogic extends ViewModel
 
   public void detectWord (String cWord)
   {
-    mcWordFromCamera = cWord;
+
     mcUiState.setValue (
         new BusinessLogicUIState (mcUiState.getValue ().getColor (),
-            mcUiState.getValue ().getLanguage (), mcImage, mcWordFromCamera,
-            mbPictureTaken, mbSignedIn));
+            mcUiState.getValue ().getLanguage (), getImage(), cWord,
+            mbPictureTaken));
   }
 
   /**
@@ -136,7 +129,7 @@ public class BusinessLogic extends ViewModel
 
   public String getWordFromCamera ()
   {
-    return mcWordFromCamera;
+    return mcUiState.getValue ().getWordFromCamera ();
   }
 
   /**
@@ -161,23 +154,10 @@ public class BusinessLogic extends ViewModel
   public void createUser (String cUsername, String cPassword)
   {
     mcUser = new User (cUsername, cPassword);
-    mbSignedIn = true;
     mcUiState.setValue (
         new BusinessLogicUIState (mcUiState.getValue ().getColor (),
-            mcUiState.getValue ().getLanguage (), mcImage, mcWordFromCamera,
-            mbPictureTaken, mbSignedIn));
-  }
-
-  /**
-   * Sets the current user member variable (unfinished?)
-   *
-   * @param cUsername username of the user
-   * @param cPassword password of the user
-   */
-
-  public void setUser (String cUsername, String cPassword)
-  {
-
+            mcUiState.getValue ().getLanguage (), getImage (), getWordFromCamera (),
+            mbPictureTaken));
   }
 
   /**
@@ -190,8 +170,8 @@ public class BusinessLogic extends ViewModel
   {
     mColor = color;
     mcUiState.setValue (
-        new BusinessLogicUIState (color, getLanguage (), mcImage,
-            mcWordFromCamera, mbPictureTaken, mbSignedIn));
+        new BusinessLogicUIState (color, getLanguage (), getImage (),
+            getWordFromCamera (), mbPictureTaken));
   }
 
   /**
@@ -226,8 +206,8 @@ public class BusinessLogic extends ViewModel
   public void setLanguage (String cLanguage)
   {
     mcUiState.setValue (
-        new BusinessLogicUIState (getColor (), cLanguage, mcImage,
-            mcWordFromCamera, mbPictureTaken, mbSignedIn));
+        new BusinessLogicUIState (getColor (), cLanguage, getImage (),
+            getWordFromCamera (), mbPictureTaken));
   }
 
   /**
@@ -272,7 +252,7 @@ public class BusinessLogic extends ViewModel
 
     mcUser = cUser;
     mcUiState.setValue (
-        new BusinessLogicUIState (tempColor, cUser.getLanguage (), mcImage,
-            mcWordFromCamera, mbPictureTaken, mbSignedIn));
+        new BusinessLogicUIState (tempColor, cUser.getLanguage (), getImage (),
+            getWordFromCamera (), mbPictureTaken));
   }
 }
