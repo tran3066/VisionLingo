@@ -70,7 +70,7 @@
             android:focusable="false"
             android:hint="@string/tvQuestionWord" />
 
-    <TextView
+    <EditText
             android:layout_width="276dp"
             android:layout_height="39dp"
             android:id="@+id/tvAnswerWord"
