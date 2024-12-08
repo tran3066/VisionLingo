@@ -20,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
+import com.google.mlkit.nl.translate.Translation;
 import com.google.mlkit.nl.translate.TranslatorOptions;
 
 import java.util.concurrent.ExecutorService;
@@ -55,6 +56,8 @@ public class PreferenceFragment extends Fragment
   //private UserPreference mcUserPref;
   private BusinessLogic mcLogic;
   //private BusinessLogicUIState mcUiLogic;
+
+
   private int mColor;
 
   /**
@@ -111,6 +114,8 @@ public class PreferenceFragment extends Fragment
   public void onDestroyView ()
   {
     super.onDestroyView ();
+    mcBinding = null;
+    mcLogic.getMcUiState ().removeObserver (mcObserver);
   }
 
   /**
@@ -139,6 +144,17 @@ public class PreferenceFragment extends Fragment
         android.R.layout.simple_spinner_dropdown_item, cLanguageArray);
     cLanguageAdapter.setDropDownViewResource (
         android.R.layout.simple_spinner_dropdown_item);
+    mcObserver = new Observer<BusinessLogicUIState> ()
+    {
+      @Override
+      public void onChanged (BusinessLogicUIState businessLogicUIState)
+      {
+        // update changes here
+        int colorInt = mcLogic.getMcUiState ().getValue ().getColor ();
+        mcBinding.btnConfirm.setBackgroundColor (colorInt);
+      }
+    };
+    mcLogic.getMcUiState ().observe (getActivity (), mcObserver);
 
     String[] cColorArray = new String[] { "Pink", "Red", "Green", "Blue" };
     ArrayAdapter<String> cColorAdapter = new ArrayAdapter<> (getActivity (),
@@ -167,19 +183,15 @@ public class PreferenceFragment extends Fragment
             switch (mcSelectedColor)
             {
               case "Pink":
-                mcBinding.btnConfirm.setBackgroundColor (Color.MAGENTA);
                 mColor = Color.MAGENTA;
                 break;
               case "Red":
-                mcBinding.btnConfirm.setBackgroundColor (Color.RED);
                 mColor = Color.RED;
                 break;
               case "Green":
-                mcBinding.btnConfirm.setBackgroundColor (Color.GREEN);
                 mColor = Color.GREEN;
                 break;
               case "Blue":
-                mcBinding.btnConfirm.setBackgroundColor (Color.BLUE);
                 mColor = Color.BLUE;
                 break;
               default:
@@ -257,4 +269,5 @@ public class PreferenceFragment extends Fragment
           Toast.LENGTH_SHORT).show ();
     });
   }
+
 }
