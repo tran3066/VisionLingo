@@ -107,8 +107,9 @@ public class QuizFragment extends Fragment
   {
     super.onViewCreated (cView, cSavedInstanceState);
 
-    DictionaryDAO cTempDAO = mcLogic.getDAO ();
-    mcLogic = new ViewModelProvider (this).get (BusinessLogic.class);
+    mcLogic = new ViewModelProvider (getActivity ()).get (BusinessLogic.class);
+    mcDictionaryDAO = mcLogic.getDAO ();
+    Log.d ("Quiz", String.valueOf (mcDictionaryDAO == null)); // true
 
     SensorManager cSensorManager = (SensorManager) requireContext ().getSystemService (
         Context.SENSOR_SERVICE);
@@ -251,7 +252,7 @@ public class QuizFragment extends Fragment
 
   public int generateRandomNumber ()
   {
-    int size = mcLogic.getDAO ().getSize ();
+    int size = mcDictionaryDAO.getSize ();
     Random cTemp = new Random ();
     return cTemp.nextInt (size - 1) + 1;
   }

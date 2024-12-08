@@ -56,7 +56,7 @@ public class HomeActivity extends AppCompatActivity
   private String mcUsername;
   private String mcPassword;
   private ArrayList<User> mcUsersFromDB;
-  private DictionaryDAO mcDictionaryDAO;
+  public static DictionaryDAO mcDictionaryDAO;
   private BusinessLogic mcLogic;
   private User mcCurrentUser;
   private Intent mcIntent;

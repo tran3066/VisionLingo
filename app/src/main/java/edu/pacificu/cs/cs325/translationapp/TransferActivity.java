@@ -1,5 +1,6 @@
 package edu.pacificu.cs.cs325.translationapp;
 
+import static edu.pacificu.cs.cs325.translationapp.HomeActivity.mcDictionaryDAO;
 import static edu.pacificu.cs.cs325.translationapp.HomeActivity.mcUserDAO;
 
 import android.content.Intent;
@@ -30,7 +31,7 @@ import edu.pacificu.cs.cs325.translationapp.databinding.ActivityTransferBinding;
 
 public class TransferActivity extends AppCompatActivity
 {
-  private final int NUM_THREADS = 3;
+  private final int NUM_THREADS = 2;
 
   private ActivityTransferBinding mcBinding;
   private BusinessLogic mcLogic;
@@ -65,14 +66,7 @@ public class TransferActivity extends AppCompatActivity
     mcLogic = new ViewModelProvider (this).get (BusinessLogic.class);
     Intent cReceiveIntent = getIntent ();
     mcRunner = Executors.newFixedThreadPool (NUM_THREADS);
-
-    mcRunner.execute (() -> {
-      DictionaryDB mcDictionaryDB = Room.databaseBuilder (
-              getApplicationContext (), DictionaryDB.class, "Dictionary-DB")
-          .build ();
-      mcLogic.setDAO (mcDictionaryDB.dictionaryDao ());
-    });
-    //test
+    mcLogic.setDAO (mcDictionaryDAO);
 
     if ("NewUser".equals (cReceiveIntent.getStringExtra ("Type")))
     {

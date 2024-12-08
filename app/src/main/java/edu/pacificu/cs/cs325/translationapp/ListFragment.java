@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -90,9 +91,7 @@ public class ListFragment extends Fragment
       @Nullable Bundle cSavedInstanceState)
   {
     super.onViewCreated (cView, cSavedInstanceState);
-    BusinessLogic mcLogic = new ViewModelProvider (getActivity ()).get (
-        BusinessLogic.class);
-
+    mcLogic = new ViewModelProvider (getActivity ()).get (BusinessLogic.class);
     mcRunner = Executors.newFixedThreadPool (NUM_THREADS);
     mcBinding.rvWords.setHasFixedSize (true);
     mcBinding.rvWords.setLayoutManager (
@@ -101,6 +100,10 @@ public class ListFragment extends Fragment
     mcDivider = new DividerItemDecoration (getActivity (),
         mcLayoutManager.getOrientation ());
     mcBinding.rvWords.addItemDecoration (mcDivider);
+
+    // testing
+    DictionaryDAO mcDictionaryDAO = mcLogic.getDAO ();
+    Log.d ("Quiz", String.valueOf (mcDictionaryDAO == null)); // false
   }
 
   /**
