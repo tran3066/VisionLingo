@@ -164,9 +164,10 @@ public class HomeActivity extends AppCompatActivity
       Log.d (LOG_TAG, "Launch User Preferences");
 
       mcIntent.setAction (Intent.ACTION_SEND);
+      mcIntent.putExtra("Type", "NewUser");
       mcIntent.putExtra ("Username", mcCurrentUser.getMcUsername ());
       mcIntent.putExtra ("Password", mcCurrentUser.getMcPassword ());
-      mcIntent.setType ("NewUser");
+      //mcIntent.setType ("NewUser");
       startActivity (mcIntent);
       Log.d (LOG_TAG, "User Preferences Activity started");
     }
@@ -200,9 +201,10 @@ public class HomeActivity extends AppCompatActivity
             if (mcPassword.equals (cCheck.getMcPassword ()))
             {
               mcCurrentUser = cCheck;
+              mcIntent.putExtra("Type", "Login");
               mcIntent.putExtra ("Username", mcUsername);
               mcIntent.putExtra ("Password", mcPassword);
-              mcIntent.setType ("Login");
+              //mcIntent.setType ("Login");
 
               runOnUiThread (() -> {
                 mcLogic.setUser (mcCurrentUser);

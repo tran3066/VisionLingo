@@ -67,7 +67,7 @@ public class TransferActivity extends AppCompatActivity
         "User-DB").fallbackToDestructiveMigrationOnDowngrade ().build ();
     mcUserDAO = mcUserDB.userDao ();
 
-    if ("NewUser".equals (receiveIntent.getType ()))
+    if ("NewUser".equals (receiveIntent.getStringExtra ("Type")))
     {
       String username = receiveIntent.getStringExtra ("Username");
       String password = receiveIntent.getStringExtra ("Password");
@@ -78,7 +78,7 @@ public class TransferActivity extends AppCompatActivity
           .replace (R.id.fragment_container_view, PreferenceFragment.class,
               null).commit ();
     }
-    else if ("Login".equals (receiveIntent.getType ()))
+    else if ("Login".equals (receiveIntent.getStringExtra("Type")))
     {
       String username = receiveIntent.getStringExtra ("Username");
       String password = receiveIntent.getStringExtra ("Password");
