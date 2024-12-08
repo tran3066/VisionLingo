@@ -239,19 +239,19 @@ public class BusinessLogic extends ViewModel
     switch (cUser.getColor ())
     {
       case "Pink":
-        Log.d ("TransferActivity", cUser.getColor ());
+        Log.d ("TransferActivity", cUser.getColor () + " SET");
         tempColor = Color.MAGENTA;
         break;
       case "Red":
-        Log.d ("TransferActivity", cUser.getColor ());
+        Log.d ("TransferActivity", cUser.getColor () + " SET");
         tempColor = Color.RED;
         break;
       case "Green":
-        Log.d ("TransferActivity", cUser.getColor ());
+        Log.d ("TransferActivity", cUser.getColor () + " SET");
         tempColor = Color.GREEN;
         break;
       case "Blue":
-        Log.d ("TransferActivity", cUser.getColor ());
+        Log.d ("TransferActivity", cUser.getColor () + " SET");
         tempColor = Color.BLUE;
         break;
       default:
