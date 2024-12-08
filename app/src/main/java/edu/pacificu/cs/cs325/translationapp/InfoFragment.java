@@ -137,7 +137,7 @@ public class InfoFragment extends Fragment
         cTempString = mcBinding.tvSearch.getText ().toString ();
         Log.d (LOG_TAG, cTempString);
         cTempWord = mcLogic.getWord (cTempString);
-
+        Log.d (LOG_TAG, cTempWord.getMcEnglishWord ());
         getActivity ().runOnUiThread (() -> {
           mcBinding.tvWordInfo.setText (cTempWord.toString ());
           Log.d (LOG_TAG, "btnSearch Pressed");
