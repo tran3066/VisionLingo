@@ -30,6 +30,8 @@ import edu.pacificu.cs.cs325.translationapp.databinding.ActivityTransferBinding;
 
 public class TransferActivity extends AppCompatActivity
 {
+  private final int NUM_THREADS = 3;
+
   private ActivityTransferBinding mcBinding;
   private BusinessLogic mcLogic;
   private MenuItem mcItem;
@@ -62,31 +64,40 @@ public class TransferActivity extends AppCompatActivity
 
     mcLogic = new ViewModelProvider (this).get (BusinessLogic.class);
     Intent cReceiveIntent = getIntent ();
-    mcRunner = Executors.newFixedThreadPool (2);
-    mcRunner.execute (() ->
-    {
-        DictionaryDB mcDictionaryDB = Room.databaseBuilder (
-            getApplicationContext (), DictionaryDB.class, "Dictionary-DB").build ();
-        mcLogic.setDAO (mcDictionaryDB.dictionaryDao ());
+    mcRunner = Executors.newFixedThreadPool (NUM_THREADS);
+
+    mcRunner.execute (() -> {
+      DictionaryDB mcDictionaryDB = Room.databaseBuilder (
+              getApplicationContext (), DictionaryDB.class, "Dictionary-DB")
+          .build ();
+      mcLogic.setDAO (mcDictionaryDB.dictionaryDao ());
     });
-//test
+    //test
 
     if ("NewUser".equals (cReceiveIntent.getStringExtra ("Type")))
     {
       String cUsername = cReceiveIntent.getStringExtra ("Username");
       String cPassword = cReceiveIntent.getStringExtra ("Password");
-      mcLogic.setUser (mcUserDAO.findUserByNamePass (cUsername, cPassword));
+
+      mcRunner.execute (() -> {
+        mcLogic.setUser (mcUserDAO.findUserByNamePass (cUsername, cPassword));
+      });
 
       getSupportFragmentManager ().beginTransaction ()
           .setReorderingAllowed (true)
           .replace (R.id.fragment_container_view, PreferenceFragment.class,
               null).commit ();
     }
-    else if ("Login".equals (cReceiveIntent.getStringExtra("Type")))
+    else if ("Login".equals (cReceiveIntent.getStringExtra ("Type")))
     {
       String cUsername = cReceiveIntent.getStringExtra ("Username");
       String cPassword = cReceiveIntent.getStringExtra ("Password");
-      mcLogic.setUser (mcUserDAO.findUserByNamePass (cUsername, cPassword));
+
+      mcRunner.execute (() -> {
+        mcLogic.setUser (mcUserDAO.findUserByNamePass (cUsername, cPassword));
+      });
+
+
 
       getSupportFragmentManager ().beginTransaction ()
           .setReorderingAllowed (true)

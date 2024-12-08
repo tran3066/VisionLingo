@@ -32,8 +32,7 @@ public class BusinessLogic extends ViewModel
     mbPictureTaken = false;
     mcDictionaryDAO = null;
     mcUiState = new MutableLiveData<> (
-        new BusinessLogicUIState (0, "", null,
-            "", mbPictureTaken));
+        new BusinessLogicUIState (0, "", null, "", mbPictureTaken));
   }
 
   /**
@@ -97,14 +96,11 @@ public class BusinessLogic extends ViewModel
     return mbPictureTaken;
   }
 
-
-
   /**
    * Obtains a boolean variable that tells whether the user is signed in
    *
    * @return the boolean variable
    */
-
 
   /**
    * Updates the BusinessLogic class by storing the word detected from the image
@@ -117,7 +113,7 @@ public class BusinessLogic extends ViewModel
 
     mcUiState.setValue (
         new BusinessLogicUIState (mcUiState.getValue ().getColor (),
-            mcUiState.getValue ().getLanguage (), getImage(), cWord,
+            mcUiState.getValue ().getLanguage (), getImage (), cWord,
             mbPictureTaken));
   }
 
@@ -156,8 +152,8 @@ public class BusinessLogic extends ViewModel
     mcUser = new User (cUsername, cPassword);
     mcUiState.setValue (
         new BusinessLogicUIState (mcUiState.getValue ().getColor (),
-            mcUiState.getValue ().getLanguage (), getImage (), getWordFromCamera (),
-            mbPictureTaken));
+            mcUiState.getValue ().getLanguage (), getImage (),
+            getWordFromCamera (), mbPictureTaken));
   }
 
   /**
@@ -251,16 +247,20 @@ public class BusinessLogic extends ViewModel
     }
 
     mcUser = cUser;
-    mcUiState.setValue (
+    mcUiState.postValue (
         new BusinessLogicUIState (tempColor, cUser.getLanguage (), getImage (),
             getWordFromCamera (), mbPictureTaken));
   }
 
-  public void resetImg()
+  /**
+   * Resets the picture taken boolean flag
+   */
+
+  public void resetImg ()
   {
     mbPictureTaken = false;
     mcUiState.setValue (
-        new BusinessLogicUIState (getColor(), getLanguage (), null,
-            null, mbPictureTaken));
+        new BusinessLogicUIState (getColor (), getLanguage (), null, null,
+            mbPictureTaken));
   }
 }
