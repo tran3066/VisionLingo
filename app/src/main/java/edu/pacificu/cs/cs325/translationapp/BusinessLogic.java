@@ -1,6 +1,7 @@
 package edu.pacificu.cs.cs325.translationapp;
 
 import android.graphics.Color;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -238,15 +239,19 @@ public class BusinessLogic extends ViewModel
     switch (cUser.getColor ())
     {
       case "Pink":
+        Log.d ("TransferActivity", cUser.getColor ());
         tempColor = Color.MAGENTA;
         break;
       case "Red":
+        Log.d ("TransferActivity", cUser.getColor ());
         tempColor = Color.RED;
         break;
       case "Green":
+        Log.d ("TransferActivity", cUser.getColor ());
         tempColor = Color.GREEN;
         break;
       case "Blue":
+        Log.d ("TransferActivity", cUser.getColor ());
         tempColor = Color.BLUE;
         break;
       default:
