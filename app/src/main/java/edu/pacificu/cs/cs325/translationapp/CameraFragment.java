@@ -3,6 +3,7 @@ package edu.pacificu.cs.cs325.translationapp;
 //import static edu.pacificu.cs.cs325.translationapp.PreferenceFragment.mcColor;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -20,6 +21,7 @@ import androidx.camera.lifecycle.ProcessCameraProvider;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -322,10 +324,15 @@ public class CameraFragment extends Fragment
       mcLogic.detectWord (mcWordFromObject);
       Log.d (LOG_TAG, "Sent Text");
 
-      getActivity ().getSupportFragmentManager ().beginTransaction ()
-          .setReorderingAllowed (true)
-          .replace (R.id.fragment_container_view, InfoFragment.class, null)
-          .commit ();
+//      Intent intent = new Intent (getActivity(), TransferActivity.class);
+//      intent.setAction (Intent.ACTION_SEND);
+//      intent.putExtra ("Picture", "ByteArray");
+//      intent.setType ("Send to Info");
+
+      getParentFragmentManager().beginTransaction()
+              .replace(R.id.fragment_container_view, new InfoFragment())
+              .addToBackStack(null).commit();
+
       Log.d (LOG_TAG, "Info Activity started");
     });
   }

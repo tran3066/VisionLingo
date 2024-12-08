@@ -127,8 +127,6 @@ public class InfoFragment extends Fragment
 
     mcLogic = new ViewModelProvider (getActivity ()).get (BusinessLogic.class);
 
-    //getActivity().findViewById(android.R.id.content).setBackgroundResource(mcColor);
-
     if (mcLogic.getWordFromCamera () != null)
     {
       mcBinding.tvWordTranslate.setText (mcLogic.getWordFromCamera ());

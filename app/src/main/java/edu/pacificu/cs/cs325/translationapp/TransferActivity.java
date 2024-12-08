@@ -80,6 +80,8 @@ public class TransferActivity extends AppCompatActivity
           .setReorderingAllowed (true)
           .add (R.id.fragment_container_view, PreferenceFragment.class,
               null).commit ();
+
+      mcBinding.bottomNavigationView.setSelectedItemId(R.id.preferences);
     }
 
     else if ("Login".equals (cReceiveIntent.getType()))
@@ -96,6 +98,11 @@ public class TransferActivity extends AppCompatActivity
           .add (R.id.fragment_container_view, CameraFragment.class, null)
           .commit ();
     }
+
+//    else if ("Send to Info".equals(cReceiveIntent.getType()))
+//    {
+//      mcBinding.bottomNavigationView.setSelectedItemId(R.id.wordInformation);
+//    }
 
     mcBinding.bottomNavigationView.setOnItemSelectedListener (item -> {
       if (item.getItemId () == R.id.camera)
