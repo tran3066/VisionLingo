@@ -255,6 +255,7 @@ public class BusinessLogic extends ViewModel
         tempColor = Color.BLUE;
         break;
       default:
+        Log.d("TransferActivity", "Entered Default");
         tempColor = 0;
         break;
     }
