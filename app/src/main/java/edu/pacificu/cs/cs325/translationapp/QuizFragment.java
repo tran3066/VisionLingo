@@ -3,6 +3,8 @@ package edu.pacificu.cs.cs325.translationapp;
 import static androidx.core.content.ContextCompat.getSystemService;
 //import static edu.pacificu.cs.cs325.translationapp.PreferenceFragment.mcColor;
 
+import static edu.pacificu.cs.cs325.translationapp.HomeActivity.mcDictionaryDAO;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.hardware.Sensor;
@@ -54,6 +56,7 @@ public class QuizFragment extends Fragment
   private final int POS_TWO = 1;
   private final int POS_THREE = 2;
   private final int SHAKE_THRESHOLD = 14;
+  private final int SIZE_DATABASE = 36657;
 
   private Observer<BusinessLogicUIState> mcObserver;
   private FragmentQuizBinding mcBinding;
@@ -61,7 +64,6 @@ public class QuizFragment extends Fragment
   private BusinessLogic mcLogic;
   private TranslatorOptions mcOptions;
   private Translator mcTranslator;
-  private DictionaryDAO mcDictionaryDAO;
 
   /**
    * Initializes QuizFragment (required empty public constructor)
@@ -108,8 +110,6 @@ public class QuizFragment extends Fragment
     super.onViewCreated (cView, cSavedInstanceState);
 
     mcLogic = new ViewModelProvider (getActivity ()).get (BusinessLogic.class);
-    mcDictionaryDAO = mcLogic.getDAO ();
-    Log.d ("Quiz", String.valueOf (mcDictionaryDAO == null)); // true
 
     SensorManager cSensorManager = (SensorManager) requireContext ().getSystemService (
         Context.SENSOR_SERVICE);
@@ -252,9 +252,8 @@ public class QuizFragment extends Fragment
 
   public int generateRandomNumber ()
   {
-    int size = mcDictionaryDAO.getSize ();
     Random cTemp = new Random ();
-    return cTemp.nextInt (size - 1) + 1;
+    return cTemp.nextInt (SIZE_DATABASE - 1) + 1;
   }
 
   /**
