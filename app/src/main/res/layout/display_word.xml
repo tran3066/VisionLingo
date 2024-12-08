@@ -13,8 +13,9 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="32dp"
-            app:layout_constraintHorizontal_bias="0.072" />
+            app:layout_constraintHorizontal_bias="0.072"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="0.025" />
 
     <TextView
             android:text="TextView"
@@ -23,8 +24,10 @@
             android:id="@+id/tvTranslation"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            tools:layout_editor_absoluteY="32dp"
-            app:layout_constraintHorizontal_bias="0.94" />
+            app:layout_constraintHorizontal_bias="0.927"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="0.025" />
 
     <TextView
             android:text="TextView"
@@ -33,17 +36,21 @@
             android:id="@+id/tvWordType"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            tools:layout_editor_absoluteY="75dp" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="76dp"
+            app:layout_constraintBottom_toTopOf="@+id/imageWord"
+            app:layout_constraintVertical_bias="0.0" />
 
     <TextView
             android:text="TextView"
-            android:layout_width="282dp"
-            android:layout_height="131dp"
+            android:layout_width="316dp"
+            android:layout_height="312dp"
             android:id="@+id/tvDefinition"
             android:inputType="text|textMultiLine"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            tools:layout_editor_absoluteY="284dp" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageWord" />
 
     <ImageView
             android:layout_width="164dp"
@@ -54,6 +61,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginBottom="152dp" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.286" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
