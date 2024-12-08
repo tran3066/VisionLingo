@@ -261,7 +261,7 @@ public class BusinessLogic extends ViewModel
     }
 
     mcUser = cUser;
-    mcUiState.postValue (
+    mcUiState.setValue (
         new BusinessLogicUIState (tempColor, cUser.getLanguage (), getImage (),
             getWordFromCamera (), mbPictureTaken));
   }
