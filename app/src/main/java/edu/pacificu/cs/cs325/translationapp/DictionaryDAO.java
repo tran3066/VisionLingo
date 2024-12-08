@@ -82,4 +82,7 @@ public interface DictionaryDAO
 
   @Query ("SELECT * FROM Word WHERE mcEnglishWord LIKE 'White'")
   List<Word> getWordWhite();
+
+  @Query("SELECT * FROM Word ORDER BY RANDOM() LIMIT 1")
+  Word getRandomWord();
 }

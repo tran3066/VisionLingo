@@ -209,10 +209,10 @@ public class InfoFragment extends Fragment
 
         cTempString = mcBinding.tvSearch.getText ().toString ();
         Log.d (LOG_TAG, cTempString);
-        Log.d (LOG_TAG, String.valueOf (cTempDAO.getWordWhite ().size ()));
-        Log.d (LOG_TAG, String.valueOf (cTempDAO.getWordWhite ().get(0).getMcEnglishWord ()));
+        Log.d (LOG_TAG, String.valueOf (cTempDAO.getAll ().size ()));
+        Log.d (LOG_TAG, String.valueOf (cTempDAO.getAll ().get(0).getMcEnglishWord ()));
         //cTempWord = cTempDAO.getWordByString (cTempString);
-        cTempWord = cTempDAO.getWordWhite ().get(0);
+        cTempWord = cTempDAO.getAll ().get(0);
 
 
         getActivity ().runOnUiThread (() ->
@@ -228,6 +228,7 @@ public class InfoFragment extends Fragment
               public void onSuccess (String cS)
               {
                 Log.d (LOG_TAG, "translation successful");
+                Log.d(LOG_TAG, cS);
                 getActivity ().runOnUiThread (() -> {
                   mcBinding.tvWordTranslate.setText (cS);
                 });
@@ -244,9 +245,8 @@ public class InfoFragment extends Fragment
                 });
               }
             });
-        mcLogic.resetImg ();
       });
-
+      mcLogic.resetImg ();
 
 
 

@@ -52,6 +52,7 @@ import edu.pacificu.cs.cs325.translationapp.databinding.FragmentQuizBinding;
 
 public class QuizFragment extends Fragment
 {
+  private final String LOG_TAG = "QuizFragment";
   private final int POS_ONE = 0;
   private final int POS_TWO = 1;
   private final int POS_THREE = 2;
@@ -110,7 +111,7 @@ public class QuizFragment extends Fragment
     super.onViewCreated (cView, cSavedInstanceState);
 
     mcLogic = new ViewModelProvider (getActivity ()).get (BusinessLogic.class);
-
+    Log.d (LOG_TAG, "Quiz OnView Created");
     SensorManager cSensorManager = (SensorManager) requireContext ().getSystemService (
         Context.SENSOR_SERVICE);
     Sensor cSensorShake = cSensorManager.getDefaultSensor (
@@ -183,6 +184,7 @@ public class QuizFragment extends Fragment
       @Override
       public void onChanged (BusinessLogicUIState cBusinessLogicUIState)
       {
+        Log.d (LOG_TAG, "Things Changed");
         //update changes here
         int colorInt = mcLogic.getMcUiState ().getValue ().getColor ();
         mcBinding.btnNewWord.setBackgroundColor (colorInt);
@@ -254,6 +256,7 @@ public class QuizFragment extends Fragment
 
   public int generateRandomNumber ()
   {
+    Log.d (LOG_TAG, "Generating Number");
     Random cTemp = new Random ();
     return cTemp.nextInt (SIZE_DATABASE - 1) + 1;
   }
@@ -266,7 +269,8 @@ public class QuizFragment extends Fragment
 
   public Word getRandomWord ()
   {
-    return mcDictionaryDAO.getWord (generateRandomNumber ());
+    Log.d(LOG_TAG, "Generating Word");
+    return mcDictionaryDAO.getRandomWord ();
   }
 
   /**
@@ -276,6 +280,7 @@ public class QuizFragment extends Fragment
 
   public void setRandomWord ()
   {
+    Log.d (LOG_TAG, "Setting RandomWord");
     mcTempWord = getRandomWord ();
     Task<String> cResult = mcTranslator.translate (
             mcTempWord.getMcEnglishWord ())
