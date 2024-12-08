@@ -32,6 +32,7 @@ import edu.pacificu.cs.cs325.translationapp.databinding.ActivityTransferBinding;
 
 public class TransferActivity extends AppCompatActivity
 {
+  private String LOG_TAG = "TransferActivity";
   private final int NUM_THREADS = 2;
   private ActivityTransferBinding mcBinding;
   private BusinessLogic mcLogic;
@@ -76,6 +77,7 @@ public class TransferActivity extends AppCompatActivity
 
       mcRunner.execute (() -> {
         mcLogic.setUser (mcUserDAO.findUserByNamePass (cUsername, cPassword));
+        Log.d (LOG_TAG, mcLogic.getUser ().getMcUsername ());
       });
 
       getSupportFragmentManager ().beginTransaction ()
@@ -93,6 +95,9 @@ public class TransferActivity extends AppCompatActivity
 
       mcRunner.execute (() -> {
         mcLogic.setUser (mcUserDAO.findUserByNamePass (cUsername, cPassword));
+
+          Log.d (LOG_TAG, mcLogic.getUser ().getMcUsername ());
+
       });
 
       getSupportFragmentManager ().beginTransaction ()
