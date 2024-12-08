@@ -1,5 +1,7 @@
 package edu.pacificu.cs.cs325.translationapp;
 
+import static edu.pacificu.cs.cs325.translationapp.HomeActivity.mcUserDAO;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -31,9 +33,6 @@ public class TransferActivity extends AppCompatActivity
   private ActivityTransferBinding mcBinding;
   private BusinessLogic mcLogic;
   private MenuItem mcItem;
-  private UserDAO mcUserDAO;
-  private UserDB mcUserDB;
-
   private ExecutorService mcRunner;
 
   /**
@@ -62,7 +61,7 @@ public class TransferActivity extends AppCompatActivity
         });
 
     mcLogic = new ViewModelProvider (this).get (BusinessLogic.class);
-    Intent mcReceiveIntent = getIntent ();
+    Intent cReceiveIntent = getIntent ();
     mcRunner = Executors.newFixedThreadPool (2);
     mcRunner.execute (() ->
     {
@@ -70,31 +69,24 @@ public class TransferActivity extends AppCompatActivity
             getApplicationContext (), DictionaryDB.class, "Dictionary-DB").build ();
         mcLogic.setDAO (mcDictionaryDB.dictionaryDao ());
     });
-
-    mcRunner.execute (() ->
-    {
-        mcUserDB = Room.databaseBuilder (getApplicationContext (), UserDB.class,
-            "User-DB").fallbackToDestructiveMigrationOnDowngrade ().build ();
-        mcUserDAO = mcUserDB.userDao ();
-    });
 //test
 
-    if ("NewUser".equals (mcReceiveIntent.getStringExtra ("Type")))
+    if ("NewUser".equals (cReceiveIntent.getStringExtra ("Type")))
     {
-      String username = mcReceiveIntent.getStringExtra ("Username");
-      String password = mcReceiveIntent.getStringExtra ("Password");
-      mcLogic.setUser (mcUserDAO.findUserByNamePass (username, password));
+      String cUsername = cReceiveIntent.getStringExtra ("Username");
+      String cPassword = cReceiveIntent.getStringExtra ("Password");
+      mcLogic.setUser (mcUserDAO.findUserByNamePass (cUsername, cPassword));
 
       getSupportFragmentManager ().beginTransaction ()
           .setReorderingAllowed (true)
           .replace (R.id.fragment_container_view, PreferenceFragment.class,
               null).commit ();
     }
-    else if ("Login".equals (mcReceiveIntent.getStringExtra("Type")))
+    else if ("Login".equals (cReceiveIntent.getStringExtra("Type")))
     {
-      String username = mcReceiveIntent.getStringExtra ("Username");
-      String password = mcReceiveIntent.getStringExtra ("Password");
-      mcLogic.setUser (mcUserDAO.findUserByNamePass (username, password));
+      String cUsername = cReceiveIntent.getStringExtra ("Username");
+      String cPassword = cReceiveIntent.getStringExtra ("Password");
+      mcLogic.setUser (mcUserDAO.findUserByNamePass (cUsername, cPassword));
 
       getSupportFragmentManager ().beginTransaction ()
           .setReorderingAllowed (true)

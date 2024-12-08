@@ -51,7 +51,7 @@ public class HomeActivity extends AppCompatActivity
 
   private ActivityHomeBinding mcBinding;
   private ExecutorService mcRunner;
-  private UserDAO mcUserDAO;
+  public static UserDAO mcUserDAO;
   private UserDB mcUserDB;
   private String mcUsername;
   private String mcPassword;
