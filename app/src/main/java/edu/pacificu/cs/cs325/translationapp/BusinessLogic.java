@@ -262,9 +262,11 @@ public class BusinessLogic extends ViewModel
 
     mcUser = cUser;
     Log.d("TransferActivity", String.valueOf (tempColor));
+    setColor(tempColor);
     mcUiState.setValue (
         new BusinessLogicUIState (tempColor, cUser.getLanguage (), getImage (),
             getWordFromCamera (), mbPictureTaken));
+
   }
 
   /**
