@@ -135,8 +135,10 @@ public class HomeActivity extends AppCompatActivity
 
     if (mcPassword.isEmpty () || mcUsername.isEmpty ())
     {
-      Toast.makeText (this, "Username and password cannot be empty",
-          Toast.LENGTH_SHORT).show ();
+      runOnUiThread (() -> {
+        Toast.makeText(this, "Username and password cannot be empty",
+                Toast.LENGTH_SHORT).show();
+      });
 
       return;
     }
@@ -146,9 +148,11 @@ public class HomeActivity extends AppCompatActivity
       {
         if (mcUsername.equals (cCheck.getMcUsername ()))
         {
-          Toast.makeText (this,
-              "Username taken: Please login or Choose a new Username",
-              Toast.LENGTH_SHORT).show ();
+          runOnUiThread (() -> {
+            Toast.makeText(this,
+                    "Username taken: Please login or Choose a new Username",
+                    Toast.LENGTH_SHORT).show();
+          });
           return;
         }
       }
@@ -182,8 +186,10 @@ public class HomeActivity extends AppCompatActivity
 
     if (mcPassword.isEmpty () || mcUsername.isEmpty ())
     {
-      Toast.makeText (this, "Username and password cannot be empty",
-          Toast.LENGTH_SHORT).show ();
+      runOnUiThread (() -> {
+        Toast.makeText(this, "Username and password cannot be empty",
+                Toast.LENGTH_SHORT).show();
+      });
       return;
     }
 
@@ -199,11 +205,6 @@ public class HomeActivity extends AppCompatActivity
             if (mcPassword.equals (cCheck.getMcPassword ()))
             {
               mcCurrentUser = cCheck;
-//              mcIntent.putExtra ("Type", "Login");
-//              mcIntent.putExtra ("Username", mcUsername);
-//              mcIntent.putExtra ("Password", mcPassword);
-              //mcIntent.setType ("Login");
-
               runOnUiThread (() -> {
                 mcLogic.setUser (mcCurrentUser);
               });
@@ -270,10 +271,12 @@ public class HomeActivity extends AppCompatActivity
             @Override
             public void onSuccess (Void cUnused)
             {
-              int duration = Toast.LENGTH_SHORT;
-              Toast cToast = Toast.makeText (HomeActivity.this,
-                  "Model Downloaded", duration);
-              cToast.show ();
+              runOnUiThread (() -> {
+                int duration = Toast.LENGTH_SHORT;
+                Toast cToast = Toast.makeText(HomeActivity.this,
+                        "Model Downloaded", duration);
+                cToast.show();
+              });
             }
           });
     });
