@@ -106,7 +106,7 @@ public class HomeActivity extends AppCompatActivity
 
     buildDictionary (mcRunner);
     buildLanguageModel (mcRunner, FRENCH);
-    buildLanguageModel (mcRunner, ENGLISH);
+    buildLanguageModel (mcRunner, SPANISH);
 
     Intent intent = new Intent (this, TransferActivity.class);
 

@@ -5,6 +5,7 @@ import static edu.pacificu.cs.cs325.translationapp.HomeActivity.mcUserDAO;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -71,6 +72,7 @@ public class TransferActivity extends AppCompatActivity
     {
       String cUsername = cReceiveIntent.getStringExtra ("Username");
       String cPassword = cReceiveIntent.getStringExtra ("Password");
+      Log.d ("TRANSFER", "New User");
 
       mcRunner.execute (() -> {
         mcLogic.setUser (mcUserDAO.findUserByNamePass (cUsername, cPassword));

@@ -108,6 +108,7 @@ public class QuizFragment extends Fragment
     super.onViewCreated (cView, cSavedInstanceState);
 
     mcLogic = new ViewModelProvider (getActivity ()).get (BusinessLogic.class);
+
     mcDictionaryDAO = mcLogic.getDAO ();
     Log.d ("Quiz", String.valueOf (mcDictionaryDAO == null)); // true
 
@@ -134,6 +135,7 @@ public class QuizFragment extends Fragment
 
           if (floatSum > SHAKE_THRESHOLD)
           {
+            setRandomWord ();
             mcBinding.tvQuestionWord.setText ("Word from Shake");
           }
           else
@@ -154,30 +156,6 @@ public class QuizFragment extends Fragment
         SensorManager.SENSOR_DELAY_NORMAL);
     assert getActivity () != null;
 
-    //        mcOptions = new TranslatorOptions.Builder()
-    //            .setTargetLanguage (mcLogic.getMcUiState ().getValue ().getLanguage ())
-    //            .setSourceLanguage ("en")
-    //            .build();
-    //        mcTranslator = Translation.getClient (mcOptions);
-    //        getLifecycle().addObserver(mcTranslator);
-    //        mcTranslator.downloadModelIfNeeded ().addOnSuccessListener (new OnSuccessListener<Void> ()
-    //        {
-    //            @Override
-    //            public void onSuccess (Void unused)
-    //            {
-    //                getActivity ().runOnUiThread (()->
-    //                {
-    //                    int duration = Toast.LENGTH_SHORT;
-    //                    Toast cToast = Toast.makeText (getActivity (),
-    //                        "Model Downloaded",
-    //                        duration);
-    //                    cToast.show ();
-    //                });
-    //            }
-    //        });
-
-    //getActivity().findViewById(android.R.id.content).setBackgroundResource(mcColor);
-
     mcObserver = new Observer<BusinessLogicUIState> ()
     {
       @Override
@@ -194,8 +172,7 @@ public class QuizFragment extends Fragment
     };
     //need to change to language
 
-    mcLogic.getMcUiState ().observe (getActivity (), mcObserver);
-    setRandomWord ();
+
     mcBinding.btnSubmit.setOnClickListener (v -> {
       if (mcBinding.tvAnswerWord.toString ()
           .equals (mcTempWord.getMcEnglishWord ()))
@@ -218,6 +195,9 @@ public class QuizFragment extends Fragment
     mcBinding.btnNewWord.setOnClickListener (v -> {
       setRandomWord ();
     });
+
+    mcLogic.getMcUiState ().observe (getActivity (), mcObserver);
+    setRandomWord ();
   }
 
   /**
@@ -298,6 +278,5 @@ public class QuizFragment extends Fragment
           }
         });
 
-    //translation
   }
 }
