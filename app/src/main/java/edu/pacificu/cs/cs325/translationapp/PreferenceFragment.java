@@ -2,7 +2,6 @@ package edu.pacificu.cs.cs325.translationapp;
 
 import static androidx.camera.core.impl.utils.ContextUtil.getApplicationContext;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -17,15 +16,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.translation.Translator;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import com.google.mlkit.nl.translate.TranslatorOptions;
 
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -41,176 +37,224 @@ import edu.pacificu.cs.cs325.translationapp.databinding.FragmentPreferenceBindin
  * @author AaJanae Henry, Jason Tran, Christian Flores
  */
 
-public class PreferenceFragment extends Fragment {
+public class PreferenceFragment extends Fragment
+{
+  private final int NUM_THREADS = 1;
+  private final String LOG_TAG = "PreferenceFragment";
+  private final String FRENCH = "fr";
+  private final String SPANISH = "es";
 
-    private FragmentPreferenceBinding mcBinding;
-    private final String LOG_TAG = "PreferenceFragment";
-    private final String FRENCH = "fr";
-    private final String SPANISH = "es";
-    private Observer<BusinessLogicUIState> mcObserver;
-    private UserDAO mcUserDAO;
-    private UserDB mcUserDB;
-    //private List<User> usersFromDB;
-    private String selectedLanguage;
-    private ExecutorService mcRunner;
-    private String selectedColor;
-    private int NUM_THREADS = 1;
-    //private UserPreference mcUserPref;
-    private BusinessLogic mcLogic;
-    //private BusinessLogicUIState mcUiLogic;
-    private int mcColor;
+  private FragmentPreferenceBinding mcBinding;
+  private Observer<BusinessLogicUIState> mcObserver;
+  private UserDAO mcUserDAO;
+  private UserDB mcUserDB;
+  //private List<User> usersFromDB;
+  private String mcSelectedLanguage;
+  private String mcSelectedColor;
+  private ExecutorService mcRunner;
+  //private UserPreference mcUserPref;
+  private BusinessLogic mcLogic;
+  //private BusinessLogicUIState mcUiLogic;
+  private int mColor;
 
-    public PreferenceFragment() {
-        // Required empty public constructor
-    }
+  /**
+   * Initializes PreferenceFragment (required empty public constructor)
+   */
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+  public PreferenceFragment ()
+  {
+  }
 
+  /**
+   * onCreate method that starts the fragment
+   *
+   * @param cSavedInstanceState Stores a small amount of data needed to reload
+   *                            UI state if the system stops and then recreates
+   *                            UI
+   */
 
-    }
+  @Override
+  public void onCreate (Bundle cSavedInstanceState)
+  {
+    super.onCreate (cSavedInstanceState);
+  }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        mcBinding = edu.pacificu.cs.cs325.translationapp.databinding.FragmentPreferenceBinding.inflate(
-                getLayoutInflater());
-        View view = mcBinding.getRoot();
-        return view;
-    }
+  /**
+   * onCreateView method that creates and returns the root view of the fragment
+   *
+   * @param cInflater           LayoutInflater object used to inflate the
+   *                            fragment's view
+   * @param cContainer          ViewGroup object that contains the fragment's UI
+   * @param cSavedInstanceState Stores a small amount of data needed to reload
+   *                            UI state if the system stops and then recreates
+   *                            UI
+   * @return the root view of the fragment
+   */
 
-    @Override
-    public void onDestroyView ()
-    {
-        super.onDestroyView ();
-    }
-    @Override
-    public void onViewCreated (@NonNull View view,
-                               @Nullable Bundle savedInstanceState)
-    {
-        super.onViewCreated (view, savedInstanceState);
+  @Override
+  public View onCreateView (LayoutInflater cInflater, ViewGroup cContainer,
+      Bundle cSavedInstanceState)
+  {
+    // Inflate the layout for this fragment
+    mcBinding = edu.pacificu.cs.cs325.translationapp.databinding.FragmentPreferenceBinding.inflate (
+        getLayoutInflater ());
+    View cView = mcBinding.getRoot ();
 
-        mcRunner = Executors.newFixedThreadPool (NUM_THREADS);
+    return cView;
+  }
 
-        assert getActivity() != null;
-        mcLogic = new ViewModelProvider(getActivity()).get(BusinessLogic.class);
+  /**
+   * onDestroyView method that is called when the fragment is destroyed
+   */
 
+  @Override
+  public void onDestroyView ()
+  {
+    super.onDestroyView ();
+  }
 
-        String[] languageArray = new String[] {"French", "Spanish" };
-        assert getActivity() != null;
-        ArrayAdapter<String> languageAdapter = new ArrayAdapter<> (getActivity(),
-                android.R.layout.simple_spinner_dropdown_item, languageArray);
-        languageAdapter.setDropDownViewResource (
-                android.R.layout.simple_spinner_dropdown_item);
+  /**
+   * onViewCreated method that is called after the fragment is created
+   *
+   * @param cView               the root view of the fragment
+   * @param cSavedInstanceState Stores a small amount of data needed to reload
+   *                            UI state if the system stops and then recreates
+   *                            UI
+   */
 
-        mcBinding.languageSpinner.setAdapter(languageAdapter);
+  @Override
+  public void onViewCreated (@NonNull View cView,
+      @Nullable Bundle cSavedInstanceState)
+  {
+    super.onViewCreated (cView, cSavedInstanceState);
 
-        String[] colorArray = new String[] { "Pink","Red", "Green", "Blue"};
-        ArrayAdapter<String> colorAdapter = new ArrayAdapter<> (getActivity(),
-                android.R.layout.simple_spinner_dropdown_item, colorArray);
-        colorAdapter.setDropDownViewResource (
-                android.R.layout.simple_spinner_dropdown_item);
+    mcRunner = Executors.newFixedThreadPool (NUM_THREADS);
 
-        mcBinding.colorSpinner.setAdapter(colorAdapter);
+    assert getActivity () != null;
+    mcLogic = new ViewModelProvider (getActivity ()).get (BusinessLogic.class);
 
-        mcBinding.colorSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int position,
-                                       long id) {
-                assert getActivity() != null;
-                Toast.makeText(getActivity().getApplicationContext(),
-                        (String) adapterView.getSelectedItem(),
-                        Toast.LENGTH_SHORT).show();
-                selectedColor = (String) adapterView.getItemAtPosition(position);
-                Log.d(LOG_TAG, "Color selected: " + selectedColor);
+    String[] cLanguageArray = new String[] { "French", "Spanish" };
+    assert getActivity () != null;
+    ArrayAdapter<String> cLanguageAdapter = new ArrayAdapter<> (getActivity (),
+        android.R.layout.simple_spinner_dropdown_item, cLanguageArray);
+    cLanguageAdapter.setDropDownViewResource (
+        android.R.layout.simple_spinner_dropdown_item);
 
-                switch (selectedColor) {
-                    case "Pink":
-                        mcBinding.btnConfirm.setBackgroundColor(Color.MAGENTA);
-                        mcColor = Color.MAGENTA;
-                        break;
-                    case "Red":
-                        mcBinding.btnConfirm.setBackgroundColor(Color.RED);
-                        mcColor = Color.RED;
-                        break;
-                    case "Green":
-                        mcBinding.btnConfirm.setBackgroundColor(Color.GREEN);
-                        mcColor = Color.GREEN;
-                        break;
-                    case "Blue":
-                        mcBinding.btnConfirm.setBackgroundColor(Color.BLUE);
-                        mcColor = Color.BLUE;
-                        break;
-                    default:
-                        mcColor = 0;
-                        break;
-                }
+    String[] cColorArray = new String[] { "Pink", "Red", "Green", "Blue" };
+    ArrayAdapter<String> cColorAdapter = new ArrayAdapter<> (getActivity (),
+        android.R.layout.simple_spinner_dropdown_item, cColorArray);
+    cColorAdapter.setDropDownViewResource (
+        android.R.layout.simple_spinner_dropdown_item);
 
+    mcBinding.languageSpinner.setAdapter (cLanguageAdapter);
+    mcBinding.colorSpinner.setAdapter (cColorAdapter);
 
+    mcBinding.colorSpinner.setOnItemSelectedListener (
+        new AdapterView.OnItemSelectedListener ()
+        {
+          @Override
+          public void onItemSelected (AdapterView<?> cAdapterView, View cView,
+              int position, long id)
+          {
+            assert getActivity () != null;
+            Toast.makeText (getActivity ().getApplicationContext (),
+                    (String) cAdapterView.getSelectedItem (), Toast.LENGTH_SHORT)
+                .show ();
+            mcSelectedColor = (String) cAdapterView.getItemAtPosition (
+                position);
+            Log.d (LOG_TAG, "Color selected: " + mcSelectedColor);
 
+            switch (mcSelectedColor)
+            {
+              case "Pink":
+                mcBinding.btnConfirm.setBackgroundColor (Color.MAGENTA);
+                mColor = Color.MAGENTA;
+                break;
+              case "Red":
+                mcBinding.btnConfirm.setBackgroundColor (Color.RED);
+                mColor = Color.RED;
+                break;
+              case "Green":
+                mcBinding.btnConfirm.setBackgroundColor (Color.GREEN);
+                mColor = Color.GREEN;
+                break;
+              case "Blue":
+                mcBinding.btnConfirm.setBackgroundColor (Color.BLUE);
+                mColor = Color.BLUE;
+                break;
+              default:
+                mColor = 0;
+                break;
             }
+          }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parentView) {
-            }
+          @Override
+          public void onNothingSelected (AdapterView<?> cParentView)
+          {
+          }
         });
 
-        mcBinding.languageSpinner.setOnItemSelectedListener(new AdapterView
-                .OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view,
-                                       int position, long id) {
-                assert getActivity() != null;
-                Toast.makeText(getActivity().getApplicationContext(),
-                        (String) adapterView.getSelectedItem(),
-                        Toast.LENGTH_SHORT).show();
-                selectedLanguage = (String) adapterView.getItemAtPosition(position);
-                Log.d(LOG_TAG, "Language selected: " + selectedLanguage);
-            }
+    mcBinding.languageSpinner.setOnItemSelectedListener (
+        new AdapterView.OnItemSelectedListener ()
+        {
+          @Override
+          public void onItemSelected (AdapterView<?> cAdapterView, View cView,
+              int position, long id)
+          {
+            assert getActivity () != null;
+            Toast.makeText (getActivity ().getApplicationContext (),
+                    (String) cAdapterView.getSelectedItem (), Toast.LENGTH_SHORT)
+                .show ();
+            mcSelectedLanguage = (String) cAdapterView.getItemAtPosition (
+                position);
+            Log.d (LOG_TAG, "Language selected: " + mcSelectedLanguage);
+          }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parentView) {
-            }
+          @Override
+          public void onNothingSelected (AdapterView<?> cParentView)
+          {
+          }
         });
 
-       mcBinding.btnConfirm.setOnClickListener (v -> {
-           mcLogic.setColor(mcColor);
-           mcLogic.getUser ().setColor (selectedColor);
-           if(selectedLanguage.equals("French"))
-           {
-               mcLogic.setLanguage (FRENCH);
-               mcLogic.getUser ().setLanguage (FRENCH);
-           }
-           else if(selectedLanguage.equals ("Spanish"))
-           {
-               mcLogic.setLanguage(SPANISH);
-               mcLogic.getUser ().setLanguage (SPANISH);
-           }
+    mcBinding.btnConfirm.setOnClickListener (v -> {
+      mcLogic.setColor (mColor);
+      mcLogic.getUser ().setColor (mcSelectedColor);
+      if (mcSelectedLanguage.equals ("French"))
+      {
+        mcLogic.setLanguage (FRENCH);
+        mcLogic.getUser ().setLanguage (FRENCH);
+      }
+      else if (mcSelectedLanguage.equals ("Spanish"))
+      {
+        mcLogic.setLanguage (SPANISH);
+        mcLogic.getUser ().setLanguage (SPANISH);
+      }
 
-           //mcUserPref = new UserPreference(selectedColor, selectedLanguage);
-           //mcLogic.getUser().setMcUserPreference(mcUserPref);
+      //mcUserPref = new UserPreference(mcSelectedColor, mcSelectedLanguage);
+      //mcLogic.getUser().setMcUserPreference(mcUserPref);
 
-           mcRunner.execute(() -> {
-               try {
-                   mcUserDB = Room.databaseBuilder (getActivity().getApplicationContext (),
-                           UserDB.class,
-                           "User-DB").fallbackToDestructiveMigrationOnDowngrade ().build ();
-                   mcUserDAO = mcUserDB.userDao ();
-                   //usersFromDB = mcUserDAO.getAll ();
-                   mcUserDAO.update (mcLogic.getUser());
+      mcRunner.execute (() -> {
+        try
+        {
+          mcUserDB = Room.databaseBuilder (
+                  getActivity ().getApplicationContext (), UserDB.class, "User-DB")
+              .fallbackToDestructiveMigrationOnDowngrade ().build ();
+          mcUserDAO = mcUserDB.userDao ();
+          //usersFromDB = mcUserDAO.getAll ();
+          mcUserDAO.update (mcLogic.getUser ());
 
-                   Log.d (LOG_TAG, String.valueOf (mcLogic.getUser().getMUid ()));
-                   Log.d(LOG_TAG, "Updated Users: " + mcLogic.getUser ().toString ());
-               } catch (Exception e) {
-                   throw new RuntimeException(e);
-               }
-           });
+          Log.d (LOG_TAG, String.valueOf (mcLogic.getUser ().getMUid ()));
+          Log.d (LOG_TAG, "Updated Users: " + mcLogic.getUser ().toString ());
+        }
+        catch (Exception cException)
+        {
+          throw new RuntimeException (cException);
+        }
+      });
 
-           Toast.makeText(getActivity().getApplicationContext(),
-                   "Preferences Confirmed: Please Choose Activity Below",
-                   Toast.LENGTH_SHORT).show();
-       });
-    }
+      Toast.makeText (getActivity ().getApplicationContext (),
+          "Preferences Confirmed: Please Choose Activity Below",
+          Toast.LENGTH_SHORT).show ();
+    });
+  }
 }

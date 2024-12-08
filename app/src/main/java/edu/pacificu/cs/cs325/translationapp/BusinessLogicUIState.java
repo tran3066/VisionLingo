@@ -17,8 +17,6 @@ public class BusinessLogicUIState
   private String mcLanguage;
   private String mcCameraWord;
 
-
-
   /**
    * Initializes BusinessLogicUIState by initializing the color, language,
    * image, word, and flags
