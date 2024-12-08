@@ -48,7 +48,7 @@ public class HomeActivity extends AppCompatActivity
   private final String SPANISH = "es";
   private final String ENGLISH = "en";
   private final int SIZE_DATABASE = 36657;
-  private final int NUM_THREADS = 5;
+  private final int NUM_THREADS = 6;
   private ActivityHomeBinding mcBinding;
   private ExecutorService mcRunner;
   protected static UserDAO mcUserDAO;
@@ -89,7 +89,6 @@ public class HomeActivity extends AppCompatActivity
     bUserFound = false;
     mcRunner = Executors.newFixedThreadPool (NUM_THREADS);
     mcLogic = new ViewModelProvider (this).get (BusinessLogic.class);
-
 
     mcRunner.execute (() -> {
       try
@@ -169,7 +168,6 @@ public class HomeActivity extends AppCompatActivity
       intent.setType ("String");
       startActivity (intent);
       Log.d (LOG_TAG, "User Preferences Activity started");
-
     }
   }
 
