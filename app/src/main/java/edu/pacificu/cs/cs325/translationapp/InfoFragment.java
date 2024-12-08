@@ -59,11 +59,7 @@ public class InfoFragment extends Fragment
   private FragmentInfoBinding mcBinding;
   private TranslatorOptions mcOptions;
   private Translator mcTranslator;
-  // Make sure to actually set this variable
-  private String mcTranslatedWord;
-
   private UserDAO mcUserDAO;
-
   private boolean bSearched;
 
   /**
@@ -114,15 +110,18 @@ public class InfoFragment extends Fragment
     assert getActivity () != null;
     bSearched = false;
     ExecutorService mcRunner = Executors.newFixedThreadPool (1);
-    mcRunner.execute(() -> {
-      try {
-        UserDB mcUserDB = Room.databaseBuilder (getActivity().getApplicationContext (),
-            UserDB.class,
-            "User-DB").fallbackToDestructiveMigrationOnDowngrade ().build ();
+    mcRunner.execute (() -> {
+      try
+      {
+        UserDB mcUserDB = Room.databaseBuilder (
+                getActivity ().getApplicationContext (), UserDB.class, "User-DB")
+            .fallbackToDestructiveMigrationOnDowngrade ().build ();
         mcUserDAO = mcUserDB.userDao ();
         //usersFromDB = mcUserDAO.getAll ();
-      } catch (Exception e) {
-        throw new RuntimeException(e);
+      }
+      catch (Exception e)
+      {
+        throw new RuntimeException (e);
       }
     });
 
@@ -142,8 +141,8 @@ public class InfoFragment extends Fragment
     {
       Bitmap cBitmap = BitmapFactory.decodeByteArray (mcLogic.getImage (), 0,
           mcLogic.getImage ().length);
-        int rotation = 90;
-        mcBinding.imgWord.setRotation(rotation);
+      int rotation = 90;
+      mcBinding.imgWord.setRotation (rotation);
       mcBinding.imgWord.setImageBitmap (cBitmap);
       Log.d (LOG_TAG, "Picture RECEIVED");
     }
@@ -163,7 +162,6 @@ public class InfoFragment extends Fragment
         mcBinding.btnAdd.setBackgroundColor (colorInt);
         mcBinding.btnSpeak.setBackgroundColor (colorInt);
 
-
         mcOptions = new TranslatorOptions.Builder ().setTargetLanguage (
             mcLogic.getLanguage ()).setSourceLanguage ("en").build ();
         mcTranslator = Translation.getClient (mcOptions);
@@ -174,12 +172,14 @@ public class InfoFragment extends Fragment
 
           if (cCurrentLanguage.equals (FRENCH))
           {
-            cUpdatedURL = FRENCH_URL.replace ("*", mcTranslatedWord);
+            cUpdatedURL = FRENCH_URL.replace ("*",
+                mcBinding.tvWordTranslate.getText ().toString ());
             openURL (cUpdatedURL);
           }
           else if (cCurrentLanguage.equals (SPANISH))
           {
-            cUpdatedURL = SPANISH_URL.replace ("*", mcTranslatedWord);
+            cUpdatedURL = SPANISH_URL.replace ("*",
+                mcBinding.tvWordTranslate.getText ().toString ());
             openURL (cUpdatedURL);
           }
         });
@@ -187,16 +187,13 @@ public class InfoFragment extends Fragment
     };
     mcBinding.btnAdd.setOnClickListener (v -> {
 
-      mcRunner.execute (()->
-      {
-        if(bSearched)
+      mcRunner.execute (() -> {
+        if (bSearched)
         {
-          String tempString = mcBinding.tvSearch.getText().toString ();
-          Vocab newVocab = new Vocab (
-              mcLogic.getWord (tempString),
+          String tempString = mcBinding.tvSearch.getText ().toString ();
+          Vocab newVocab = new Vocab (mcLogic.getWord (tempString),
               mcLogic.getImage (),
-              mcBinding.tvWordTranslate.getText ().toString ()
-          );
+              mcBinding.tvWordTranslate.getText ().toString ());
 
           mcLogic.getUser ().addToVocab (newVocab);
           mcUserDAO.update (mcLogic.getUser ());
@@ -209,16 +206,13 @@ public class InfoFragment extends Fragment
     mcBinding.btnSearch.setOnClickListener (v -> {
       Log.d (LOG_TAG, "btnSearch Pressed");
       bSearched = true;
-      mcRunner.execute (()-> {
+      mcRunner.execute (() -> {
         String cTempString;
         Word cTempWord;
         cTempString = mcBinding.tvSearch.getText ().toString ();
         cTempWord = mcLogic.getWord (cTempString);
 
-
-
-        getActivity ().runOnUiThread (() ->
-        {
+        getActivity ().runOnUiThread (() -> {
           mcBinding.tvWordInfo.setText (cTempWord.toString ());
           Log.d (LOG_TAG, "btnSearch Pressed");
         });
@@ -230,7 +224,7 @@ public class InfoFragment extends Fragment
               public void onSuccess (String cS)
               {
                 Log.d (LOG_TAG, "translation successful");
-                Log.d(LOG_TAG, cS);
+                Log.d (LOG_TAG, cS);
                 getActivity ().runOnUiThread (() -> {
                   mcBinding.tvWordTranslate.setText (cS);
                 });
@@ -249,9 +243,6 @@ public class InfoFragment extends Fragment
             });
       });
       mcLogic.resetImg ();
-
-
-
 
     });
 
