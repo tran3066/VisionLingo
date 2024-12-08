@@ -14,9 +14,10 @@ public class BusinessLogicUIState
   private int mColor;
   private byte[] mcImage;
   private boolean mbPictureTaken;
-  private boolean mbSignedIn;
   private String mcLanguage;
   private String mcCameraWord;
+
+
 
   /**
    * Initializes BusinessLogicUIState by initializing the color, language,
@@ -27,18 +28,16 @@ public class BusinessLogicUIState
    * @param cImage        captured image from camera fragment
    * @param cCameraWord   word detected from the camera
    * @param bPictureTaken flag that tells if a picture was taken
-   * @param bSignedIn     flag that tells if the user has signed in
    */
 
   public BusinessLogicUIState (int color, String cLanguage, byte[] cImage,
-      String cCameraWord, boolean bPictureTaken, boolean bSignedIn)
+      String cCameraWord, boolean bPictureTaken)
   {
     mColor = color;
     mcLanguage = cLanguage;
     mcImage = cImage;
     mcCameraWord = cCameraWord;
     mbPictureTaken = bPictureTaken;
-    mbSignedIn = bSignedIn;
   }
 
   /**
