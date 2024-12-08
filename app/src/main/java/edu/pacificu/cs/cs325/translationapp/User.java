@@ -159,15 +159,33 @@ public class User
     this.mUid = mUid;
   }
 
+  /**
+   * Sets the language
+   *
+   * @param cLanguage - the language to set
+   */
+
   public void setLanguage (String cLanguage)
   {
     mcUserPreference.setMcLanguage (cLanguage);
   }
 
+  /**
+   * Sets the color
+   *
+   * @param cColor - the color to set
+   */
+
   public void setColor (String cColor)
   {
     mcUserPreference.setMcColor (cColor);
   }
+
+  /**
+   * Adds a new Vocab object to the user's vocab list
+   *
+   * @param cNewVocab - the Vocab object to add
+   */
 
   public void addToVocab (Vocab cNewVocab)
   {

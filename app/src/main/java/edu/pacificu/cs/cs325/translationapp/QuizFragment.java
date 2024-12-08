@@ -3,7 +3,6 @@ package edu.pacificu.cs.cs325.translationapp;
 import static androidx.core.content.ContextCompat.getSystemService;
 //import static edu.pacificu.cs.cs325.translationapp.PreferenceFragment.mcColor;
 
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.hardware.Sensor;
@@ -49,197 +48,255 @@ import edu.pacificu.cs.cs325.translationapp.databinding.FragmentQuizBinding;
  * @author AaJanae Henry, Jason Tran, Christian Flores
  */
 
-public class QuizFragment extends Fragment {
+public class QuizFragment extends Fragment
+{
+  private final int POS_ONE = 0;
+  private final int POS_TWO = 1;
+  private final int POS_THREE = 2;
+  private final int SHAKE_THRESHOLD = 14;
 
-    private Observer<BusinessLogicUIState> mcObserver;
-    private FragmentQuizBinding mcBinding;
-    private Word mcTempWord;
-    private BusinessLogic mcLogic;
-    private TranslatorOptions mcOptions;
-    private Translator mcTranslator;
-    private DictionaryDAO mcDictionaryDAO;
+  private Observer<BusinessLogicUIState> mcObserver;
+  private FragmentQuizBinding mcBinding;
+  private Word mcTempWord;
+  private BusinessLogic mcLogic;
+  private TranslatorOptions mcOptions;
+  private Translator mcTranslator;
+  private DictionaryDAO mcDictionaryDAO;
 
-    public QuizFragment ()
+  /**
+   * Initializes QuizFragment (required empty public constructor)
+   */
+
+  public QuizFragment ()
+  {
+  }
+
+  /**
+   * onCreateView method that creates and returns the root view of the fragment
+   *
+   * @param cInflater           LayoutInflater object used to inflate the
+   *                            fragment's view
+   * @param cContainer          ViewGroup object that contains the fragment's UI
+   * @param cSavedInstanceState Stores a small amount of data needed to reload
+   *                            UI state if the system stops and then recreates
+   *                            UI
+   * @return the root view of the fragment
+   */
+
+  @Override
+  public View onCreateView (@NonNull LayoutInflater cInflater,
+      ViewGroup cContainer, Bundle cSavedInstanceState)
+  {
+    mcBinding = edu.pacificu.cs.cs325.translationapp.databinding.FragmentQuizBinding.inflate (
+        getLayoutInflater ());
+    return mcBinding.getRoot ();
+  }
+
+  /**
+   * onViewCreated method that is called after the fragment is created
+   *
+   * @param cView               the root view of the fragment
+   * @param cSavedInstanceState Stores a small amount of data needed to reload
+   *                            UI state if the system stops and then recreates
+   *                            UI
+   */
+
+  @Override
+  public void onViewCreated (@NonNull View cView,
+      @Nullable Bundle cSavedInstanceState)
+  {
+    super.onViewCreated (cView, cSavedInstanceState);
+
+    DictionaryDAO cTempDAO = mcLogic.getDAO ();
+    mcLogic = new ViewModelProvider (this).get (BusinessLogic.class);
+
+    SensorManager cSensorManager = (SensorManager) requireContext ().getSystemService (
+        Context.SENSOR_SERVICE);
+    Sensor cSensorShake = cSensorManager.getDefaultSensor (
+        Sensor.TYPE_ACCELEROMETER);
+
+    SensorEventListener sensorEventListener = new SensorEventListener ()
     {
-        // Required empty public constructor
+      @SuppressLint ("SetTextI18n")
+      @Override
+      public void onSensorChanged (SensorEvent cSensorEvent)
+      {
 
-    }
-
-    @Override
-    public View onCreateView (@NonNull LayoutInflater inflater, ViewGroup container,
-                              Bundle savedInstanceState)
-    {
-        mcBinding = edu.pacificu.cs.cs325.translationapp.databinding.FragmentQuizBinding.inflate (
-                getLayoutInflater ());
-        return mcBinding.getRoot ();
-    }
-
-    @Override
-    public void onViewCreated (@NonNull View view,
-                               @Nullable Bundle savedInstanceState)
-    {
-        super.onViewCreated (view, savedInstanceState);
-        DictionaryDAO tempDAO;
-        mcLogic = new ViewModelProvider(this).get(BusinessLogic.class);
-        tempDAO = mcLogic.getDAO ();
-
-        SensorManager sensorManager = (SensorManager) requireContext().getSystemService
-                (Context.SENSOR_SERVICE);
-
-        Sensor sensorShake = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        SensorEventListener sensorEventListener = new SensorEventListener() {
-            @SuppressLint("SetTextI18n")
-            @Override
-            public void onSensorChanged(SensorEvent sensorEvent) {
-
-                if (sensorEvent != null)
-                {
-                    float x_accl = sensorEvent.values[0];
-                    float y_accl = sensorEvent.values[1];
-                    float z_accl = sensorEvent.values[2];
-
-                    float floatSum = Math.abs(x_accl) + Math.abs(y_accl) + Math.abs(z_accl);
-
-                    if (floatSum > 14)
-                    {
-                        mcBinding.tvQuestionWord.setText("Word from Shake");
-                    }
-                    else {
-                        mcBinding.tvQuestionWord.setText("No shake");
-                    }
-
-                }
-            }
-
-            @Override
-            public void onAccuracyChanged(Sensor sensor, int accuracy) {
-
-            }
-        };
-
-        sensorManager.registerListener(sensorEventListener, sensorShake,
-                SensorManager.SENSOR_DELAY_NORMAL);
-        assert getActivity() != null;
-
-//        mcOptions = new TranslatorOptions.Builder()
-//            .setTargetLanguage (mcLogic.getMcUiState ().getValue ().getLanguage ())
-//            .setSourceLanguage ("en")
-//            .build();
-//        mcTranslator = Translation.getClient (mcOptions);
-//        getLifecycle().addObserver(mcTranslator);
-//        mcTranslator.downloadModelIfNeeded ().addOnSuccessListener (new OnSuccessListener<Void> ()
-//        {
-//            @Override
-//            public void onSuccess (Void unused)
-//            {
-//                getActivity ().runOnUiThread (()->
-//                {
-//                    int duration = Toast.LENGTH_SHORT;
-//                    Toast cToast = Toast.makeText (getActivity (),
-//                        "Model Downloaded",
-//                        duration);
-//                    cToast.show ();
-//                });
-//            }
-//        });
-
-        //getActivity().findViewById(android.R.id.content).setBackgroundResource(mcColor);
-
-        mcObserver = new Observer<BusinessLogicUIState>()
+        if (cSensorEvent != null)
         {
-            @Override
-            public void onChanged(BusinessLogicUIState businessLogicUIState)
-            {
-                //update changes here
-                int colorInt = mcLogic.getMcUiState ().getValue ().getColor ();
-                mcBinding.btnNewWord.setBackgroundColor (colorInt);
-                mcBinding.btnSubmit.setBackgroundColor (colorInt);
-                mcOptions = new TranslatorOptions.Builder()
-                    .setTargetLanguage (mcLogic.getLanguage ())
-                    .setSourceLanguage ("en")
-                    .build();
-                mcTranslator = Translation.getClient (mcOptions);
-            }
-        };
-        //need to change to language
+          float x_accl = cSensorEvent.values[POS_ONE];
+          float y_accl = cSensorEvent.values[POS_TWO];
+          float z_accl = cSensorEvent.values[POS_THREE];
 
+          float floatSum =
+              Math.abs (x_accl) + Math.abs (y_accl) + Math.abs (z_accl);
 
-        mcLogic.getMcUiState ().observe (getActivity (), mcObserver);
-        setRandomWord ();
-        mcBinding.btnSubmit.setOnClickListener (v->
-        {
-            if(mcBinding.tvAnswerWord.toString ()
-                .equals (mcTempWord.getMcEnglishWord ()))
-            {
-                getActivity().runOnUiThread (() -> {
-                    Toast.makeText (getActivity ().getApplicationContext (),
-                        "Answered Correctly",
-                        Toast.LENGTH_LONG);
-                });
+          if (floatSum > SHAKE_THRESHOLD)
+          {
+            mcBinding.tvQuestionWord.setText ("Word from Shake");
+          }
+          else
+          {
+            mcBinding.tvQuestionWord.setText ("No shake");
+          }
+        }
+      }
 
-            }
-            else {
-                getActivity().runOnUiThread (() -> {
-                    Toast.makeText (getActivity ().getApplicationContext (),
-                        "Answered Incorrectly",
-                        Toast.LENGTH_LONG);
-                });
-            }
+      @Override
+      public void onAccuracyChanged (Sensor cSensor, int accuracy)
+      {
+
+      }
+    };
+
+    cSensorManager.registerListener (sensorEventListener, cSensorShake,
+        SensorManager.SENSOR_DELAY_NORMAL);
+    assert getActivity () != null;
+
+    //        mcOptions = new TranslatorOptions.Builder()
+    //            .setTargetLanguage (mcLogic.getMcUiState ().getValue ().getLanguage ())
+    //            .setSourceLanguage ("en")
+    //            .build();
+    //        mcTranslator = Translation.getClient (mcOptions);
+    //        getLifecycle().addObserver(mcTranslator);
+    //        mcTranslator.downloadModelIfNeeded ().addOnSuccessListener (new OnSuccessListener<Void> ()
+    //        {
+    //            @Override
+    //            public void onSuccess (Void unused)
+    //            {
+    //                getActivity ().runOnUiThread (()->
+    //                {
+    //                    int duration = Toast.LENGTH_SHORT;
+    //                    Toast cToast = Toast.makeText (getActivity (),
+    //                        "Model Downloaded",
+    //                        duration);
+    //                    cToast.show ();
+    //                });
+    //            }
+    //        });
+
+    //getActivity().findViewById(android.R.id.content).setBackgroundResource(mcColor);
+
+    mcObserver = new Observer<BusinessLogicUIState> ()
+    {
+      @Override
+      public void onChanged (BusinessLogicUIState cBusinessLogicUIState)
+      {
+        //update changes here
+        int colorInt = mcLogic.getMcUiState ().getValue ().getColor ();
+        mcBinding.btnNewWord.setBackgroundColor (colorInt);
+        mcBinding.btnSubmit.setBackgroundColor (colorInt);
+        mcOptions = new TranslatorOptions.Builder ().setTargetLanguage (
+            mcLogic.getLanguage ()).setSourceLanguage ("en").build ();
+        mcTranslator = Translation.getClient (mcOptions);
+      }
+    };
+    //need to change to language
+
+    mcLogic.getMcUiState ().observe (getActivity (), mcObserver);
+    setRandomWord ();
+    mcBinding.btnSubmit.setOnClickListener (v -> {
+      if (mcBinding.tvAnswerWord.toString ()
+          .equals (mcTempWord.getMcEnglishWord ()))
+      {
+        getActivity ().runOnUiThread (() -> {
+          Toast.makeText (getActivity ().getApplicationContext (),
+              "Answered Correctly", Toast.LENGTH_LONG);
         });
 
-        mcBinding.btnNewWord.setOnClickListener (v-> {
-            setRandomWord ();
+      }
+      else
+      {
+        getActivity ().runOnUiThread (() -> {
+          Toast.makeText (getActivity ().getApplicationContext (),
+              "Answered Incorrectly", Toast.LENGTH_LONG);
         });
+      }
+    });
 
+    mcBinding.btnNewWord.setOnClickListener (v -> {
+      setRandomWord ();
+    });
+  }
 
-    }
+  /**
+   * onCreate method that starts the fragment
+   *
+   * @param cSavedInstanceState Stores a small amount of data needed to reload
+   *                            UI state if the system stops and then recreates
+   *                            UI
+   */
 
-    @Override
-    public void onCreate (Bundle savedInstanceState)
-    {
-        super.onCreate (savedInstanceState);
-    }
+  @Override
+  public void onCreate (Bundle cSavedInstanceState)
+  {
+    super.onCreate (cSavedInstanceState);
+  }
 
-    @Override
-    public void onDestroyView ()
-    {
-        super.onDestroyView ();
-    }
+  /**
+   * onDestroyView method that is called when the fragment is destroyed
+   */
 
-    public int generateRandomNumber()
-    {
-        int size = mcLogic.getDAO ().getSize ();
-        Random temp = new Random ();
-        return temp.nextInt (size - 1) + 1;
-    }
+  @Override
+  public void onDestroyView ()
+  {
+    super.onDestroyView ();
+  }
 
-    public Word getRandomWord()
-    {
-        return  mcDictionaryDAO.getWord (generateRandomNumber ());
-    }
+  /**
+   * Generates a random number based on the number of items in the database
+   *
+   * @return a random number from 1 to the size of the database
+   */
 
-    public void setRandomWord()
-    {
-        mcTempWord = getRandomWord ();
-        Task<String> result = mcTranslator.translate(mcTempWord.getMcEnglishWord ())
-            .addOnSuccessListener (new OnSuccessListener<String>() {
-                @Override
-                public void onSuccess(String s) {
-                    getActivity ().runOnUiThread (() -> {
-                        mcBinding.tvQuestionWord.setText (s);
-                    });
-                }
-            }).addOnFailureListener (new OnFailureListener ()
-            {
-                @Override
-                public void onFailure (@NonNull Exception e)
-                {
-                    getActivity ().runOnUiThread (() -> {
-                        mcBinding.tvQuestionWord.setText(mcTempWord.getMcEnglishWord ());
-                    });
-                }
+  public int generateRandomNumber ()
+  {
+    int size = mcLogic.getDAO ().getSize ();
+    Random cTemp = new Random ();
+    return cTemp.nextInt (size - 1) + 1;
+  }
+
+  /**
+   * Obtains a random word from the dictionary
+   *
+   * @return a random word from the dictionary
+   */
+
+  public Word getRandomWord ()
+  {
+    return mcDictionaryDAO.getWord (generateRandomNumber ());
+  }
+
+  /**
+   * Obtains a random word from the dictionary and sets it to the
+   * tvQuestionWord textview
+   */
+
+  public void setRandomWord ()
+  {
+    mcTempWord = getRandomWord ();
+    Task<String> cResult = mcTranslator.translate (
+            mcTempWord.getMcEnglishWord ())
+        .addOnSuccessListener (new OnSuccessListener<String> ()
+        {
+          @Override
+          public void onSuccess (String cS)
+          {
+            getActivity ().runOnUiThread (() -> {
+              mcBinding.tvQuestionWord.setText (cS);
             });
+          }
+        }).addOnFailureListener (new OnFailureListener ()
+        {
+          @Override
+          public void onFailure (@NonNull Exception cException)
+          {
+            getActivity ().runOnUiThread (() -> {
+              mcBinding.tvQuestionWord.setText (mcTempWord.getMcEnglishWord ());
+            });
+          }
+        });
 
-        //translation
-    }
+    //translation
+  }
 }

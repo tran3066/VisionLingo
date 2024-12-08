@@ -10,13 +10,11 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import edu.pacificu.cs.cs325.translationapp.databinding.ActivityListBinding;
 import edu.pacificu.cs.cs325.translationapp.databinding.FragmentListBinding;
 
 /**
@@ -42,42 +40,79 @@ public class ListFragment extends Fragment
   private LinearLayoutManager mcLayoutManager;
   private BusinessLogic mcLogic;
 
+  /**
+   * Initializes ListFragment (required empty public constructor)
+   */
+
   public ListFragment ()
   {
-    // Required empty public constructor
   }
 
+  /**
+   * onCreateView method that creates and returns the root view of the fragment
+   *
+   * @param cInflater           LayoutInflater object used to inflate the
+   *                            fragment's view
+   * @param cContainer          ViewGroup object that contains the fragment's UI
+   * @param cSavedInstanceState Stores a small amount of data needed to reload
+   *                            UI state if the system stops and then recreates
+   *                            UI
+   * @return the root view of the fragment
+   */
+
   @Override
-  public View onCreateView (@NonNull LayoutInflater inflater,
-      ViewGroup container, Bundle savedInstanceState)
+  public View onCreateView (@NonNull LayoutInflater cInflater,
+      ViewGroup cContainer, Bundle cSavedInstanceState)
   {
     mcBinding = edu.pacificu.cs.cs325.translationapp.databinding.FragmentListBinding.inflate (
         getLayoutInflater ());
+
     return mcBinding.getRoot ();
   }
 
+  /**
+   * onViewCreated method that is called after the fragment is created
+   *
+   * @param cView               the root view of the fragment
+   * @param cSavedInstanceState Stores a small amount of data needed to reload
+   *                            UI state if the system stops and then recreates
+   *                            UI
+   */
+
   @Override
-  public void onViewCreated (@NonNull View view,
-      @Nullable Bundle savedInstanceState)
+  public void onViewCreated (@NonNull View cView,
+      @Nullable Bundle cSavedInstanceState)
   {
-    super.onViewCreated (view, savedInstanceState);
-    BusinessLogic mcLogic = new ViewModelProvider (getActivity()).get (
+    super.onViewCreated (cView, cSavedInstanceState);
+    BusinessLogic mcLogic = new ViewModelProvider (getActivity ()).get (
         BusinessLogic.class);
 
     mcBinding.rvWords.setHasFixedSize (true);
-    mcBinding.rvWords.setLayoutManager (new LinearLayoutManager (getActivity ()));
+    mcBinding.rvWords.setLayoutManager (
+        new LinearLayoutManager (getActivity ()));
     mcLayoutManager = new LinearLayoutManager (getActivity ());
     mcDivider = new DividerItemDecoration (getActivity (),
         mcLayoutManager.getOrientation ());
     mcBinding.rvWords.addItemDecoration (mcDivider);
   }
 
-  @Override
-  public void onCreate (Bundle savedInstanceState)
-  {
-    super.onCreate (savedInstanceState);
+  /**
+   * onCreate method that starts the fragment
+   *
+   * @param cSavedInstanceState Stores a small amount of data needed to reload
+   *                            UI state if the system stops and then recreates
+   *                            UI
+   */
 
+  @Override
+  public void onCreate (Bundle cSavedInstanceState)
+  {
+    super.onCreate (cSavedInstanceState);
   }
+
+  /**
+   * onDestroyView method that is called when the fragment is destroyed
+   */
 
   @Override
   public void onDestroyView ()
