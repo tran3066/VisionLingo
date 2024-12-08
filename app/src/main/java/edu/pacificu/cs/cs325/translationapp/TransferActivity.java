@@ -30,7 +30,7 @@ public class TransferActivity extends AppCompatActivity
 {
   private ActivityTransferBinding mcBinding;
   private BusinessLogic mcLogic;
-  private MenuItem item;
+  private MenuItem mcItem;
   private UserDAO mcUserDAO;
   private UserDB mcUserDB;
 
@@ -62,7 +62,7 @@ public class TransferActivity extends AppCompatActivity
         });
 
     mcLogic = new ViewModelProvider (this).get (BusinessLogic.class);
-    Intent receiveIntent = getIntent ();
+    Intent mcReceiveIntent = getIntent ();
     mcRunner = Executors.newFixedThreadPool (2);
     mcRunner.execute (() ->
     {
@@ -79,10 +79,10 @@ public class TransferActivity extends AppCompatActivity
     });
 //test
 
-    if ("NewUser".equals (receiveIntent.getStringExtra ("Type")))
+    if ("NewUser".equals (mcReceiveIntent.getStringExtra ("Type")))
     {
-      String username = receiveIntent.getStringExtra ("Username");
-      String password = receiveIntent.getStringExtra ("Password");
+      String username = mcReceiveIntent.getStringExtra ("Username");
+      String password = mcReceiveIntent.getStringExtra ("Password");
       mcLogic.setUser (mcUserDAO.findUserByNamePass (username, password));
 
       getSupportFragmentManager ().beginTransaction ()
@@ -90,10 +90,10 @@ public class TransferActivity extends AppCompatActivity
           .replace (R.id.fragment_container_view, PreferenceFragment.class,
               null).commit ();
     }
-    else if ("Login".equals (receiveIntent.getStringExtra("Type")))
+    else if ("Login".equals (mcReceiveIntent.getStringExtra("Type")))
     {
-      String username = receiveIntent.getStringExtra ("Username");
-      String password = receiveIntent.getStringExtra ("Password");
+      String username = mcReceiveIntent.getStringExtra ("Username");
+      String password = mcReceiveIntent.getStringExtra ("Password");
       mcLogic.setUser (mcUserDAO.findUserByNamePass (username, password));
 
       getSupportFragmentManager ().beginTransaction ()
