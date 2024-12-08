@@ -1,7 +1,5 @@
 package edu.pacificu.cs.cs325.translationapp;
 
-//import static edu.pacificu.cs.cs325.translationapp.PreferenceFragment.mcColor;
-
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -100,10 +98,6 @@ public class ListFragment extends Fragment
     mcDivider = new DividerItemDecoration (getActivity (),
         mcLayoutManager.getOrientation ());
     mcBinding.rvWords.addItemDecoration (mcDivider);
-
-    // testing
-    DictionaryDAO mcDictionaryDAO = mcLogic.getDAO ();
-    Log.d ("Quiz", String.valueOf (mcDictionaryDAO == null)); // false
   }
 
   /**
