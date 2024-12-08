@@ -328,6 +328,7 @@ public class CameraFragment extends Fragment
       mcLogic.takePicture (mcByteArray);
       Log.d (LOG_TAG, "Sent Picture");
 
+
       mcLogic.detectWord (mcWordFromObject);
       Log.d (LOG_TAG, "Sent Text");
 
