@@ -74,12 +74,15 @@ public class TransferActivity extends AppCompatActivity
     {
       String cUsername = cReceiveIntent.getStringExtra ("Username");
       String cPassword = cReceiveIntent.getStringExtra ("Password");
-      Log.d ("TRANSFER", "New User");
 
       mcRunner.execute (() -> {
-        mcLogic.setUser (mcUserDAO.findUserByNamePass (cUsername, cPassword));
-        Log.d (LOG_TAG, mcLogic.getUser ().getMcUsername ());
-        Log.d(LOG_TAG, String.valueOf (mcLogic.getColor ()));
+        User tempUser = mcUserDAO.findUserByNamePass (cUsername, cPassword);
+        runOnUiThread (() ->
+        {
+          mcLogic.setUser (tempUser);
+          Log.d (LOG_TAG, mcLogic.getUser ().getMcUsername ());
+          Log.d(LOG_TAG, String.valueOf (mcLogic.getColor ()));
+        });
       });
 
       getSupportFragmentManager ().beginTransaction ()
@@ -103,10 +106,6 @@ public class TransferActivity extends AppCompatActivity
           Log.d (LOG_TAG, mcLogic.getUser ().getMcUsername ());
           Log.d(LOG_TAG, String.valueOf (mcLogic.getColor ()));
         });
-
-
-
-
       });
 
       getSupportFragmentManager ().beginTransaction ()
