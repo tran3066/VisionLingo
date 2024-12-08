@@ -10,7 +10,6 @@ package edu.pacificu.cs.cs325.translationapp;
 
 public class BusinessLogicUIState
 {
-  //private User mcUser;
   private int mColor;
   private byte[] mcImage;
   private boolean mbPictureTaken;

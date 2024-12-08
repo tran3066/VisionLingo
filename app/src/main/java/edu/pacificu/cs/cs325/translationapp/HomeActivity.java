@@ -162,8 +162,8 @@ public class HomeActivity extends AppCompatActivity
     if (mcPassword.isEmpty () || mcUsername.isEmpty ())
     {
       runOnUiThread (() -> {
-        Toast.makeText(this, "Username and password cannot be empty",
-                Toast.LENGTH_SHORT).show();
+        Toast.makeText (this, "Username and password cannot be empty",
+            Toast.LENGTH_SHORT).show ();
       });
 
       return;
@@ -175,9 +175,9 @@ public class HomeActivity extends AppCompatActivity
         if (mcUsername.equals (cCheck.getMcUsername ()))
         {
           runOnUiThread (() -> {
-            Toast.makeText(this,
-                    "Username taken: Please login or Choose a new Username",
-                    Toast.LENGTH_SHORT).show();
+            Toast.makeText (this,
+                "Username taken: Please login or Choose a new Username",
+                Toast.LENGTH_SHORT).show ();
           });
           return;
         }
@@ -213,8 +213,8 @@ public class HomeActivity extends AppCompatActivity
     if (mcPassword.isEmpty () || mcUsername.isEmpty ())
     {
       runOnUiThread (() -> {
-        Toast.makeText(this, "Username and password cannot be empty",
-                Toast.LENGTH_SHORT).show();
+        Toast.makeText (this, "Username and password cannot be empty",
+            Toast.LENGTH_SHORT).show ();
       });
       return;
     }
@@ -299,9 +299,9 @@ public class HomeActivity extends AppCompatActivity
             {
               runOnUiThread (() -> {
                 int duration = Toast.LENGTH_SHORT;
-                Toast cToast = Toast.makeText(HomeActivity.this,
-                        "Model Downloaded", duration);
-                cToast.show();
+                Toast cToast = Toast.makeText (HomeActivity.this,
+                    "Model Downloaded", duration);
+                cToast.show ();
               });
             }
           });

@@ -13,18 +13,15 @@ import java.util.List;
 public class Dictionary
 {
   private HashMap<String, Word> mcDictionary;
-  //private String mcLanguage;
 
   /**
    * Initializes Dictionary by initializing HashMap and language
-   *
-   *
    */
 
   public Dictionary (List<Word> mcListOfWords)
   {
     mcDictionary = new HashMap<> ();
-    for(Word cWord: mcListOfWords)
+    for (Word cWord : mcListOfWords)
     {
       mcDictionary.put (cWord.getMcEnglishWord (), cWord);
     }
@@ -53,14 +50,4 @@ public class Dictionary
   {
     return mcDictionary.get (cWordName);
   }
-
-  //  public ArrayList<Word> getAllWords()
-  //  {
-  //    ArrayList listOfWords = ArrayList<>(mcDictionary.values());
-  //    return mcDictionary.values ();
-  //  }
-
-
-
-
 }

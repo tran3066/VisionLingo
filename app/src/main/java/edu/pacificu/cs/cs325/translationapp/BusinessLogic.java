@@ -47,7 +47,7 @@ public class BusinessLogic extends ViewModel
   public void setDAO (DictionaryDAO cDictionaryDAO)
   {
     mcDictionaryDAO = cDictionaryDAO;
-    mcDictionary = new  Dictionary(mcDictionaryDAO.getAll ());
+    mcDictionary = new Dictionary (mcDictionaryDAO.getAll ());
   }
 
   /**
@@ -56,7 +56,7 @@ public class BusinessLogic extends ViewModel
    * @return the DictionaryDAO object
    */
 
-  public Word getWord(String cWord)
+  public Word getWord (String cWord)
   {
     return mcDictionary.getWord (cWord);
   }
@@ -188,7 +188,6 @@ public class BusinessLogic extends ViewModel
   public int getColor ()
   {
     return mColor;
-    //test.....
   }
 
   /**
@@ -255,14 +254,14 @@ public class BusinessLogic extends ViewModel
         tempColor = Color.BLUE;
         break;
       default:
-        Log.d("TransferActivity", "Entered Default");
+        Log.d ("TransferActivity", "Entered Default");
         tempColor = 0;
         break;
     }
 
     mcUser = cUser;
-    Log.d("TransferActivity", String.valueOf (tempColor));
-    setColor(tempColor);
+    Log.d ("TransferActivity", String.valueOf (tempColor));
+    setColor (tempColor);
     mcUiState.setValue (
         new BusinessLogicUIState (tempColor, cUser.getLanguage (), getImage (),
             getWordFromCamera (), mbPictureTaken));

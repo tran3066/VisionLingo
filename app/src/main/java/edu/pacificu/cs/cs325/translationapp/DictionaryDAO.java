@@ -71,19 +71,6 @@ public interface DictionaryDAO
   void deleteAll ();
 
   /**
-   * Search for a specific word in the dictionary database by English word
-   *
-   * @param cWord the English word associated with the word
-   * @return word if found in the dictionary database
-   */
-
-  @Query ("SELECT * FROM Word WHERE mcEnglishWord LIKE :cWord")
-  List<Word> getWordByString (String cWord);
-
-  @Query ("SELECT * FROM Word WHERE mcEnglishWord LIKE 'White'")
-  List<Word> getWordWhite ();
-
-  /**
    * Return a random word from the Dictionary database
    *
    * @return a random word from the Dictionary database
