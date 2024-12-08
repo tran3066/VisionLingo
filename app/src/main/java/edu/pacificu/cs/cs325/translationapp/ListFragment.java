@@ -15,6 +15,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import edu.pacificu.cs.cs325.translationapp.databinding.FragmentListBinding;
 
 /**
@@ -34,11 +37,14 @@ import edu.pacificu.cs.cs325.translationapp.databinding.FragmentListBinding;
 
 public class ListFragment extends Fragment
 {
+  private final int NUM_THREADS = 1;
+
   private VocabRecyclerViewAdapter mcAdapter;
   private FragmentListBinding mcBinding;
   private DividerItemDecoration mcDivider;
   private LinearLayoutManager mcLayoutManager;
   private BusinessLogic mcLogic;
+  private ExecutorService mcRunner;
 
   /**
    * Initializes ListFragment (required empty public constructor)
@@ -87,6 +93,7 @@ public class ListFragment extends Fragment
     BusinessLogic mcLogic = new ViewModelProvider (getActivity ()).get (
         BusinessLogic.class);
 
+    mcRunner = Executors.newFixedThreadPool (NUM_THREADS);
     mcBinding.rvWords.setHasFixedSize (true);
     mcBinding.rvWords.setLayoutManager (
         new LinearLayoutManager (getActivity ()));
@@ -129,8 +136,12 @@ public class ListFragment extends Fragment
   public void onResume ()
   {
     super.onResume ();
-    mcAdapter = new VocabRecyclerViewAdapter (
-        mcLogic.getUser ().getMcVocabList ());
+
+    mcRunner.execute (() -> {
+      mcAdapter = new VocabRecyclerViewAdapter (
+          mcLogic.getUser ().getMcVocabList ());
+    });
+
     mcBinding.rvWords.setAdapter (mcAdapter);
   }
 }
