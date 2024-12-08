@@ -79,9 +79,10 @@ public class TransferActivity extends AppCompatActivity
 
       getSupportFragmentManager ().beginTransaction ()
           .setReorderingAllowed (true)
-          .replace (R.id.fragment_container_view, PreferenceFragment.class,
+          .add (R.id.fragment_container_view, PreferenceFragment.class,
               null).commit ();
     }
+
     else if ("Login".equals (cReceiveIntent.getStringExtra ("Type")))
     {
       String cUsername = cReceiveIntent.getStringExtra ("Username");
@@ -90,8 +91,6 @@ public class TransferActivity extends AppCompatActivity
       mcRunner.execute (() -> {
         mcLogic.setUser (mcUserDAO.findUserByNamePass (cUsername, cPassword));
       });
-
-
 
       getSupportFragmentManager ().beginTransaction ()
           .setReorderingAllowed (true)

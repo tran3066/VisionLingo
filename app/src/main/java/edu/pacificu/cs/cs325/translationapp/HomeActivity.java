@@ -22,6 +22,7 @@ import com.google.mlkit.nl.translate.TranslatorOptions;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -47,19 +48,17 @@ public class HomeActivity extends AppCompatActivity
   private final String SPANISH = "es";
   private final String ENGLISH = "en";
   private final int SIZE_DATABASE = 36657;
-  private final int NUM_THREADS = 6;
-
+  private final int NUM_THREADS = 5;
   private ActivityHomeBinding mcBinding;
   private ExecutorService mcRunner;
-  public static UserDAO mcUserDAO;
+  protected static UserDAO mcUserDAO;
   private UserDB mcUserDB;
   private String mcUsername;
   private String mcPassword;
-  private ArrayList<User> mcUsersFromDB;
-  public static DictionaryDAO mcDictionaryDAO;
+  private ArrayList<User> usersFromDB;
+  protected static DictionaryDAO mcDictionaryDAO;
   private BusinessLogic mcLogic;
   private User mcCurrentUser;
-  private Intent mcIntent;
   private boolean bUserFound;
 
   /**
@@ -91,13 +90,14 @@ public class HomeActivity extends AppCompatActivity
     mcRunner = Executors.newFixedThreadPool (NUM_THREADS);
     mcLogic = new ViewModelProvider (this).get (BusinessLogic.class);
 
+
     mcRunner.execute (() -> {
       try
       {
         mcUserDB = Room.databaseBuilder (getApplicationContext (), UserDB.class,
             "User-DB").fallbackToDestructiveMigrationOnDowngrade ().build ();
         mcUserDAO = mcUserDB.userDao ();
-        mcUsersFromDB = (ArrayList<User>) mcUserDAO.getAll ();
+        usersFromDB = (ArrayList<User>) mcUserDAO.getAll ();
       }
       catch (Exception e)
       {
@@ -105,31 +105,31 @@ public class HomeActivity extends AppCompatActivity
       }
     });
 
-    buildDictionary ();
-    buildLanguageModel (FRENCH);
-    buildLanguageModel (SPANISH);
+    buildDictionary (mcRunner);
+    buildLanguageModel (mcRunner, FRENCH);
+    buildLanguageModel (mcRunner, ENGLISH);
 
-    mcIntent = new Intent (this, TransferActivity.class);
+    Intent intent = new Intent (this, TransferActivity.class);
 
     mcBinding.btnLogin.setOnClickListener (v -> {
-      login ();
+      login (intent, mcRunner, usersFromDB);
     });
 
     mcBinding.btnNewUser.setOnClickListener ((view -> {
-      newUser ();
+
+      newUser (intent, mcRunner, usersFromDB);
 
       mcRunner.execute (() -> {
+        UserPreference cDefault = new UserPreference ("defaultCol",
+            "defaultLang");
+        mcCurrentUser.setMcUserPreference (cDefault);
         mcUserDAO.insert (mcCurrentUser);
       });
     }));
   }
 
-  /**
-   * newUser method that adds a new user to the User database after the user
-   * presses the "New User" button
-   */
-
-  private void newUser ()
+  private void newUser (Intent intent, ExecutorService mcRunner,
+      List<User> usersFromDB)
   {
     mcUsername = mcBinding.ptUsername.getText ().toString ().trim ();
     mcPassword = mcBinding.ptPassword.getText ().toString ().trim ();
@@ -143,9 +143,9 @@ public class HomeActivity extends AppCompatActivity
     }
 
     mcRunner.execute (() -> {
-      for (User cCheck : mcUsersFromDB)
+      for (User check : usersFromDB)
       {
-        if (mcUsername.equals (cCheck.getMcUsername ()))
+        if (mcUsername.equals (check.getMcUsername ()))
         {
           Toast.makeText (this,
               "Username taken: Please login or Choose a new Username",
@@ -163,22 +163,20 @@ public class HomeActivity extends AppCompatActivity
       Log.d (LOG_TAG, "New user created");
       Log.d (LOG_TAG, "Launch User Preferences");
 
-      mcIntent.setAction (Intent.ACTION_SEND);
-      mcIntent.putExtra("Type", "NewUser");
-      mcIntent.putExtra ("Username", mcCurrentUser.getMcUsername ());
-      mcIntent.putExtra ("Password", mcCurrentUser.getMcPassword ());
-      //mcIntent.setType ("NewUser");
-      startActivity (mcIntent);
+      intent.setAction (Intent.ACTION_SEND);
+      intent.putExtra ("Username", mcCurrentUser.getMcUsername ());
+      intent.putExtra ("Password", mcCurrentUser.getMcPassword ());
+      intent.setType ("String");
+      startActivity (intent);
       Log.d (LOG_TAG, "User Preferences Activity started");
+
     }
   }
 
-  /**
-   * login method that authenticates an existing user from the user database
-   */
-
-  private void login ()
+  private void login (Intent intent, ExecutorService mcRunner,
+      List<User> usersFromDB)
   {
+
     mcUsername = mcBinding.ptUsername.getText ().toString ().trim ();
     mcPassword = mcBinding.ptPassword.getText ().toString ().trim ();
 
@@ -190,35 +188,32 @@ public class HomeActivity extends AppCompatActivity
     }
 
     mcRunner.execute (() -> {
-      if (mcUsersFromDB != null)
+      if (usersFromDB != null)
       {
-        for (User cCheck : mcUsersFromDB)
+        for (User check : usersFromDB)
         {
-          if (mcUsername.equals (cCheck.getMcUsername ()))
+          if (mcUsername.equals (check.getMcUsername ()))
           {
             bUserFound = true;
 
-            if (mcPassword.equals (cCheck.getMcPassword ()))
+            if (mcPassword.equals (check.getMcPassword ()))
             {
-              mcCurrentUser = cCheck;
-              mcIntent.putExtra("Type", "Login");
-              mcIntent.putExtra ("Username", mcUsername);
-              mcIntent.putExtra ("Password", mcPassword);
-              //mcIntent.setType ("Login");
+              mcCurrentUser = check;
 
               runOnUiThread (() -> {
                 mcLogic.setUser (mcCurrentUser);
+                Log.d (LOG_TAG, mcLogic.getUser().getMcUserPreference ().getColor () + " " + mcLogic.getUser().getMcUserPreference ().getLanguage ());
               });
             }
             else
             {
               runOnUiThread (() -> {
                 int time = Toast.LENGTH_SHORT;
-                StringBuilder cWordMessage = new StringBuilder ();
-                cWordMessage.append ("Incorrect Password for User: ")
+                StringBuilder wordMessage = new StringBuilder ();
+                wordMessage.append ("Incorrect Password for User: ")
                     .append (mcUsername);
-                Toast cToast = Toast.makeText (this, cWordMessage, time);
-                cToast.show ();
+                Toast toast = Toast.makeText (this, wordMessage, time);
+                toast.show ();
                 Log.d (LOG_TAG, "Password Incorrect Toast was shown");
               });
             }
@@ -226,62 +221,53 @@ public class HomeActivity extends AppCompatActivity
         }
       }
 
-      if (null != mcCurrentUser && bUserFound)
+      if (mcCurrentUser != null && bUserFound)
       {
         Log.d (LOG_TAG, "Launch CameraActivity from Login");
-        startActivity (mcIntent);
+        startActivity (intent);
         Log.d (LOG_TAG, "Camera Activity started");
       }
       else if (!bUserFound)
       {
         runOnUiThread (() -> {
           int time = Toast.LENGTH_SHORT;
-          StringBuilder cWordMessage = new StringBuilder ();
-          cWordMessage.append ("User: ").append (mcUsername)
+          StringBuilder wordMessage = new StringBuilder ();
+          wordMessage.append ("User: ").append (mcUsername)
               .append (" not found. Please create a new account");
-          Toast cToast = Toast.makeText (this, cWordMessage, time);
-          cToast.show ();
+          Toast toast = Toast.makeText (this, wordMessage, time);
+          toast.show ();
           Log.d (LOG_TAG, "User not Found Toast was shown");
         });
       }
     });
   }
 
-  /**
-   * buildLanguageModel method that initializes the language translation model
-   * by setting up the translator options and downloading the necessary model
-   *
-   * @param cLanguage language model to load (English to this language)
-   */
-
-  private void buildLanguageModel (String cLanguage)
+  private void buildLanguageModel(ExecutorService mcRunner, String language)
   {
-    mcRunner.execute (() -> {
-      TranslatorOptions cOptions = new TranslatorOptions.Builder ().setTargetLanguage (
-          cLanguage).setSourceLanguage (ENGLISH).build ();
-      Translator cTranslator = Translation.getClient (cOptions);
 
-      cTranslator.downloadModelIfNeeded ()
-          .addOnSuccessListener (new OnSuccessListener<Void> ()
-          {
-            @Override
-            public void onSuccess (Void cUnused)
-            {
-              int duration = Toast.LENGTH_SHORT;
-              Toast cToast = Toast.makeText (HomeActivity.this,
-                  "Model Downloaded", duration);
-              cToast.show ();
-            }
-          });
+    mcRunner.execute(() ->
+    {
+      TranslatorOptions mcOptions = new TranslatorOptions.Builder()
+          .setTargetLanguage(language)
+          .setSourceLanguage ("en")
+          .build();
+      Translator mcTranslator = Translation.getClient (mcOptions);
+      mcTranslator.downloadModelIfNeeded ().addOnSuccessListener (new OnSuccessListener<Void> ()
+      {
+        @Override
+        public void onSuccess (Void unused)
+        {
+          int duration = Toast.LENGTH_SHORT;
+          Toast cToast = Toast.makeText (HomeActivity.this,
+              "Model Downloaded",
+              duration);
+          cToast.show ();
+        }
+      });
     });
   }
 
-  /**
-   * buildDictionary method that loads the online Oxford dictionary onto the
-   * local Dictionary database
-   */
-
-  private void buildDictionary ()
+  private void buildDictionary (ExecutorService mcRunner)
   {
     DictionaryDB mcDictionaryDB = Room.databaseBuilder (
         getApplicationContext (), DictionaryDB.class, "Dictionary-DB").build ();
@@ -291,7 +277,8 @@ public class HomeActivity extends AppCompatActivity
       if (mcDictionaryDAO.getSize () == 0
           || mcDictionaryDAO.getSize () != SIZE_DATABASE)
       {
-        //mcDictionaryDAO.deleteAll ();
+        mcDictionaryDAO.deleteAll ();
+
         try
         {
           URL cDictionaryURL = new URL ("https://raw.githubusercontent.com"
