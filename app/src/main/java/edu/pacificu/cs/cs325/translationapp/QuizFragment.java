@@ -135,7 +135,7 @@ public class QuizFragment extends Fragment
 
           if (floatSum > SHAKE_THRESHOLD)
           {
-            mcBinding.tvQuestionWord.setText ("Word from Shake");
+            setRandomWord ();
           }
           else
           {
