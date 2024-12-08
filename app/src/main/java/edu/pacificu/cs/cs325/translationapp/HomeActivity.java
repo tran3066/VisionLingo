@@ -295,7 +295,7 @@ public class HomeActivity extends AppCompatActivity
       if (mcDictionaryDAO.getSize () == 0
           || mcDictionaryDAO.getSize () != SIZE_DATABASE)
       {
-        //mcDictionaryDAO.deleteAll ();
+        mcDictionaryDAO.deleteAll ();
         try
         {
           URL cDictionaryURL = new URL ("https://raw.githubusercontent.com"

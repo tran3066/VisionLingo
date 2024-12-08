@@ -97,4 +97,16 @@ public class Word
   {
     return this.mWid;
   }
+
+  @Override
+  public String toString()
+  {
+    StringBuilder tempBuilder = new StringBuilder ();
+    tempBuilder.append (mcEnglishWord);
+    tempBuilder.append ("\n");
+    tempBuilder.append (mcLexical);
+    tempBuilder.append ("\n");
+    tempBuilder.append (mcDefinition);
+    return tempBuilder.toString ();
+  }
 }

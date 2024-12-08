@@ -118,8 +118,6 @@ public class InfoFragment extends Fragment
             "User-DB").fallbackToDestructiveMigrationOnDowngrade ().build ();
         mcUserDAO = mcUserDB.userDao ();
         //usersFromDB = mcUserDAO.getAll ();
-        Log.d (LOG_TAG, String.valueOf (mcLogic.getUser().getMUid ()));
-        Log.d(LOG_TAG, "Updated Users: " + mcLogic.getUser ().toString ());
       } catch (Exception e) {
         throw new RuntimeException(e);
       }
@@ -185,48 +183,74 @@ public class InfoFragment extends Fragment
       }
     };
     mcBinding.btnAdd.setOnClickListener (v -> {
-      Vocab newVocab;
-      Word newWord = mcLogic.getDAO ()
-          .getWordByString (mcBinding.tvSearch.getText ().toString ());
-      newVocab = new Vocab (newWord,
-                            mcLogic.getImage (),
-                            mcBinding.tvWordTranslate.getText().toString ());
-      mcLogic.getUser ().addToVocab (newVocab);
-      mcUserDAO.update (mcLogic.getUser ());
+
+      mcRunner.execute (()->
+      {
+//        Vocab newVocab;
+//        Word newWord = mcLogic.getDAO ()
+//            .getWordByString (mcBinding.tvSearch.getText ().toString ());
+//        newVocab = new Vocab (newWord,
+//            mcLogic.getImage (),
+//            mcBinding.tvWordTranslate.getText().toString ());
+//        mcLogic.getUser ().addToVocab (newVocab);
+//        mcUserDAO.update (mcLogic.getUser ());
+      });
+
     });
 
-    mcLogic.getMcUiState ().observe (getActivity (), mcObserver);
-
     mcBinding.btnSearch.setOnClickListener (v -> {
-      String cTempString;
-      Word cTempWord;
-      DictionaryDAO cTempDAO = mcLogic.getDAO ();
-      cTempString = mcBinding.tvSearch.getText ().toString ();
-      cTempWord = cTempDAO.getWordByString (cTempString);
-      mcBinding.tvWordInfo.setText (cTempWord.toString ());
-      mcLogic.resetImg ();
-      Task<String> cResult = mcTranslator.translate (
-              cTempWord.getMcEnglishWord ())
-          .addOnSuccessListener (new OnSuccessListener<String> ()
-          {
-            @Override
-            public void onSuccess (String cS)
+      Log.d (LOG_TAG, "btnSearch Pressed");
+
+      mcRunner.execute (()-> {
+        String cTempString;
+        Word cTempWord;
+        DictionaryDAO cTempDAO = mcLogic.getDAO ();
+        Log.d(LOG_TAG, String.valueOf (cTempDAO.getSize ()));
+
+        cTempString = mcBinding.tvSearch.getText ().toString ();
+        Log.d (LOG_TAG, cTempString);
+        Log.d (LOG_TAG, String.valueOf (cTempDAO.getWordWhite ().size ()));
+        Log.d (LOG_TAG, String.valueOf (cTempDAO.getWordWhite ().get(0).getMcEnglishWord ()));
+        //cTempWord = cTempDAO.getWordByString (cTempString);
+        cTempWord = cTempDAO.getWordWhite ().get(0);
+
+
+        getActivity ().runOnUiThread (() ->
+        {
+          mcBinding.tvWordInfo.setText (cTempWord.toString ());
+          Log.d (LOG_TAG, "btnSearch Pressed");
+        });
+        Task<String> cResult = mcTranslator.translate (
+                cTempWord.getMcEnglishWord ())
+            .addOnSuccessListener (new OnSuccessListener<String> ()
             {
-              getActivity ().runOnUiThread (() -> {
-                mcBinding.tvWordTranslate.setText (cS);
-              });
-            }
-          }).addOnFailureListener (new OnFailureListener ()
-          {
-            @Override
-            public void onFailure (@NonNull Exception cException)
+              @Override
+              public void onSuccess (String cS)
+              {
+                Log.d (LOG_TAG, "translation successful");
+                getActivity ().runOnUiThread (() -> {
+                  mcBinding.tvWordTranslate.setText (cS);
+                });
+              }
+            }).addOnFailureListener (new OnFailureListener ()
             {
-              getActivity ().runOnUiThread (() -> {
-                mcBinding.tvWordTranslate.setText (
-                    cTempWord.getMcEnglishWord ());
-              });
-            }
-          });
+              @Override
+              public void onFailure (@NonNull Exception cException)
+              {
+                Log.d (LOG_TAG, "translation unsuccessful");
+                getActivity ().runOnUiThread (() -> {
+                  mcBinding.tvWordTranslate.setText (
+                      cTempWord.getMcEnglishWord ());
+                });
+              }
+            });
+        mcLogic.resetImg ();
+      });
+
+
+
+
+
     });
 
     mcLogic.getMcUiState ().observe (getActivity (), mcObserver);

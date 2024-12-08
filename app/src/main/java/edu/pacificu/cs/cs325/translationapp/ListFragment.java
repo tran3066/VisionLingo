@@ -128,6 +128,8 @@ public class ListFragment extends Fragment
   public void onDestroyView ()
   {
     super.onDestroyView ();
+    mcBinding = null;
+
   }
 
   /**

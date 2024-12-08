@@ -138,7 +138,7 @@ public class QuizFragment extends Fragment
           }
           else
           {
-            mcBinding.tvQuestionWord.setText ("No shake");
+            //mcBinding.tvQuestionWord.setText ("No shake");
           }
         }
       }
@@ -242,6 +242,8 @@ public class QuizFragment extends Fragment
   public void onDestroyView ()
   {
     super.onDestroyView ();
+    mcBinding = null;
+    mcLogic.getMcUiState ().removeObserver (mcObserver);
   }
 
   /**

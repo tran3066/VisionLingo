@@ -77,6 +77,9 @@ public interface DictionaryDAO
    * @return word if found in the dictionary database
    */
 
-  @Query ("SELECT * FROM Word WHERE mcEnglishWord = :cWord")
-  Word getWordByString (String cWord);
+  @Query ("SELECT * FROM Word WHERE mcEnglishWord LIKE :cWord")
+  List<Word> getWordByString (String cWord);
+
+  @Query ("SELECT * FROM Word WHERE mcEnglishWord LIKE 'White'")
+  List<Word> getWordWhite();
 }
