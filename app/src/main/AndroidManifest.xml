@@ -23,12 +23,6 @@
             android:name=".TransferActivity"
             android:exported="false" />
         <activity
-            android:name=".ListActivity"
-            android:exported="false" />
-        <activity
-            android:name=".InfoActivity"
-            android:exported="false" />
-        <activity
             android:name=".HomeActivity"
             android:exported="true">
             <intent-filter>
