@@ -19,7 +19,6 @@ public class BusinessLogic extends ViewModel
   private final MutableLiveData<BusinessLogicUIState> mcUiState;
   private int mColor = 0;
   private boolean mbPictureTaken;
-
   private User mcUser;
   private DictionaryDAO mcDictionaryDAO;
 
