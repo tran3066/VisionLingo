@@ -48,7 +48,6 @@ public class HomeActivity extends AppCompatActivity
   private final String ENGLISH = "en";
   private final int SIZE_DATABASE = 36657;
   private final int NUM_THREADS = 6;
-
   private ActivityHomeBinding mcBinding;
   private ExecutorService mcRunner;
   public static UserDAO mcUserDAO;
@@ -164,10 +163,9 @@ public class HomeActivity extends AppCompatActivity
       Log.d (LOG_TAG, "Launch User Preferences");
 
       mcIntent.setAction (Intent.ACTION_SEND);
-      mcIntent.putExtra ("Type", "NewUser");
       mcIntent.putExtra ("Username", mcCurrentUser.getMcUsername ());
       mcIntent.putExtra ("Password", mcCurrentUser.getMcPassword ());
-      //mcIntent.setType ("NewUser");
+      mcIntent.setType ("New User");
       startActivity (mcIntent);
       Log.d (LOG_TAG, "User Preferences Activity started");
     }
@@ -201,9 +199,9 @@ public class HomeActivity extends AppCompatActivity
             if (mcPassword.equals (cCheck.getMcPassword ()))
             {
               mcCurrentUser = cCheck;
-              mcIntent.putExtra ("Type", "Login");
-              mcIntent.putExtra ("Username", mcUsername);
-              mcIntent.putExtra ("Password", mcPassword);
+//              mcIntent.putExtra ("Type", "Login");
+//              mcIntent.putExtra ("Username", mcUsername);
+//              mcIntent.putExtra ("Password", mcPassword);
               //mcIntent.setType ("Login");
 
               runOnUiThread (() -> {
@@ -229,6 +227,11 @@ public class HomeActivity extends AppCompatActivity
       if (null != mcCurrentUser && bUserFound)
       {
         Log.d (LOG_TAG, "Launch CameraActivity from Login");
+
+        mcIntent.setAction (Intent.ACTION_SEND);
+        mcIntent.putExtra ("Username", mcCurrentUser.getMcUsername ());
+        mcIntent.putExtra ("Password", mcCurrentUser.getMcPassword ());
+        mcIntent.setType ("Login");
         startActivity (mcIntent);
         Log.d (LOG_TAG, "Camera Activity started");
       }
