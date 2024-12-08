@@ -135,6 +135,7 @@ public class InfoFragment extends Fragment
         String cTempString;
         Word cTempWord;
         cTempString = mcBinding.tvSearch.getText ().toString ();
+        Log.d (LOG_TAG, cTempString);
         cTempWord = mcLogic.getWord (cTempString);
 
         getActivity ().runOnUiThread (() -> {
