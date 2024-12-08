@@ -27,7 +27,7 @@ public class TransferActivity extends AppCompatActivity
 {
   private ActivityTransferBinding mcBinding;
   private BusinessLogic mcLogic;
-  private MenuItem item;
+  private MenuItem mcItem;
   private UserDAO mcUserDAO;
   private UserDB mcUserDB;
 
@@ -57,7 +57,7 @@ public class TransferActivity extends AppCompatActivity
         });
 
     mcLogic = new ViewModelProvider (this).get (BusinessLogic.class);
-    Intent receiveIntent = getIntent ();
+    Intent cReceiveIntent = getIntent ();
 
     DictionaryDB mcDictionaryDB = Room.databaseBuilder (
         getApplicationContext (), DictionaryDB.class, "Dictionary-DB").build ();
@@ -67,10 +67,10 @@ public class TransferActivity extends AppCompatActivity
         "User-DB").fallbackToDestructiveMigrationOnDowngrade ().build ();
     mcUserDAO = mcUserDB.userDao ();
 
-    if ("NewUser".equals (receiveIntent.getStringExtra ("Type")))
+    if ("NewUser".equals (cReceiveIntent.getStringExtra ("Type")))
     {
-      String username = receiveIntent.getStringExtra ("Username");
-      String password = receiveIntent.getStringExtra ("Password");
+      String username = cReceiveIntent.getStringExtra ("Username");
+      String password = cReceiveIntent.getStringExtra ("Password");
       mcLogic.setUser (mcUserDAO.findUserByNamePass (username, password));
 
       getSupportFragmentManager ().beginTransaction ()
@@ -78,10 +78,10 @@ public class TransferActivity extends AppCompatActivity
           .replace (R.id.fragment_container_view, PreferenceFragment.class,
               null).commit ();
     }
-    else if ("Login".equals (receiveIntent.getStringExtra("Type")))
+    else if ("Login".equals (cReceiveIntent.getStringExtra("Type")))
     {
-      String username = receiveIntent.getStringExtra ("Username");
-      String password = receiveIntent.getStringExtra ("Password");
+      String username = cReceiveIntent.getStringExtra ("Username");
+      String password = cReceiveIntent.getStringExtra ("Password");
       mcLogic.setUser (mcUserDAO.findUserByNamePass (username, password));
 
       getSupportFragmentManager ().beginTransaction ()
