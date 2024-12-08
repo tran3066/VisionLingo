@@ -98,13 +98,14 @@ public class TransferActivity extends AppCompatActivity
         runOnUiThread (() ->
         {
           mcLogic.setUser (mcUserDAO.findUserByNamePass (cUsername, cPassword));
+          Log.d (LOG_TAG, mcLogic.getUser ().getMcUsername ());
+          Log.d(LOG_TAG, String.valueOf (mcLogic.getColor ()));
+          Log.d(LOG_TAG, mcUserDAO.findUserByNamePass (cUsername, cPassword).getColor ());
         });
 
 
 
-          Log.d (LOG_TAG, mcLogic.getUser ().getMcUsername ());
-          Log.d(LOG_TAG, String.valueOf (mcLogic.getColor ()));
-          Log.d(LOG_TAG, mcUserDAO.findUserByNamePass (cUsername, cPassword).getColor ());
+
       });
 
       getSupportFragmentManager ().beginTransaction ()
