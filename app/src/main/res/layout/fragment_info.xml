@@ -45,19 +45,7 @@
             app:layout_constraintHorizontal_bias="0.107"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.808" />
-
-    <Button
-            android:id="@+id/btnSpeak"
-            android:layout_width="143dp"
-            android:layout_height="49dp"
-            android:text="@string/btnSpeak"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.839"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.887" />
+            app:layout_constraintVertical_bias="0.879" />
 
     <Button
             android:id="@+id/btnAdd"
@@ -69,7 +57,7 @@
             app:layout_constraintHorizontal_bias="0.208"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.887" />
+            app:layout_constraintVertical_bias="0.959" />
 
     <Button
             android:id="@+id/btnSearch"
@@ -81,7 +69,19 @@
             app:layout_constraintHorizontal_bias="0.948"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.794" />
+            app:layout_constraintVertical_bias="0.865" />
+
+    <Button
+            android:id="@+id/btnSpeak"
+            android:layout_width="143dp"
+            android:layout_height="49dp"
+            android:text="@string/btnSpeak"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.839"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.958" />
 
     <ImageView
             android:id="@+id/imgWord"
@@ -92,6 +92,6 @@
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.681"
+            app:layout_constraintVertical_bias="0.711"
             app:srcCompat="@drawable/baseline_info_24" />
 </androidx.constraintlayout.widget.ConstraintLayout>

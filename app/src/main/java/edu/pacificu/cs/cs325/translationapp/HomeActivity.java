@@ -123,11 +123,17 @@ public class HomeActivity extends AppCompatActivity
         mcUserDB = Room.databaseBuilder (getApplicationContext (), UserDB.class,
             "User-DB").fallbackToDestructiveMigrationOnDowngrade ().build ();
         mcUserDAO = mcUserDB.userDao ();
+
+        // Uncomment this and run it if you try to log in with an existing user
+        // and you can't login (I think the images get too big in the database,
+        // so that messes up things if you add too many)
+        // mcUserDAO.deleteAll ();
+
         mcUsersFromDB = (ArrayList<User>) mcUserDAO.getAll ();
       }
       catch (Exception cException)
       {
-        throw new RuntimeException (cException);
+        Log.d (LOG_TAG, cException.toString ());
       }
     });
 

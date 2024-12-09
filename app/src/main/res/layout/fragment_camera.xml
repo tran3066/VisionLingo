@@ -8,62 +8,65 @@
     tools:context=".CameraFragment">
 
     <androidx.camera.view.PreviewView
-        android:id="@+id/cameraPreview"
-        android:layout_width="315dp"
-        android:layout_height="264dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.098">
+            android:id="@+id/cameraPreview"
+            android:layout_width="315dp"
+            android:layout_height="264dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.085">
 
     </androidx.camera.view.PreviewView>
 
-    <ImageView
-        android:id="@+id/cptIMG"
-        android:layout_width="173dp"
-        android:layout_height="136dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.067"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.773"
-        app:srcCompat="@android:drawable/alert_dark_frame" />
+    <Button
+            android:id="@+id/btnTranslate"
+            android:layout_width="153dp"
+            android:layout_height="56dp"
+            android:text="@string/Translate"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.841"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.976"
+            android:gravity="center" />
 
     <Button
-        android:id="@+id/btnTakePicture"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/TakePicture"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.53" />
-
-    <Button
-        android:id="@+id/btnTranslate"
-        android:layout_width="156dp"
-        android:layout_height="68dp"
-        android:text="@string/Translate"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.933" />
+            android:id="@+id/btnTakePicture"
+            android:layout_width="153dp"
+            android:layout_height="56dp"
+            android:text="@string/TakePicture2"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.147"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.976"
+            android:gravity="center" />
 
     <TextView
-        android:id="@+id/txtTextView"
-        android:layout_width="173dp"
-        android:layout_height="140dp"
-        app:layout_constraintBottom_toTopOf="@+id/btnTranslate"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.932"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.961" />
+            android:id="@+id/txtTextView"
+            android:layout_width="199dp"
+            android:layout_height="87dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:gravity="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="0.869"
+            android:textStyle="bold"
+            android:textSize="24sp" />
+
+    <ImageView
+            android:id="@+id/cptIMG"
+            android:layout_width="173dp"
+            android:layout_height="136dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.665"
+            app:srcCompat="@android:drawable/alert_dark_frame" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

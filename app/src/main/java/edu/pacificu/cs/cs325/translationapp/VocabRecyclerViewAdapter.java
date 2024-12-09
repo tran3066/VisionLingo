@@ -23,6 +23,8 @@ import java.util.ArrayList;
 public class VocabRecyclerViewAdapter
     extends RecyclerView.Adapter<VocabRecyclerViewAdapter.ViewHolder>
 {
+  private final int ROTATION = 90;
+
   private ArrayList<Vocab> mcData;
 
   /**
@@ -147,6 +149,7 @@ public class VocabRecyclerViewAdapter
         mcImageWord.setImageBitmap (
             BitmapFactory.decodeByteArray (mcVocab.getImage (), 0,
                 mcVocab.getImage ().length));
+        mcImageWord.setRotation (ROTATION);
       }
       else
       {
