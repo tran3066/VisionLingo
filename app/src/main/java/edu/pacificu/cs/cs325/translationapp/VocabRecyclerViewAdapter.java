@@ -77,7 +77,6 @@ public class VocabRecyclerViewAdapter
    * @return number of items
    */
 
-  // get number of items
   @Override
   public int getItemCount ()
   {

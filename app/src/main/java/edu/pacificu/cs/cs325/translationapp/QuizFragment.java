@@ -1,7 +1,5 @@
 package edu.pacificu.cs.cs325.translationapp;
 
-import static androidx.core.content.ContextCompat.getSystemService;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.hardware.Sensor;
@@ -30,8 +28,6 @@ import com.google.mlkit.nl.translate.Translation;
 import com.google.mlkit.nl.translate.Translator;
 import com.google.mlkit.nl.translate.TranslatorOptions;
 
-import java.util.Random;
-
 import edu.pacificu.cs.cs325.translationapp.databinding.FragmentQuizBinding;
 
 /**
@@ -49,12 +45,11 @@ import edu.pacificu.cs.cs325.translationapp.databinding.FragmentQuizBinding;
 
 public class QuizFragment extends Fragment
 {
-  private final String LOG_TAG = "QuizFragment";
   private final int POS_ONE = 0;
   private final int POS_TWO = 1;
   private final int POS_THREE = 2;
   private final int SHAKE_THRESHOLD = 14;
-  private final int SIZE_DATABASE = 36657;
+  private final String LOG_TAG = "QuizFragment";
 
   private Observer<BusinessLogicUIState> mcObserver;
   private FragmentQuizBinding mcBinding;
@@ -134,17 +129,12 @@ public class QuizFragment extends Fragment
           {
             setRandomWord ();
           }
-          else
-          {
-            //mcBinding.tvQuestionWord.setText ("No shake");
-          }
         }
       }
 
       @Override
       public void onAccuracyChanged (Sensor cSensor, int accuracy)
       {
-
       }
     };
 
@@ -158,7 +148,7 @@ public class QuizFragment extends Fragment
       public void onChanged (BusinessLogicUIState cBusinessLogicUIState)
       {
         Log.d (LOG_TAG, "Things Changed");
-        //update changes here
+        // update changes here
         int colorInt = mcLogic.getMcUiState ().getValue ().getColor ();
         mcBinding.btnNewWord.setBackgroundColor (colorInt);
         mcBinding.btnSubmit.setBackgroundColor (colorInt);
@@ -167,7 +157,6 @@ public class QuizFragment extends Fragment
         mcTranslator = Translation.getClient (mcOptions);
       }
     };
-    //need to change to language
 
     mcLogic.getMcUiState ().observe (getActivity (), mcObserver);
     setRandomWord ();
@@ -178,18 +167,18 @@ public class QuizFragment extends Fragment
         getActivity ().runOnUiThread (() -> {
           Log.d (LOG_TAG, "Correct");
           Toast.makeText (getActivity ().getApplicationContext (),
-              "Answered Correctly", Toast.LENGTH_LONG).show();
+              "Answered Correctly", Toast.LENGTH_LONG).show ();
         });
-
       }
       else
       {
         getActivity ().runOnUiThread (() -> {
           Log.d (LOG_TAG, "Incorrect");
           Log.d (LOG_TAG, "Correct answer:" + mcTempWord.getMcEnglishWord ());
-          Log.d (LOG_TAG, "Incorrect answer:" + mcBinding.tvAnswerWord.toString ());
+          Log.d (LOG_TAG,
+              "Incorrect answer:" + mcBinding.tvAnswerWord.toString ());
           Toast.makeText (getActivity ().getApplicationContext (),
-              "Answered Incorrectly", Toast.LENGTH_LONG).show();
+              "Answered Incorrectly", Toast.LENGTH_LONG).show ();
         });
       }
     });
@@ -226,19 +215,6 @@ public class QuizFragment extends Fragment
   }
 
   /**
-   * Generates a random number based on the number of items in the database
-   *
-   * @return a random number from 1 to the size of the database
-   */
-
-  public int generateRandomNumber ()
-  {
-    Log.d (LOG_TAG, "Generating Number");
-    Random cTemp = new Random ();
-    return cTemp.nextInt (SIZE_DATABASE - 1) + 1;
-  }
-
-  /**
    * Obtains a random word from the dictionary
    *
    * @return a random word from the dictionary
@@ -246,7 +222,7 @@ public class QuizFragment extends Fragment
 
   public Word getRandomWord ()
   {
-    Log.d(LOG_TAG, "Generating Word");
+    Log.d (LOG_TAG, "Generating Word");
     return mcLogic.getDictionaryDAO ().getRandomWord ();
   }
 
@@ -280,7 +256,5 @@ public class QuizFragment extends Fragment
             });
           }
         });
-
-    //translation
   }
 }

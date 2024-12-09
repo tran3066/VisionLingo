@@ -47,12 +47,14 @@ import edu.pacificu.cs.cs325.translationapp.databinding.ActivityHomeBinding;
 
 public class HomeActivity extends AppCompatActivity
 {
+  private final int SIZE_DATABASE = 36657;
+  private final int NUM_THREADS = 6;
   private final String LOG_TAG = "HomeActivity";
   private final String FRENCH = "fr";
   private final String SPANISH = "es";
   private final String ENGLISH = "en";
-  private final int SIZE_DATABASE = 36657;
-  private final int NUM_THREADS = 6;
+
+  private boolean bUserFound;
   private ActivityHomeBinding mcBinding;
   private ExecutorService mcRunner;
   private UserDAO mcUserDAO;
@@ -65,7 +67,6 @@ public class HomeActivity extends AppCompatActivity
   private User mcCurrentUser;
   private Intent mcIntent;
   private ActivityResultLauncher<Intent> mcActivityLauncher;
-  private boolean bUserFound;
 
   /**
    * onCreate method that starts the activity
@@ -325,6 +326,7 @@ public class HomeActivity extends AppCompatActivity
           || mcDictionaryDAO.getSize () != SIZE_DATABASE)
       {
         mcDictionaryDAO.deleteAll ();
+
         try
         {
           URL cDictionaryURL = new URL ("https://raw.githubusercontent.com"

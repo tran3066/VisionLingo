@@ -28,7 +28,6 @@ public class BusinessLogic extends ViewModel
   private DictionaryDAO mcDictionaryDAO;
   private UserDAO mcUserDAO;
   private Dictionary mcDictionary;
-
   private Translator mcTranslator;
 
   /**
@@ -142,12 +141,6 @@ public class BusinessLogic extends ViewModel
   }
 
   /**
-   * Obtains a boolean variable that tells whether the user is signed in
-   *
-   * @return the boolean variable
-   */
-
-  /**
    * Updates the BusinessLogic class by storing the word detected from the image
    *
    * @param cWord word detected from image
@@ -155,7 +148,6 @@ public class BusinessLogic extends ViewModel
 
   public void detectWord (String cWord)
   {
-
     mcUiState.setValue (
         new BusinessLogicUIState (mcUiState.getValue ().getColor (),
             mcUiState.getValue ().getLanguage (), getImage (), cWord,
@@ -245,9 +237,9 @@ public class BusinessLogic extends ViewModel
 
   public void setLanguage (String cLanguage)
   {
-    TranslatorOptions tempOptions = new TranslatorOptions.Builder ().setTargetLanguage (
+    TranslatorOptions cTempOptions = new TranslatorOptions.Builder ().setTargetLanguage (
         cLanguage).setSourceLanguage ("en").build ();
-    mcTranslator = Translation.getClient(tempOptions);
+    mcTranslator = Translation.getClient (cTempOptions);
     mcUiState.setValue (
         new BusinessLogicUIState (getColor (), cLanguage, getImage (),
             getWordFromCamera (), mbPictureTaken));
@@ -274,7 +266,6 @@ public class BusinessLogic extends ViewModel
   {
     int tempColor;
 
-
     switch (cUser.getColor ())
     {
       case "Pink":
@@ -299,16 +290,13 @@ public class BusinessLogic extends ViewModel
         break;
     }
 
-
-
     mcUser = cUser;
     Log.d ("TransferActivity", String.valueOf (tempColor));
     setColor (tempColor);
-    setLanguage(cUser.getLanguage ());
+    setLanguage (cUser.getLanguage ());
     mcUiState.setValue (
         new BusinessLogicUIState (tempColor, cUser.getLanguage (), getImage (),
             getWordFromCamera (), mbPictureTaken));
-
   }
 
   /**
@@ -323,9 +311,8 @@ public class BusinessLogic extends ViewModel
             mbPictureTaken));
   }
 
-  public Translator getTranslator()
+  public Translator getTranslator ()
   {
     return mcTranslator;
   }
-
 }

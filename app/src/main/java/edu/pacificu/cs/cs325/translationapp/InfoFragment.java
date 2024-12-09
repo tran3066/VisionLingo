@@ -1,7 +1,5 @@
 package edu.pacificu.cs.cs325.translationapp;
 
-//import static edu.pacificu.cs.cs325.translationapp.PreferenceFragment.mcColor;
-
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -23,9 +21,6 @@ import androidx.room.Room;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.mlkit.nl.translate.Translation;
-import com.google.mlkit.nl.translate.Translator;
-import com.google.mlkit.nl.translate.TranslatorOptions;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -49,20 +44,18 @@ import edu.pacificu.cs.cs325.translationapp.databinding.FragmentInfoBinding;
 
 public class InfoFragment extends Fragment
 {
+  private final int ROTATION = 90;
   private final String LOG_TAG = "InfoFragment";
   private final String FRENCH = "fr";
   private final String SPANISH = "es";
   private final String FRENCH_URL = "https://forvo.com/word/*/#fr";
   private final String SPANISH_URL = "https://forvo.com/word/*/#es";
-  private final int ROTATION = 90;
 
+  private boolean bSearched;
   private Observer<BusinessLogicUIState> mcObserver;
   private BusinessLogic mcLogic;
   private FragmentInfoBinding mcBinding;
-  //private TranslatorOptions mcOptions;
-  //private Translator mcTranslator;
   private UserDAO mcUserDAO;
-  private boolean bSearched;
 
   /**
    * Initializes InfoFragment (required empty public constructor)
@@ -119,7 +112,6 @@ public class InfoFragment extends Fragment
                 getActivity ().getApplicationContext (), UserDB.class, "User-DB")
             .fallbackToDestructiveMigrationOnDowngrade ().build ();
         mcUserDAO = mcUserDB.userDao ();
-        //usersFromDB = mcUserDAO.getAll ();
       }
       catch (Exception e)
       {
@@ -131,11 +123,10 @@ public class InfoFragment extends Fragment
 
     if (mcLogic.getWordFromCamera () != null)
     {
-      mcRunner.execute (()->
-      {
-        Word tempWord = mcLogic.getWord (mcLogic.getWordFromCamera ());
-        Task<String> cResult = mcLogic.getTranslator ().translate (
-                tempWord.getMcEnglishWord ())
+      mcRunner.execute (() -> {
+        Word cTempWord = mcLogic.getWord (mcLogic.getWordFromCamera ());
+        Task<String> cResult = mcLogic.getTranslator ()
+            .translate (cTempWord.getMcEnglishWord ())
             .addOnSuccessListener (new OnSuccessListener<String> ()
             {
               @Override
@@ -155,20 +146,16 @@ public class InfoFragment extends Fragment
                 Log.d (LOG_TAG, "translation unsuccessful");
                 getActivity ().runOnUiThread (() -> {
                   mcBinding.tvWordTranslate.setText (
-                      tempWord.getMcEnglishWord ());
+                      cTempWord.getMcEnglishWord ());
                 });
               }
             });
-        getActivity ().runOnUiThread (()->
-        {
+        getActivity ().runOnUiThread (() -> {
           mcBinding.tvSearch.setText (mcLogic.getWordFromCamera ());
-          mcBinding.tvWordInfo.setText (tempWord.toString ());
+          mcBinding.tvWordInfo.setText (cTempWord.toString ());
           bSearched = true;
         });
-
       });
-
-      //      mcBinding.tvWordInfo.setText()
     }
     else
     {
@@ -219,26 +206,23 @@ public class InfoFragment extends Fragment
       }
     };
     mcBinding.btnAdd.setOnClickListener (v -> {
-
       mcRunner.execute (() -> {
         if (bSearched)
         {
-          String tempString = mcBinding.tvSearch.getText ().toString ();
-          Vocab newVocab = new Vocab (mcLogic.getWord (tempString),
+          String cTempString = mcBinding.tvSearch.getText ().toString ();
+          Vocab cNewVocab = new Vocab (mcLogic.getWord (cTempString),
               mcLogic.getImage (),
               mcBinding.tvWordTranslate.getText ().toString ());
-
-          mcLogic.getUser ().addToVocab (newVocab);
+          mcLogic.getUser ().addToVocab (cNewVocab);
           mcUserDAO.update (mcLogic.getUser ());
         }
-
       });
-
     });
 
     mcBinding.btnSearch.setOnClickListener (v -> {
       Log.d (LOG_TAG, "btnSearch Pressed");
       bSearched = true;
+
       mcRunner.execute (() -> {
         String cTempString;
         Word cTempWord;
@@ -254,8 +238,9 @@ public class InfoFragment extends Fragment
 
             Log.d (LOG_TAG, "btnSearch Pressed");
           });
-          Task<String> cResult = mcLogic.getTranslator ().translate (
-                  cTempWord.getMcEnglishWord ())
+
+          Task<String> cResult = mcLogic.getTranslator ()
+              .translate (cTempWord.getMcEnglishWord ())
               .addOnSuccessListener (new OnSuccessListener<String> ()
               {
                 @Override
@@ -280,11 +265,11 @@ public class InfoFragment extends Fragment
                 }
               });
         }
-        catch (Exception e)
+        catch (Exception cException)
         {
           getActivity ().runOnUiThread (() -> {
             Toast.makeText (getActivity ().getApplicationContext (),
-                "Could Not Find in Dictionary", Toast.LENGTH_LONG).show();
+                "Could Not Find in Dictionary", Toast.LENGTH_LONG).show ();
           });
         }
       });

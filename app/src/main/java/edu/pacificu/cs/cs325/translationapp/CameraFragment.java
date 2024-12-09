@@ -1,9 +1,6 @@
 package edu.pacificu.cs.cs325.translationapp;
 
-//import static edu.pacificu.cs.cs325.translationapp.PreferenceFragment.mcColor;
-
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -21,7 +18,6 @@ import androidx.camera.lifecycle.ProcessCameraProvider;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -29,7 +25,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -121,6 +116,7 @@ public class CameraFragment extends Fragment
     mcBinding = edu.pacificu.cs.cs325.translationapp.databinding.FragmentCameraBinding.inflate (
         getLayoutInflater ());
     View cView = mcBinding.getRoot ();
+
     return cView;
   }
 
@@ -165,7 +161,6 @@ public class CameraFragment extends Fragment
       }
     };
     mcLogic.getMcUiState ().observe (getActivity (), mcObserver);
-
 
     mcObjectDetector = ObjectDetection.getClient (
         new ObjectDetectorOptions.Builder ().setDetectorMode (
@@ -296,7 +291,7 @@ public class CameraFragment extends Fragment
               assert getActivity () != null;
               getActivity ().runOnUiThread (() -> {
                 int rotation = 90;
-                mcBinding.cptIMG.setRotation(rotation);
+                mcBinding.cptIMG.setRotation (rotation);
                 mcBinding.cptIMG.setImageBitmap (BitmapFactory.decodeByteArray (
                     cByteArrayStream.toByteArray (), 0,
                     cByteArrayStream.toByteArray ().length));
@@ -327,19 +322,12 @@ public class CameraFragment extends Fragment
 
       mcLogic.takePicture (mcByteArray);
       Log.d (LOG_TAG, "Sent Picture");
-
-
       mcLogic.detectWord (mcWordFromObject);
       Log.d (LOG_TAG, "Sent Text");
 
-//      Intent intent = new Intent (getActivity(), TransferActivity.class);
-//      intent.setAction (Intent.ACTION_SEND);
-//      intent.putExtra ("Picture", "ByteArray");
-//      intent.setType ("Send to Info");
-
-      getParentFragmentManager().beginTransaction()
-              .replace(R.id.fragment_container_view, new InfoFragment())
-              .addToBackStack(null).commit();
+      getParentFragmentManager ().beginTransaction ()
+          .replace (R.id.fragment_container_view, new InfoFragment ())
+          .addToBackStack (null).commit ();
 
       Log.d (LOG_TAG, "Info Activity started");
     });

@@ -45,6 +45,7 @@ public class VocabTypeConverter
     Type cListType = new TypeToken<ArrayList<Vocab>> ()
     {
     }.getType ();
+
     return mcGson.fromJson (cString, cListType);
   }
 }

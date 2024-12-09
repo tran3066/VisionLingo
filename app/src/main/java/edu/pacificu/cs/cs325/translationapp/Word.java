@@ -98,15 +98,21 @@ public class Word
     return this.mWid;
   }
 
+  /**
+   * Returns a String representation of a Word object
+   *
+   * @return String representation of a Word object
+   */
+
   @Override
-  public String toString()
+  public String toString ()
   {
-    StringBuilder tempBuilder = new StringBuilder ();
-    tempBuilder.append (mcEnglishWord);
-    tempBuilder.append ("\n");
-    tempBuilder.append (mcLexical);
-    tempBuilder.append ("\n");
-    tempBuilder.append (mcDefinition);
-    return tempBuilder.toString ();
+    StringBuilder cTempBuilder = new StringBuilder ();
+    cTempBuilder.append (mcEnglishWord);
+    cTempBuilder.append ("\n");
+    cTempBuilder.append (mcLexical);
+    cTempBuilder.append ("\n");
+    cTempBuilder.append (mcDefinition);
+    return cTempBuilder.toString ();
   }
 }

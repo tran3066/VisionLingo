@@ -1,7 +1,5 @@
 package edu.pacificu.cs.cs325.translationapp;
 
-import static androidx.camera.core.impl.utils.ContextUtil.getApplicationContext;
-
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -19,9 +17,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
-
-import com.google.mlkit.nl.translate.Translation;
-import com.google.mlkit.nl.translate.TranslatorOptions;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -45,20 +40,15 @@ public class PreferenceFragment extends Fragment
   private final String FRENCH = "fr";
   private final String SPANISH = "es";
 
+  private int mColor;
   private FragmentPreferenceBinding mcBinding;
   private Observer<BusinessLogicUIState> mcObserver;
   private UserDAO mcUserDAO;
   private UserDB mcUserDB;
-  //private List<User> usersFromDB;
   private String mcSelectedLanguage;
   private String mcSelectedColor;
   private ExecutorService mcRunner;
-  //private UserPreference mcUserPref;
   private BusinessLogic mcLogic;
-  //private BusinessLogicUIState mcUiLogic;
-
-
-  private int mColor;
 
   /**
    * Initializes PreferenceFragment (required empty public constructor)
@@ -132,7 +122,6 @@ public class PreferenceFragment extends Fragment
       @Nullable Bundle cSavedInstanceState)
   {
     super.onViewCreated (cView, cSavedInstanceState);
-
     mcRunner = Executors.newFixedThreadPool (NUM_THREADS);
 
     assert getActivity () != null;
@@ -144,6 +133,7 @@ public class PreferenceFragment extends Fragment
         android.R.layout.simple_spinner_dropdown_item, cLanguageArray);
     cLanguageAdapter.setDropDownViewResource (
         android.R.layout.simple_spinner_dropdown_item);
+
     mcObserver = new Observer<BusinessLogicUIState> ()
     {
       @Override
@@ -154,6 +144,7 @@ public class PreferenceFragment extends Fragment
         mcBinding.btnConfirm.setBackgroundColor (colorInt);
       }
     };
+
     mcLogic.getMcUiState ().observe (getActivity (), mcObserver);
     mcBinding.btnConfirm.setBackgroundColor (mcLogic.getColor ());
     String[] cColorArray = new String[] { "Pink", "Red", "Green", "Blue" };
@@ -231,6 +222,7 @@ public class PreferenceFragment extends Fragment
     mcBinding.btnConfirm.setOnClickListener (v -> {
       mcLogic.setColor (mColor);
       mcLogic.getUser ().setColor (mcSelectedColor);
+
       if (mcSelectedLanguage.equals ("French"))
       {
         mcLogic.setLanguage (FRENCH);
@@ -242,9 +234,6 @@ public class PreferenceFragment extends Fragment
         mcLogic.getUser ().setLanguage (SPANISH);
       }
 
-      //mcUserPref = new UserPreference(mcSelectedColor, mcSelectedLanguage);
-      //mcLogic.getUser().setMcUserPreference(mcUserPref);
-
       mcRunner.execute (() -> {
         try
         {
@@ -252,11 +241,7 @@ public class PreferenceFragment extends Fragment
                   getActivity ().getApplicationContext (), UserDB.class, "User-DB")
               .fallbackToDestructiveMigrationOnDowngrade ().build ();
           mcUserDAO = mcUserDB.userDao ();
-          //usersFromDB = mcUserDAO.getAll ();
-
           mcUserDAO.update (mcLogic.getUser ());
-
-
 
           Log.d (LOG_TAG, String.valueOf (mcLogic.getUser ().getMUid ()));
           Log.d (LOG_TAG, "Updated Users: " + mcLogic.getUser ().toString ());
@@ -272,5 +257,4 @@ public class PreferenceFragment extends Fragment
           Toast.LENGTH_SHORT).show ();
     });
   }
-
 }

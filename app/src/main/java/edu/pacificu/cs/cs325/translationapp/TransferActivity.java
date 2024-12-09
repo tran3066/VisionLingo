@@ -3,7 +3,6 @@ package edu.pacificu.cs.cs325.translationapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 
 import androidx.activity.EdgeToEdge;
@@ -29,11 +28,11 @@ import edu.pacificu.cs.cs325.translationapp.databinding.ActivityTransferBinding;
 
 public class TransferActivity extends AppCompatActivity
 {
-  private String LOG_TAG = "TransferActivity";
   private final int NUM_THREADS = 4;
+  private final String LOG_TAG = "TransferActivity";
+
   private ActivityTransferBinding mcBinding;
   private BusinessLogic mcLogic;
-  private MenuItem mcItem;
   private ExecutorService mcRunner;
   private UserDB mcUserDB;
   private UserDAO mcUserDAO;
@@ -91,9 +90,10 @@ public class TransferActivity extends AppCompatActivity
             String cPassword = cReceiveIntent.getStringExtra ("Password");
 
             mcRunner.execute (() -> {
-              User tempUser = mcUserDAO.findUserByNamePass (cUsername, cPassword);
+              User cTempUser = mcUserDAO.findUserByNamePass (cUsername,
+                  cPassword);
               runOnUiThread (() -> {
-                mcLogic.setUser (tempUser);
+                mcLogic.setUser (cTempUser);
                 Log.d (LOG_TAG, mcLogic.getUser ().getMcUsername ());
                 Log.d (LOG_TAG, String.valueOf (mcLogic.getColor ()));
               });
@@ -101,8 +101,8 @@ public class TransferActivity extends AppCompatActivity
 
             getSupportFragmentManager ().beginTransaction ()
                 .setReorderingAllowed (true)
-                .add (R.id.fragment_container_view, PreferenceFragment.class, null)
-                .commit ();
+                .add (R.id.fragment_container_view, PreferenceFragment.class,
+                    null).commit ();
 
             mcBinding.bottomNavigationView.setSelectedItemId (R.id.preferences);
           }
@@ -113,9 +113,10 @@ public class TransferActivity extends AppCompatActivity
             String cPassword = cReceiveIntent.getStringExtra ("Password");
 
             mcRunner.execute (() -> {
-              User tempUser = mcUserDAO.findUserByNamePass (cUsername, cPassword);
+              User cTempUser = mcUserDAO.findUserByNamePass (cUsername,
+                  cPassword);
               runOnUiThread (() -> {
-                mcLogic.setUser (tempUser);
+                mcLogic.setUser (cTempUser);
                 Log.d (LOG_TAG, mcLogic.getUser ().getMcUsername ());
                 Log.d (LOG_TAG, String.valueOf (mcLogic.getColor ()));
               });
@@ -128,16 +129,11 @@ public class TransferActivity extends AppCompatActivity
           }
         });
       }
-      catch (Exception e)
+      catch (Exception cException)
       {
-        throw new RuntimeException (e);
+        throw new RuntimeException (cException);
       }
     });
-
-    //    else if ("Send to Info".equals(cReceiveIntent.getType()))
-    //    {
-    //      mcBinding.bottomNavigationView.setSelectedItemId(R.id.wordInformation);
-    //    }
 
     mcBinding.bottomNavigationView.setOnItemSelectedListener (item -> {
       if (item.getItemId () == R.id.camera)
