@@ -138,12 +138,16 @@ public class InfoFragment extends Fragment
         Log.d (LOG_TAG, cTempString);
         cTempWord = mcLogic.getWord (cTempString);
         Log.d (LOG_TAG, cTempWord.getMcEnglishWord ());
+
+
         getActivity ().runOnUiThread (() -> {
           mcBinding.tvWordInfo.setText (cTempWord.toString ());
           Log.d (LOG_TAG, "btnSearch Pressed");
         });
+
+
         Task<String> cResult = mcTranslator.translate (
-                cTempWord.getMcEnglishWord ())
+                cTempString)
             .addOnSuccessListener (new OnSuccessListener<String> ()
             {
               @Override
