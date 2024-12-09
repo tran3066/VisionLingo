@@ -123,38 +123,57 @@ public class InfoFragment extends Fragment
 
     if (mcLogic.getWordFromCamera () != null)
     {
+
       mcRunner.execute (() -> {
-        Word cTempWord = mcLogic.getWord (mcLogic.getWordFromCamera ());
-        Task<String> cResult = mcLogic.getTranslator ()
-            .translate (cTempWord.getMcEnglishWord ())
-            .addOnSuccessListener (new OnSuccessListener<String> ()
+        try
+        {
+          Word cTempWord = mcLogic.getWord (mcLogic.getWordFromCamera ());
+          getActivity ().runOnUiThread (() -> {
+            if (null != cTempWord)
             {
-              @Override
-              public void onSuccess (String cS)
+              mcBinding.tvWordInfo.setText (cTempWord.toString ());
+            }
+
+            Log.d (LOG_TAG, "Camera Word Received");
+          });
+          Task<String> cResult = mcLogic.getTranslator ()
+              .translate (cTempWord.getMcEnglishWord ())
+              .addOnSuccessListener (new OnSuccessListener<String> ()
               {
-                Log.d (LOG_TAG, "translation successful");
-                Log.d (LOG_TAG, cS);
-                getActivity ().runOnUiThread (() -> {
-                  mcBinding.tvWordTranslate.setText (cS);
-                });
-              }
-            }).addOnFailureListener (new OnFailureListener ()
-            {
-              @Override
-              public void onFailure (@NonNull Exception cException)
+                @Override
+                public void onSuccess (String cS)
+                {
+                  Log.d (LOG_TAG, "translation successful");
+                  Log.d (LOG_TAG, cS);
+                  getActivity ().runOnUiThread (() -> {
+                    mcBinding.tvWordTranslate.setText (cS);
+                  });
+                }
+              }).addOnFailureListener (new OnFailureListener ()
               {
-                Log.d (LOG_TAG, "translation unsuccessful");
-                getActivity ().runOnUiThread (() -> {
-                  mcBinding.tvWordTranslate.setText (
-                      cTempWord.getMcEnglishWord ());
-                });
-              }
-            });
-        getActivity ().runOnUiThread (() -> {
-          mcBinding.tvSearch.setText (mcLogic.getWordFromCamera ());
-          mcBinding.tvWordInfo.setText (cTempWord.toString ());
-          bSearched = true;
-        });
+                @Override
+                public void onFailure (@NonNull Exception cException)
+                {
+                  Log.d (LOG_TAG, "translation unsuccessful");
+                  getActivity ().runOnUiThread (() -> {
+                    mcBinding.tvWordTranslate.setText (
+                        mcLogic.getWordFromCamera ());
+                  });
+                }
+              });
+          getActivity ().runOnUiThread (() -> {
+            mcBinding.tvSearch.setText (mcLogic.getWordFromCamera ());
+            mcBinding.tvWordInfo.setText (cTempWord.toString ());
+            bSearched = true;
+          });
+        }
+        catch (Exception e)
+        {
+          getActivity ().runOnUiThread (() -> {
+            Toast.makeText (getActivity ().getApplicationContext (),
+                "Could Not Find in Dictionary", Toast.LENGTH_LONG).show ();
+          });
+        }
       });
     }
     else
