@@ -166,7 +166,7 @@ public class InfoFragment extends Fragment
 
       });
 
-//      mcBinding.tvWordInfo.setText()
+      //      mcBinding.tvWordInfo.setText()
     }
     else
     {
@@ -280,11 +280,10 @@ public class InfoFragment extends Fragment
           Toast.makeText (getActivity ().getApplicationContext (),
               "Could Not Find in Dictionary", Toast.LENGTH_LONG).show();
         }
-
-
       });
 
-
+      mcLogic.resetImg ();
+      mcBinding.imgWord.setImageResource (R.drawable.baseline_add_a_photo_24);
     });
 
     mcLogic.getMcUiState ().observe (getActivity (), mcObserver);
