@@ -41,7 +41,7 @@ public class BusinessLogic extends ViewModel
     mcDictionaryDAO = null;
     mcTranslator = null;
     mcUiState = new MutableLiveData<> (
-        new BusinessLogicUIState (0, "", 0, "", mbPictureTaken));
+        new BusinessLogicUIState (0, "", null, "", mbPictureTaken));
     mcDictionary = null;
   }
 
@@ -71,7 +71,7 @@ public class BusinessLogic extends ViewModel
   /**
    * Sets the image data access object of the BusinessLogic
    *
-   * @param cImageDAO the ImageDAO to set the new ImageDAO
+   * @param cImageDAO the imageDAO to set the new UserDAO
    */
 
   public void setImageDAO (ImageDAO cImageDAO)
@@ -125,29 +125,29 @@ public class BusinessLogic extends ViewModel
   }
 
   /**
-   * Updates the BusinessLogic class by storing the provided image ID and
-   * marking that a picture has been taken
+   * Updates the BusinessLogic class by storing the provided image and marking
+   * that a picture has been taken
    *
-   * @param imageID image ID
+   * @param cImage image taken, represented as a byte array
    */
 
-  public void takePicture (int imageID)
+  public void takePicture (byte[] cImage)
   {
     mbPictureTaken = true;
 
     mcUiState.setValue (
         new BusinessLogicUIState (mcUiState.getValue ().getColor (),
-            mcUiState.getValue ().getLanguage (), imageID, getWordFromCamera (),
+            mcUiState.getValue ().getLanguage (), cImage, getWordFromCamera (),
             mbPictureTaken));
   }
 
   /**
-   * Obtains the image ID
+   * Obtains the image
    *
-   * @return the image ID
+   * @return the image as a byte array
    */
 
-  public int getImage ()
+  public byte[] getImage ()
   {
     return mcUiState.getValue ().getImage ();
   }
@@ -330,7 +330,7 @@ public class BusinessLogic extends ViewModel
   {
     mbPictureTaken = false;
     mcUiState.setValue (
-        new BusinessLogicUIState (getColor (), getLanguage (), 0, null,
+        new BusinessLogicUIState (getColor (), getLanguage (), null, null,
             mbPictureTaken));
   }
 

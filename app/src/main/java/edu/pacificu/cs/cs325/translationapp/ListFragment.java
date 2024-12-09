@@ -115,7 +115,7 @@ public class ListFragment extends Fragment
       {
         getActivity ().runOnUiThread (() -> {
           mcAdapter = new VocabRecyclerViewAdapter (
-              mcLogic.getUser ().getMcVocabList ());
+              mcLogic.getUser ().getMcVocabList (), mcLogic);
           mcBinding.rvWords.setAdapter (mcAdapter);
         });
       }

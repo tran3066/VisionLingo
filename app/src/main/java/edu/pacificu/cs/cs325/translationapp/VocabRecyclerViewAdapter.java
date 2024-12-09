@@ -26,16 +26,19 @@ public class VocabRecyclerViewAdapter
   private final int ROTATION = 90;
 
   private ArrayList<Vocab> mcData;
+  private BusinessLogic mcLogic;
 
   /**
    * Constructor to build the adapter
    *
-   * @param cData the data to be displayed by the views
+   * @param cData  the data to be displayed by the views
+   * @param cLogic BusinessLogic object used to access Image database
    */
 
-  public VocabRecyclerViewAdapter (ArrayList<Vocab> cData)
+  public VocabRecyclerViewAdapter (ArrayList<Vocab> cData, BusinessLogic cLogic)
   {
     this.mcData = cData;
+    this.mcLogic = cLogic;
   }
 
   /**
@@ -118,6 +121,8 @@ public class VocabRecyclerViewAdapter
 
     public void bindData ()
     {
+      Image cCurrentImage = mcLogic.getImageDAO ().getImage (mcVocab.getImage ());
+
       if (null == mcTvEnglishWord)
       {
         mcTvEnglishWord = (TextView) itemView.findViewById (R.id.tvEnglishWord);
@@ -144,11 +149,11 @@ public class VocabRecyclerViewAdapter
       mcTvWordType.setText (mcVocab.getWord ().getMcLexical ());
       mcTvDefinition.setText (mcVocab.getWord ().getMcDefinition ());
 
-      if (null != mcVocab.getImage () && 0 < mcVocab.getImage ().length)
+      if (null != cCurrentImage.getMcImage () && 0 < cCurrentImage.getMcImage ().length)
       {
         mcImageWord.setImageBitmap (
-            BitmapFactory.decodeByteArray (mcVocab.getImage (), 0,
-                mcVocab.getImage ().length));
+            BitmapFactory.decodeByteArray (cCurrentImage.getMcImage (), 0,
+                cCurrentImage.getMcImage ().length));
         mcImageWord.setRotation (ROTATION);
       }
       else

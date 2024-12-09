@@ -56,6 +56,7 @@ public class InfoFragment extends Fragment
   private BusinessLogic mcLogic;
   private FragmentInfoBinding mcBinding;
   private UserDAO mcUserDAO;
+  private ImageDAO mcImageDAO;
 
   /**
    * Initializes InfoFragment (required empty public constructor)
@@ -229,8 +230,13 @@ public class InfoFragment extends Fragment
         if (bSearched)
         {
           String cTempString = mcBinding.tvSearch.getText ().toString ();
+          Image cTempImage = new Image (mcLogic.getImage ());
+
+          mcImageDAO = mcLogic.getImageDAO ();
+          mcImageDAO.insert (cTempImage);
+
           Vocab cNewVocab = new Vocab (mcLogic.getWord (cTempString),
-              mcLogic.getImage (),
+              cTempImage.getMId (),
               mcBinding.tvWordTranslate.getText ().toString ());
           mcLogic.getUser ().addToVocab (cNewVocab);
           mcUserDAO.update (mcLogic.getUser ());
