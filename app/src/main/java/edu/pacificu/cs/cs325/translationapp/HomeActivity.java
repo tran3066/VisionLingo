@@ -67,6 +67,8 @@ public class HomeActivity extends AppCompatActivity
   private User mcCurrentUser;
   private Intent mcIntent;
   private ActivityResultLauncher<Intent> mcActivityLauncher;
+  private ImageDB mcImageDB;
+  private ImageDAO mcImageDAO;
 
   /**
    * onCreate method that starts the activity
@@ -123,6 +125,10 @@ public class HomeActivity extends AppCompatActivity
         mcUserDB = Room.databaseBuilder (getApplicationContext (), UserDB.class,
             "User-DB").fallbackToDestructiveMigrationOnDowngrade ().build ();
         mcUserDAO = mcUserDB.userDao ();
+
+        mcImageDB = Room.databaseBuilder (getApplicationContext (), ImageDB.class,
+            "Image-DB").fallbackToDestructiveMigrationOnDowngrade ().build ();
+        mcImageDAO = mcImageDB.imageDao ();
 
         // Uncomment this and run it if you try to log in with an existing user
         // and you can't login (I think the images get too big in the database,

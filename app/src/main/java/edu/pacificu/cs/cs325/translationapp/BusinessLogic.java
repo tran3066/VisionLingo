@@ -27,6 +27,7 @@ public class BusinessLogic extends ViewModel
   private User mcUser;
   private DictionaryDAO mcDictionaryDAO;
   private UserDAO mcUserDAO;
+  private ImageDAO mcImageDAO;
   private Dictionary mcDictionary;
   private Translator mcTranslator;
 
@@ -68,6 +69,17 @@ public class BusinessLogic extends ViewModel
   }
 
   /**
+   * Sets the image data access object of the BusinessLogic
+   *
+   * @param cImageDAO the ImageDAO to set the new ImageDAO
+   */
+
+  public void setImageDAO (ImageDAO cImageDAO)
+  {
+    mcImageDAO = cImageDAO;
+  }
+
+  /**
    * Obtains a word from the dictionary
    *
    * @param cWord word to search
@@ -99,6 +111,17 @@ public class BusinessLogic extends ViewModel
   public UserDAO getUserDAO ()
   {
     return mcUserDAO;
+  }
+
+  /**
+   * Obtains the ImageDAO
+   *
+   * @return the ImageDAO object
+   */
+
+  public ImageDAO getImageDAO ()
+  {
+    return mcImageDAO;
   }
 
   /**

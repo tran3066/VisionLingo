@@ -37,7 +37,7 @@ public class Image
    * @return the id
    */
 
-  public int getmId ()
+  public int getMId ()
   {
     return mId;
   }
@@ -48,7 +48,7 @@ public class Image
    * @param id - the primary key to set
    */
 
-  public void setmId (int id)
+  public void setMId (int id)
   {
     this.mId = id;
   }

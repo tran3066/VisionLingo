@@ -38,6 +38,8 @@ public class TransferActivity extends AppCompatActivity
   private UserDAO mcUserDAO;
   private DictionaryDB mcDictionaryDB;
   private DictionaryDAO mcDictionaryDAO;
+  private ImageDB mcImageDB;
+  private ImageDAO mcImageDAO;
 
   /**
    * onCreate method that starts the activity
@@ -80,8 +82,13 @@ public class TransferActivity extends AppCompatActivity
             .build ();
         mcDictionaryDAO = mcDictionaryDB.dictionaryDao ();
 
+        mcImageDB = Room.databaseBuilder (getApplicationContext (), ImageDB.class,
+            "Image-DB").fallbackToDestructiveMigrationOnDowngrade ().build ();
+        mcImageDAO = mcImageDB.imageDao ();
+
         mcLogic.setDictionaryDAO (mcDictionaryDAO);
         mcLogic.setUserDAO (mcUserDAO);
+        mcLogic.setImageDAO (mcImageDAO);
 
         runOnUiThread (() -> {
           if ("New User".equals (cReceiveIntent.getType ()))
