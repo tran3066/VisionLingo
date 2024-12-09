@@ -156,7 +156,9 @@ public class HomeActivity extends AppCompatActivity
       newUser ();
 
       mcRunner.execute (() -> {
-        mcUserDAO.insert (mcCurrentUser);
+        if (mcCurrentUser != null) {
+          mcUserDAO.insert(mcCurrentUser);
+        }
       });
     }));
   }
@@ -180,37 +182,40 @@ public class HomeActivity extends AppCompatActivity
       return;
     }
 
-    mcRunner.execute (() -> {
+   mcRunner.execute (() -> {
+      boolean bFound = false;
       for (User cCheck : mcUsersFromDB)
       {
         if (mcUsername.equals (cCheck.getMcUsername ()))
         {
+          bFound = true;
           runOnUiThread (() -> {
             Toast.makeText (this,
                 "Username taken: Please login or Choose a new Username",
                 Toast.LENGTH_SHORT).show ();
           });
-          bUserFound = true;
-          return;
+         return;
         }
       }
-    });
+      if (!bFound)
+      {
+        runOnUiThread (() -> {
+        mcLogic.createUser (mcUsername, mcPassword);
+        mcCurrentUser = mcLogic.getUser ();
 
-    if (!bUserFound)
-    {
-      mcLogic.createUser (mcUsername, mcPassword);
-      mcCurrentUser = mcLogic.getUser ();
+        Log.d (LOG_TAG, "New user created");
+        Log.d (LOG_TAG, "Launch User Preferences");
 
-      Log.d (LOG_TAG, "New user created");
-      Log.d (LOG_TAG, "Launch User Preferences");
 
-      mcIntent.setAction (Intent.ACTION_SEND);
-      mcIntent.putExtra ("Username", mcCurrentUser.getMcUsername ());
-      mcIntent.putExtra ("Password", mcCurrentUser.getMcPassword ());
-      mcIntent.setType ("New User");
-      mcActivityLauncher.launch (mcIntent);
-      Log.d (LOG_TAG, "User Preferences Activity started");
-    }
+        mcIntent.setAction (Intent.ACTION_SEND);
+        mcIntent.putExtra ("Username", mcCurrentUser.getMcUsername ());
+        mcIntent.putExtra ("Password", mcCurrentUser.getMcPassword ());
+        mcIntent.setType ("New User");
+        mcActivityLauncher.launch (mcIntent);
+        Log.d (LOG_TAG, "User Preferences Activity started");
+        });
+      }
+   });
   }
 
   /**
