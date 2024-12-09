@@ -250,7 +250,8 @@ public class QuizFragment extends Fragment
   public Word getRandomWord ()
   {
     Log.d(LOG_TAG, "Generating Word");
-    return mcDictionaryDAO.getRandomWord ();
+    //return mcDictionaryDAO.getRandomWord ();
+    return mcLogic.getDAO ().getRandomWord ();
   }
 
   /**
