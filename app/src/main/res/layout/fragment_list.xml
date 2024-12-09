@@ -8,31 +8,32 @@
         tools:context=".ListFragment">
 
     <TextView
-            android:text="@string/tvVocabList"
-            android:layout_width="234dp"
-            android:layout_height="46dp"
-            android:id="@+id/tvVocabList"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:focusable="false"
-            app:layout_constraintVertical_bias="0.068"
-            android:gravity="center"
-            android:textSize="24sp"
-            android:fontFamily="sans-serif-smallcaps"
-            app:layout_constraintHorizontal_bias="0.497" />
+        android:id="@+id/tvVocabList"
+        android:layout_width="234dp"
+        android:layout_height="46dp"
+        android:focusable="false"
+        android:fontFamily="sans-serif-smallcaps"
+        android:gravity="center"
+        android:text="@string/tvVocabList"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.071" />
 
     <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="328dp"
-            android:layout_height="530dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_bias="0.493"
-            app:layout_constraintVertical_bias="0.766"
-            android:id="@+id/rvWords" />
+        android:id="@+id/rvWords"
+        android:layout_width="328dp"
+        android:layout_height="530dp"
+        android:scrollbars="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.766" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

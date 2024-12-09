@@ -174,7 +174,6 @@ public class HomeActivity extends AppCompatActivity
         Toast.makeText (this, "Username and password cannot be empty",
             Toast.LENGTH_SHORT).show ();
       });
-
       return;
     }
 
@@ -188,6 +187,7 @@ public class HomeActivity extends AppCompatActivity
                 "Username taken: Please login or Choose a new Username",
                 Toast.LENGTH_SHORT).show ();
           });
+          bUserFound = true;
           return;
         }
       }
