@@ -40,7 +40,7 @@ public class BusinessLogic extends ViewModel
     mcDictionaryDAO = null;
     mcTranslator = null;
     mcUiState = new MutableLiveData<> (
-        new BusinessLogicUIState (0, "", null, "", mbPictureTaken));
+        new BusinessLogicUIState (0, "", 0, "", mbPictureTaken));
     mcDictionary = null;
   }
 
@@ -102,29 +102,29 @@ public class BusinessLogic extends ViewModel
   }
 
   /**
-   * Updates the BusinessLogic class by storing the provided image and marking
-   * that a picture has been taken
+   * Updates the BusinessLogic class by storing the provided image ID and
+   * marking that a picture has been taken
    *
-   * @param cImage image taken, represented as a byte array
+   * @param imageID image ID
    */
 
-  public void takePicture (byte[] cImage)
+  public void takePicture (int imageID)
   {
     mbPictureTaken = true;
 
     mcUiState.setValue (
         new BusinessLogicUIState (mcUiState.getValue ().getColor (),
-            mcUiState.getValue ().getLanguage (), cImage, getWordFromCamera (),
+            mcUiState.getValue ().getLanguage (), imageID, getWordFromCamera (),
             mbPictureTaken));
   }
 
   /**
-   * Obtains the image
+   * Obtains the image ID
    *
-   * @return the image as a byte array
+   * @return the image ID
    */
 
-  public byte[] getImage ()
+  public int getImage ()
   {
     return mcUiState.getValue ().getImage ();
   }
@@ -307,9 +307,15 @@ public class BusinessLogic extends ViewModel
   {
     mbPictureTaken = false;
     mcUiState.setValue (
-        new BusinessLogicUIState (getColor (), getLanguage (), null, null,
+        new BusinessLogicUIState (getColor (), getLanguage (), 0, null,
             mbPictureTaken));
   }
+
+  /**
+   * Gets the Translator object
+   *
+   * @return the Translator object
+   */
 
   public Translator getTranslator ()
   {
