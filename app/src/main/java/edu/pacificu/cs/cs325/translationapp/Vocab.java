@@ -9,33 +9,34 @@ package edu.pacificu.cs.cs325.translationapp;
 
 public class Vocab
 {
+  private int mImageID;
   private Word mcTheWord;
-  private byte[] mcImage;
   private String mcTranslatedWord;
 
   /**
    * Initializes Vocab by initializing the word and image
    *
-   * @param mcTheWord word object
-   * @param mcImage   image stored as a byte array
+   * @param mcTheWord        word object
+   * @param mImageID         ID that points to the image in the ImageDB
+   * @param mcTranslatedWord translated word
    */
 
-  public Vocab (Word mcTheWord, byte[] mcImage, String mcTranslatedWord)
+  public Vocab (Word mcTheWord, int mImageID, String mcTranslatedWord)
   {
     this.mcTheWord = mcTheWord;
-    this.mcImage = mcImage;
+    this.mImageID = mImageID;
     this.mcTranslatedWord = mcTranslatedWord;
   }
 
   /**
-   * Obtains the image of the word
+   * Obtains the image ID
    *
-   * @return image of the word
+   * @return image ID
    */
 
-  public byte[] getImage ()
+  public int getImage ()
   {
-    return mcImage;
+    return mImageID;
   }
 
   /**

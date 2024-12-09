@@ -11,7 +11,7 @@ package edu.pacificu.cs.cs325.translationapp;
 public class BusinessLogicUIState
 {
   private int mColor;
-  private byte[] mcImage;
+  private int mImageID;
   private boolean mbPictureTaken;
   private String mcLanguage;
   private String mcCameraWord;
@@ -22,17 +22,17 @@ public class BusinessLogicUIState
    *
    * @param color         color used to set button colors
    * @param cLanguage     language the user is learning
-   * @param cImage        captured image from camera fragment
+   * @param imageID       ID associated with image
    * @param cCameraWord   word detected from the camera
    * @param bPictureTaken flag that tells if a picture was taken
    */
 
-  public BusinessLogicUIState (int color, String cLanguage, byte[] cImage,
+  public BusinessLogicUIState (int color, String cLanguage, int imageID,
       String cCameraWord, boolean bPictureTaken)
   {
     mColor = color;
     mcLanguage = cLanguage;
-    mcImage = cImage;
+    mImageID = imageID;
     mcCameraWord = cCameraWord;
     mbPictureTaken = bPictureTaken;
   }
@@ -71,21 +71,14 @@ public class BusinessLogicUIState
   }
 
   /**
-   * Obtains the image
+   * Obtains the image ID
    *
-   * @return the image as a byte array
+   * @return the image ID
    */
 
-  public byte[] getImage ()
+  public int getImage ()
   {
-    byte[] cTempImage = null;
-
-    if (mbPictureTaken)
-    {
-      cTempImage = mcImage;
-    }
-
-    return cTempImage;
+    return mImageID;
   }
 
   /**
