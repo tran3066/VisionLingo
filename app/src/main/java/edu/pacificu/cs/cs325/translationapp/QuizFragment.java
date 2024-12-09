@@ -54,8 +54,8 @@ public class QuizFragment extends Fragment
   private final int SHAKE_THRESHOLD = 14;
   private final String LOG_TAG = "QuizFragment";
 
-  private Vocab mcTempVocab;
   private boolean bEmptyList;
+  private Vocab mcTempVocab;
 
   private Observer<BusinessLogicUIState> mcObserver;
   private FragmentQuizBinding mcBinding;
@@ -158,53 +158,55 @@ public class QuizFragment extends Fragment
         int colorInt = mcLogic.getMcUiState ().getValue ().getColor ();
         mcBinding.btnNewWord.setBackgroundColor (colorInt);
         mcBinding.btnSubmit.setBackgroundColor (colorInt);
-//        mcOptions = new TranslatorOptions.Builder ().setTargetLanguage (
-//            mcLogic.getLanguage ()).setSourceLanguage ("en").build ();
-//        mcTranslator = Translation.getClient (mcOptions);
+        //        mcOptions = new TranslatorOptions.Builder ().setTargetLanguage (
+        //            mcLogic.getLanguage ()).setSourceLanguage ("en").build ();
+        //        mcTranslator = Translation.getClient (mcOptions);
       }
     };
 
     mcLogic.getMcUiState ().observe (getActivity (), mcObserver);
     setRandomWordFromVocab ();
     mcBinding.btnSubmit.setOnClickListener (v -> {
-//      if (mcBinding.tvAnswerWord.getText ().toString ()
-//          .equals (mcTempWord.getMcEnglishWord ()))
-//      {
-//        getActivity ().runOnUiThread (() -> {
-//          Log.d (LOG_TAG, "Correct");
-//          Toast.makeText (getActivity ().getApplicationContext (),
-//              "Answered Correctly", Toast.LENGTH_LONG).show ();
-//        });
-//      }
-//      else
-//      {
-//        getActivity ().runOnUiThread (() -> {
-//          Log.d (LOG_TAG, "Incorrect");
-//          Log.d (LOG_TAG, "Correct answer:" + mcTempWord.getMcEnglishWord ());
-//          Log.d (LOG_TAG,
-//              "Incorrect answer:" + mcBinding.tvAnswerWord.toString ());
-//          Toast.makeText (getActivity ().getApplicationContext (),
-//              "Answered Incorrectly", Toast.LENGTH_LONG).show ();
-//        });
-//      }
+      //      if (mcBinding.tvAnswerWord.getText ().toString ()
+      //          .equals (mcTempWord.getMcEnglishWord ()))
+      //      {
+      //        getActivity ().runOnUiThread (() -> {
+      //          Log.d (LOG_TAG, "Correct");
+      //          Toast.makeText (getActivity ().getApplicationContext (),
+      //              "Answered Correctly", Toast.LENGTH_LONG).show ();
+      //        });
+      //      }
+      //      else
+      //      {
+      //        getActivity ().runOnUiThread (() -> {
+      //          Log.d (LOG_TAG, "Incorrect");
+      //          Log.d (LOG_TAG, "Correct answer:" + mcTempWord.getMcEnglishWord ());
+      //          Log.d (LOG_TAG,
+      //              "Incorrect answer:" + mcBinding.tvAnswerWord.toString ());
+      //          Toast.makeText (getActivity ().getApplicationContext (),
+      //              "Answered Incorrectly", Toast.LENGTH_LONG).show ();
+      //        });
+      //      }
 
-      if(bEmptyList)
+      if (bEmptyList)
       {
         Log.d (LOG_TAG, "Nothing to Check, Vocab List Empty");
       }
-      else {
+      else
+      {
         Log.d (LOG_TAG, "Vocab Word Found");
-        if(mcBinding.tvAnswerWord.getText().toString()
-            .equals(mcTempVocab.getWord ().getMcEnglishWord ()))
+        if (mcBinding.tvAnswerWord.getText ().toString ()
+            .equals (mcTempVocab.getWord ().getMcEnglishWord ()))
         {
-          Log.d(LOG_TAG, "Correct");
-          Toast.makeText(getActivity ().getApplicationContext (),
-              "Answered Correctly", Toast.LENGTH_LONG).show();
+          Log.d (LOG_TAG, "Correct");
+          Toast.makeText (getActivity ().getApplicationContext (),
+              "Answered Correctly", Toast.LENGTH_LONG).show ();
         }
-        else {
-          Log.d(LOG_TAG, "InCorrect");
-          Toast.makeText(getActivity ().getApplicationContext (),
-              "Answered Incorrectly", Toast.LENGTH_LONG).show();
+        else
+        {
+          Log.d (LOG_TAG, "InCorrect");
+          Toast.makeText (getActivity ().getApplicationContext (),
+              "Answered Incorrectly", Toast.LENGTH_LONG).show ();
         }
       }
 
@@ -247,62 +249,61 @@ public class QuizFragment extends Fragment
    * @return a random word from the dictionary
    */
 
-//  public Word getRandomWord ()
-//  {
-//    Log.d (LOG_TAG, "Generating Word");
-//    return mcLogic.getDictionaryDAO ().getRandomWord ();
-//  }
+  //  public Word getRandomWord ()
+  //  {
+  //    Log.d (LOG_TAG, "Generating Word");
+  //    return mcLogic.getDictionaryDAO ().getRandomWord ();
+  //  }
 
   /**
    * Obtains a random word from the dictionary and sets it to the
    * tvQuestionWord textview
    */
 
-//  public void setRandomWord ()
-//  {
-//    Log.d (LOG_TAG, "Setting RandomWord");
-//    mcTempWord = getRandomWord ();
-//    Task<String> cResult = mcTranslator.translate (
-//            mcTempWord.getMcEnglishWord ())
-//        .addOnSuccessListener (new OnSuccessListener<String> ()
-//        {
-//          @Override
-//          public void onSuccess (String cS)
-//          {
-//            getActivity ().runOnUiThread (() -> {
-//              mcBinding.tvQuestionWord.setText (cS);
-//            });
-//          }
-//        }).addOnFailureListener (new OnFailureListener ()
-//        {
-//          @Override
-//          public void onFailure (@NonNull Exception cException)
-//          {
-//            getActivity ().runOnUiThread (() -> {
-//              mcBinding.tvQuestionWord.setText (mcTempWord.getMcEnglishWord ());
-//            });
-//          }
-//        });
-//  }
-
-
-  public void setRandomWordFromVocab()
+  //  public void setRandomWord ()
+  //  {
+  //    Log.d (LOG_TAG, "Setting RandomWord");
+  //    mcTempWord = getRandomWord ();
+  //    Task<String> cResult = mcTranslator.translate (
+  //            mcTempWord.getMcEnglishWord ())
+  //        .addOnSuccessListener (new OnSuccessListener<String> ()
+  //        {
+  //          @Override
+  //          public void onSuccess (String cS)
+  //          {
+  //            getActivity ().runOnUiThread (() -> {
+  //              mcBinding.tvQuestionWord.setText (cS);
+  //            });
+  //          }
+  //        }).addOnFailureListener (new OnFailureListener ()
+  //        {
+  //          @Override
+  //          public void onFailure (@NonNull Exception cException)
+  //          {
+  //            getActivity ().runOnUiThread (() -> {
+  //              mcBinding.tvQuestionWord.setText (mcTempWord.getMcEnglishWord ());
+  //            });
+  //          }
+  //        });
+  //  }
+  public void setRandomWordFromVocab ()
   {
-    List<Vocab> userVocab = mcLogic.getUser ().getMcVocabList ();
-    Random rand = new Random();
-    if(!userVocab.isEmpty ()){
-      Vocab randomVocab = userVocab.get(rand.nextInt (userVocab.size()));
-      mcTempVocab = randomVocab;
-      getActivity().runOnUiThread(() ->
-      {
-        mcBinding.tvQuestionWord.setText(randomVocab.getTranslatedWord ());
+    List<Vocab> cUserVocab = mcLogic.getUser ().getMcVocabList ();
+    Random cRand = new Random ();
+    if (!cUserVocab.isEmpty ())
+    {
+      Vocab cRandomVocab = cUserVocab.get (cRand.nextInt (cUserVocab.size ()));
+      mcTempVocab = cRandomVocab;
+      getActivity ().runOnUiThread (() -> {
+        mcBinding.tvQuestionWord.setText (cRandomVocab.getTranslatedWord ());
         Log.d (LOG_TAG, "Found Vocab Word");
       });
 
       bEmptyList = false;
     }
-    else {
-      getActivity ().runOnUiThread (()->{
+    else
+    {
+      getActivity ().runOnUiThread (() -> {
         mcBinding.tvQuestionWord.setText ("Vocab List Empty");
         Log.d (LOG_TAG, "Vocab List Empty");
         Toast.makeText (getActivity ().getApplicationContext (),
@@ -310,10 +311,7 @@ public class QuizFragment extends Fragment
       });
 
       bEmptyList = true;
-
     }
-
-
 
   }
 }
