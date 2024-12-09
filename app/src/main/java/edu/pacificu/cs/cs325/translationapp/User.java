@@ -45,7 +45,7 @@ public class User
     this.mcUsername = mcUsername;
     this.mcPassword = mcPassword;
     mcVocabList = new ArrayList<> ();
-    mcUserPreference = new UserPreference ("DefaultCol", "DefaultLang");
+    mcUserPreference = new UserPreference ("Blue", "French");
   }
 
   /**

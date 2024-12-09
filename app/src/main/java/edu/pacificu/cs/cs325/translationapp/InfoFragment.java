@@ -247,7 +247,11 @@ public class InfoFragment extends Fragment
         {
           cTempWord = mcLogic.getWord (cTempString);
           getActivity ().runOnUiThread (() -> {
-            mcBinding.tvWordInfo.setText (cTempWord.toString ());
+            if (null != cTempWord)
+            {
+              mcBinding.tvWordInfo.setText (cTempWord.toString ());
+            }
+
             Log.d (LOG_TAG, "btnSearch Pressed");
           });
           Task<String> cResult = mcLogic.getTranslator ().translate (
@@ -278,8 +282,10 @@ public class InfoFragment extends Fragment
         }
         catch (Exception e)
         {
-          Toast.makeText (getActivity ().getApplicationContext (),
-              "Could Not Find in Dictionary", Toast.LENGTH_LONG).show();
+          getActivity ().runOnUiThread (() -> {
+            Toast.makeText (getActivity ().getApplicationContext (),
+                "Could Not Find in Dictionary", Toast.LENGTH_LONG).show();
+          });
         }
       });
 
