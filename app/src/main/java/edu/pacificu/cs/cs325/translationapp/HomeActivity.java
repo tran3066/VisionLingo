@@ -125,9 +125,9 @@ public class HomeActivity extends AppCompatActivity
         mcUserDAO = mcUserDB.userDao ();
         mcUsersFromDB = (ArrayList<User>) mcUserDAO.getAll ();
       }
-      catch (Exception e)
+      catch (Exception cException)
       {
-        throw new RuntimeException (e);
+        throw new RuntimeException (cException);
       }
     });
 
