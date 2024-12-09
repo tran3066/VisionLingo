@@ -233,10 +233,10 @@ public class InfoFragment extends Fragment
           Image cTempImage = new Image (mcLogic.getImage ());
 
           mcImageDAO = mcLogic.getImageDAO ();
-          mcImageDAO.insert (cTempImage);
+          int tempID = (int) mcImageDAO.insert (cTempImage);
+          Log.d (LOG_TAG, String.valueOf (tempID));
 
-          Vocab cNewVocab = new Vocab (mcLogic.getWord (cTempString),
-              cTempImage.getMId (),
+          Vocab cNewVocab = new Vocab (mcLogic.getWord (cTempString), tempID,
               mcBinding.tvWordTranslate.getText ().toString ());
           mcLogic.getUser ().addToVocab (cNewVocab);
           mcUserDAO.update (mcLogic.getUser ());

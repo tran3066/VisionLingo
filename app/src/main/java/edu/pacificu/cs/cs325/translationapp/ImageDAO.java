@@ -40,10 +40,11 @@ public interface ImageDAO
    * Insert an image into the image database
    *
    * @param cImage image to insert
+   * @return the ID of the image inserted
    */
 
   @Insert
-  void insert (Image cImage);
+  long insert (Image cImage);
 
   /**
    * Delete an image from the image database

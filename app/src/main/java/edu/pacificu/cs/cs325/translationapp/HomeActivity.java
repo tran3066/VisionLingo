@@ -131,7 +131,6 @@ public class HomeActivity extends AppCompatActivity
             .fallbackToDestructiveMigrationOnDowngrade ()
             .allowMainThreadQueries ().build ();
         mcImageDAO = mcImageDB.imageDao ();
-        // mcImageDAO.deleteAll ();
 
         mcUsersFromDB = (ArrayList<User>) mcUserDAO.getAll ();
       }
