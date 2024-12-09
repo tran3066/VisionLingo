@@ -26,7 +26,7 @@ public class BusinessLogic extends ViewModel
   private boolean mbPictureTaken;
   private User mcUser;
   private DictionaryDAO mcDictionaryDAO;
-
+  private UserDAO mcUserDAO;
   private Dictionary mcDictionary;
 
   private Translator mcTranslator;
@@ -51,10 +51,33 @@ public class BusinessLogic extends ViewModel
    * @param cDictionaryDAO the DictionaryDAO to set the new DictionaryDAO
    */
 
-  public void setDAO (DictionaryDAO cDictionaryDAO)
+  public void setDictionaryDAO (DictionaryDAO cDictionaryDAO)
   {
     mcDictionaryDAO = cDictionaryDAO;
     mcDictionary = new Dictionary (mcDictionaryDAO.getAll ());
+  }
+
+  /**
+   * Sets the user data access object of the BusinessLogic
+   *
+   * @param cUserDAO the UserDAO to set the new UserDAO
+   */
+
+  public void setUserDAO (UserDAO cUserDAO)
+  {
+    mcUserDAO = cUserDAO;
+  }
+
+  /**
+   * Obtains a word from the dictionary
+   *
+   * @param cWord word to search
+   * @return a word from the dictionary
+   */
+
+  public Word getWord (String cWord)
+  {
+    return mcDictionary.getWord (cWord);
   }
 
   /**
@@ -63,14 +86,20 @@ public class BusinessLogic extends ViewModel
    * @return the DictionaryDAO object
    */
 
-  public Word getWord (String cWord)
-  {
-    return mcDictionary.getWord (cWord);
-  }
-
-  public DictionaryDAO getDAO ()
+  public DictionaryDAO getDictionaryDAO ()
   {
     return mcDictionaryDAO;
+  }
+
+  /**
+   * Obtains the UserDAO
+   *
+   * @return the UserDAO object
+   */
+
+  public UserDAO getUserDAO ()
+  {
+    return mcUserDAO;
   }
 
   /**

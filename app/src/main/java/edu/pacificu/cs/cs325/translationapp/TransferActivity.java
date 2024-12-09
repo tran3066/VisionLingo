@@ -68,7 +68,7 @@ public class TransferActivity extends AppCompatActivity
     mcLogic = new ViewModelProvider (this).get (BusinessLogic.class);
     Intent cReceiveIntent = getIntent ();
     mcRunner = Executors.newFixedThreadPool (NUM_THREADS);
-    mcLogic.setDAO (mcDictionaryDAO);
+    mcLogic.setDictionaryDAO (mcDictionaryDAO);
 
     if ("New User".equals (cReceiveIntent.getType()))
     {

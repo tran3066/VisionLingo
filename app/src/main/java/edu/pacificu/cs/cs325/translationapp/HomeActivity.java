@@ -55,12 +55,12 @@ public class HomeActivity extends AppCompatActivity
   private final int NUM_THREADS = 6;
   private ActivityHomeBinding mcBinding;
   private ExecutorService mcRunner;
-  public static UserDAO mcUserDAO;
+  private UserDAO mcUserDAO;
   private UserDB mcUserDB;
   private String mcUsername;
   private String mcPassword;
   private ArrayList<User> mcUsersFromDB;
-  public static DictionaryDAO mcDictionaryDAO;
+  private DictionaryDAO mcDictionaryDAO;
   private BusinessLogic mcLogic;
   private User mcCurrentUser;
   private Intent mcIntent;
