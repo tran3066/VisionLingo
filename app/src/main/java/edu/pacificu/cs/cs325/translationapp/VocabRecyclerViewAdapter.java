@@ -121,7 +121,8 @@ public class VocabRecyclerViewAdapter
 
     public void bindData ()
     {
-      Image cCurrentImage = mcLogic.getImageDAO ().getImage (mcVocab.getImage ());
+      Image cCurrentImage = mcLogic.getImageDAO ()
+          .getImage (mcVocab.getImage ());
 
       if (null == mcTvEnglishWord)
       {
@@ -149,7 +150,8 @@ public class VocabRecyclerViewAdapter
       mcTvWordType.setText (mcVocab.getWord ().getMcLexical ());
       mcTvDefinition.setText (mcVocab.getWord ().getMcDefinition ());
 
-      if (null != cCurrentImage.getMcImage () && 0 < cCurrentImage.getMcImage ().length)
+      if (null != cCurrentImage.getMcImage ()
+          && 0 < cCurrentImage.getMcImage ().length)
       {
         mcImageWord.setImageBitmap (
             BitmapFactory.decodeByteArray (cCurrentImage.getMcImage (), 0,

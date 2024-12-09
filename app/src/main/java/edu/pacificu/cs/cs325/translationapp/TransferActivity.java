@@ -82,8 +82,10 @@ public class TransferActivity extends AppCompatActivity
             .build ();
         mcDictionaryDAO = mcDictionaryDB.dictionaryDao ();
 
-        mcImageDB = Room.databaseBuilder (getApplicationContext (), ImageDB.class,
-            "Image-DB").fallbackToDestructiveMigrationOnDowngrade ().build ();
+        mcImageDB = Room.databaseBuilder (getApplicationContext (),
+                ImageDB.class, "Image-DB")
+            .fallbackToDestructiveMigrationOnDowngrade ()
+            .allowMainThreadQueries ().build ();
         mcImageDAO = mcImageDB.imageDao ();
 
         mcLogic.setDictionaryDAO (mcDictionaryDAO);

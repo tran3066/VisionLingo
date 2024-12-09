@@ -126,14 +126,12 @@ public class HomeActivity extends AppCompatActivity
             "User-DB").fallbackToDestructiveMigrationOnDowngrade ().build ();
         mcUserDAO = mcUserDB.userDao ();
 
-        mcImageDB = Room.databaseBuilder (getApplicationContext (), ImageDB.class,
-            "Image-DB").fallbackToDestructiveMigrationOnDowngrade ().build ();
+        mcImageDB = Room.databaseBuilder (getApplicationContext (),
+                ImageDB.class, "Image-DB")
+            .fallbackToDestructiveMigrationOnDowngrade ()
+            .allowMainThreadQueries ().build ();
         mcImageDAO = mcImageDB.imageDao ();
-
-        // Uncomment this and run it if you try to log in with an existing user
-        // and you can't login (I think the images get too big in the database,
-        // so that messes up things if you add too many)
-        // mcUserDAO.deleteAll ();
+        // mcImageDAO.deleteAll ();
 
         mcUsersFromDB = (ArrayList<User>) mcUserDAO.getAll ();
       }
