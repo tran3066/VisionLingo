@@ -1,9 +1,6 @@
 package edu.pacificu.cs.cs325.translationapp;
 
 import static androidx.core.content.ContextCompat.getSystemService;
-//import static edu.pacificu.cs.cs325.translationapp.PreferenceFragment.mcColor;
-
-import static edu.pacificu.cs.cs325.translationapp.HomeActivity.mcDictionaryDAO;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -250,8 +247,7 @@ public class QuizFragment extends Fragment
   public Word getRandomWord ()
   {
     Log.d(LOG_TAG, "Generating Word");
-    //return mcDictionaryDAO.getRandomWord ();
-    return mcLogic.getDAO ().getRandomWord ();
+    return mcLogic.getDictionaryDAO ().getRandomWord ();
   }
 
   /**

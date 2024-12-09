@@ -1,8 +1,5 @@
 package edu.pacificu.cs.cs325.translationapp;
 
-import static edu.pacificu.cs.cs325.translationapp.HomeActivity.mcDictionaryDAO;
-import static edu.pacificu.cs.cs325.translationapp.HomeActivity.mcUserDAO;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -33,12 +30,15 @@ import edu.pacificu.cs.cs325.translationapp.databinding.ActivityTransferBinding;
 public class TransferActivity extends AppCompatActivity
 {
   private String LOG_TAG = "TransferActivity";
-  private final int NUM_THREADS = 2;
+  private final int NUM_THREADS = 4;
   private ActivityTransferBinding mcBinding;
   private BusinessLogic mcLogic;
   private MenuItem mcItem;
   private ExecutorService mcRunner;
-
+  private UserDB mcUserDB;
+  private UserDAO mcUserDAO;
+  private DictionaryDB mcDictionaryDB;
+  private DictionaryDAO mcDictionaryDAO;
 
   /**
    * onCreate method that starts the activity
@@ -68,56 +68,76 @@ public class TransferActivity extends AppCompatActivity
     mcLogic = new ViewModelProvider (this).get (BusinessLogic.class);
     Intent cReceiveIntent = getIntent ();
     mcRunner = Executors.newFixedThreadPool (NUM_THREADS);
-    mcLogic.setDictionaryDAO (mcDictionaryDAO);
 
-    if ("New User".equals (cReceiveIntent.getType()))
-    {
-      String cUsername = cReceiveIntent.getStringExtra ("Username");
-      String cPassword = cReceiveIntent.getStringExtra ("Password");
+    mcRunner.execute (() -> {
+      try
+      {
+        mcUserDB = Room.databaseBuilder (getApplicationContext (), UserDB.class,
+            "User-DB").fallbackToDestructiveMigrationOnDowngrade ().build ();
+        mcUserDAO = mcUserDB.userDao ();
 
-      mcRunner.execute (() -> {
-        User tempUser = mcUserDAO.findUserByNamePass (cUsername, cPassword);
-        runOnUiThread (() ->
-        {
-          mcLogic.setUser (tempUser);
-          Log.d (LOG_TAG, mcLogic.getUser ().getMcUsername ());
-          Log.d(LOG_TAG, String.valueOf (mcLogic.getColor ()));
+        mcDictionaryDB = Room.databaseBuilder (getApplicationContext (),
+                DictionaryDB.class, "Dictionary-DB").allowMainThreadQueries ()
+            .build ();
+        mcDictionaryDAO = mcDictionaryDB.dictionaryDao ();
+
+        mcLogic.setDictionaryDAO (mcDictionaryDAO);
+        mcLogic.setUserDAO (mcUserDAO);
+
+        runOnUiThread (() -> {
+          if ("New User".equals (cReceiveIntent.getType ()))
+          {
+            String cUsername = cReceiveIntent.getStringExtra ("Username");
+            String cPassword = cReceiveIntent.getStringExtra ("Password");
+
+            mcRunner.execute (() -> {
+              User tempUser = mcUserDAO.findUserByNamePass (cUsername, cPassword);
+              runOnUiThread (() -> {
+                mcLogic.setUser (tempUser);
+                Log.d (LOG_TAG, mcLogic.getUser ().getMcUsername ());
+                Log.d (LOG_TAG, String.valueOf (mcLogic.getColor ()));
+              });
+            });
+
+            getSupportFragmentManager ().beginTransaction ()
+                .setReorderingAllowed (true)
+                .add (R.id.fragment_container_view, PreferenceFragment.class, null)
+                .commit ();
+
+            mcBinding.bottomNavigationView.setSelectedItemId (R.id.preferences);
+          }
+
+          else if ("Login".equals (cReceiveIntent.getType ()))
+          {
+            String cUsername = cReceiveIntent.getStringExtra ("Username");
+            String cPassword = cReceiveIntent.getStringExtra ("Password");
+
+            mcRunner.execute (() -> {
+              User tempUser = mcUserDAO.findUserByNamePass (cUsername, cPassword);
+              runOnUiThread (() -> {
+                mcLogic.setUser (tempUser);
+                Log.d (LOG_TAG, mcLogic.getUser ().getMcUsername ());
+                Log.d (LOG_TAG, String.valueOf (mcLogic.getColor ()));
+              });
+            });
+
+            getSupportFragmentManager ().beginTransaction ()
+                .setReorderingAllowed (true)
+                .add (R.id.fragment_container_view, CameraFragment.class, null)
+                .commit ();
+          }
         });
-      });
+      }
+      catch (Exception e)
+      {
+        throw new RuntimeException (e);
+      }
+    });
 
-      getSupportFragmentManager ().beginTransaction ()
-          .setReorderingAllowed (true)
-          .add (R.id.fragment_container_view, PreferenceFragment.class,
-              null).commit ();
-
-      mcBinding.bottomNavigationView.setSelectedItemId(R.id.preferences);
-    }
-
-    else if ("Login".equals (cReceiveIntent.getType()))
-    {
-      String cUsername = cReceiveIntent.getStringExtra ("Username");
-      String cPassword = cReceiveIntent.getStringExtra ("Password");
-
-      mcRunner.execute (() -> {
-        User tempUser = mcUserDAO.findUserByNamePass (cUsername, cPassword);
-        runOnUiThread (() ->
-        {
-          mcLogic.setUser (tempUser);
-          Log.d (LOG_TAG, mcLogic.getUser ().getMcUsername ());
-          Log.d(LOG_TAG, String.valueOf (mcLogic.getColor ()));
-        });
-      });
-
-      getSupportFragmentManager ().beginTransaction ()
-          .setReorderingAllowed (true)
-          .add (R.id.fragment_container_view, CameraFragment.class, null)
-          .commit ();
-    }
-
-//    else if ("Send to Info".equals(cReceiveIntent.getType()))
-//    {
-//      mcBinding.bottomNavigationView.setSelectedItemId(R.id.wordInformation);
-//    }
+    //    else if ("Send to Info".equals(cReceiveIntent.getType()))
+    //    {
+    //      mcBinding.bottomNavigationView.setSelectedItemId(R.id.wordInformation);
+    //    }
 
     mcBinding.bottomNavigationView.setOnItemSelectedListener (item -> {
       if (item.getItemId () == R.id.camera)
