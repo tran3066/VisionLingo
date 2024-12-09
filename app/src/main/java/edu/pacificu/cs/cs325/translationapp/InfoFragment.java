@@ -163,6 +163,7 @@ public class InfoFragment extends Fragment
         {
           mcBinding.tvSearch.setText (mcLogic.getWordFromCamera ());
           mcBinding.tvWordInfo.setText (tempWord.toString ());
+          bSearched = true;
         });
 
       });
