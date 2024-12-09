@@ -54,6 +54,7 @@ public class InfoFragment extends Fragment
   private final String SPANISH = "es";
   private final String FRENCH_URL = "https://forvo.com/word/*/#fr";
   private final String SPANISH_URL = "https://forvo.com/word/*/#es";
+  private final int ROTATION = 90;
 
   private Observer<BusinessLogicUIState> mcObserver;
   private BusinessLogic mcLogic;
@@ -177,8 +178,7 @@ public class InfoFragment extends Fragment
     {
       Bitmap cBitmap = BitmapFactory.decodeByteArray (mcLogic.getImage (), 0,
           mcLogic.getImage ().length);
-      int rotation = 90;
-      mcBinding.imgWord.setRotation (rotation);
+      mcBinding.imgWord.setRotation (ROTATION);
       mcBinding.imgWord.setImageBitmap (cBitmap);
       Log.d (LOG_TAG, "Picture RECEIVED");
     }
@@ -284,6 +284,7 @@ public class InfoFragment extends Fragment
 
       mcLogic.resetImg ();
       mcBinding.imgWord.setImageResource (R.drawable.baseline_add_a_photo_24);
+      mcBinding.imgWord.setRotation (ROTATION);
     });
 
     mcLogic.getMcUiState ().observe (getActivity (), mcObserver);
