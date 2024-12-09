@@ -133,6 +133,8 @@ public class HomeActivity extends AppCompatActivity
       }
       catch (Exception cException)
       {
+        // This error will appear if the database can't fit all the images
+        // the user stored
         Log.d (LOG_TAG, cException.toString ());
       }
     });

@@ -145,6 +145,8 @@ public class CameraFragment extends Fragment
   public void onViewCreated (@NonNull View cView,
       @Nullable Bundle cSavedInstanceState)
   {
+    final int ROTATION = 90;
+
     super.onViewCreated (cView, cSavedInstanceState);
 
     assert getActivity () != null;
@@ -290,8 +292,7 @@ public class CameraFragment extends Fragment
 
               assert getActivity () != null;
               getActivity ().runOnUiThread (() -> {
-                int rotation = 90;
-                mcBinding.cptIMG.setRotation (rotation);
+                mcBinding.cptIMG.setRotation (ROTATION);
                 mcBinding.cptIMG.setImageBitmap (BitmapFactory.decodeByteArray (
                     cByteArrayStream.toByteArray (), 0,
                     cByteArrayStream.toByteArray ().length));
