@@ -215,6 +215,11 @@ public class InfoFragment extends Fragment
               mcBinding.tvWordTranslate.getText ().toString ());
           mcLogic.getUser ().addToVocab (cNewVocab);
           mcUserDAO.update (mcLogic.getUser ());
+
+          getActivity ().runOnUiThread (() -> {
+            Toast.makeText (getActivity ().getApplicationContext (),
+                "Added to Vocabulary List", Toast.LENGTH_LONG).show ();
+          });
         }
       });
     });
