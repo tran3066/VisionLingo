@@ -7,6 +7,10 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.google.mlkit.nl.translate.Translation;
+import com.google.mlkit.nl.translate.Translator;
+import com.google.mlkit.nl.translate.TranslatorOptions;
+
 /**
  * Creates a BusinessLogic class that serves as the ViewModel for managing the
  * application's data and operations, including user data (color and language
@@ -25,6 +29,8 @@ public class BusinessLogic extends ViewModel
   private UserDAO mcUserDAO;
   private Dictionary mcDictionary;
 
+  private Translator mcTranslator;
+
   /**
    * Initializes BusinessLogic by assigning its member variables default values
    */
@@ -33,6 +39,7 @@ public class BusinessLogic extends ViewModel
   {
     mbPictureTaken = false;
     mcDictionaryDAO = null;
+    mcTranslator = null;
     mcUiState = new MutableLiveData<> (
         new BusinessLogicUIState (0, "", null, "", mbPictureTaken));
     mcDictionary = null;
@@ -238,6 +245,9 @@ public class BusinessLogic extends ViewModel
 
   public void setLanguage (String cLanguage)
   {
+    TranslatorOptions tempOptions = new TranslatorOptions.Builder ().setTargetLanguage (
+        cLanguage).setSourceLanguage ("en").build ();
+    mcTranslator = Translation.getClient(tempOptions);
     mcUiState.setValue (
         new BusinessLogicUIState (getColor (), cLanguage, getImage (),
             getWordFromCamera (), mbPictureTaken));
@@ -264,6 +274,7 @@ public class BusinessLogic extends ViewModel
   {
     int tempColor;
 
+
     switch (cUser.getColor ())
     {
       case "Pink":
@@ -288,9 +299,12 @@ public class BusinessLogic extends ViewModel
         break;
     }
 
+
+
     mcUser = cUser;
     Log.d ("TransferActivity", String.valueOf (tempColor));
     setColor (tempColor);
+    setLanguage(cUser.getLanguage ());
     mcUiState.setValue (
         new BusinessLogicUIState (tempColor, cUser.getLanguage (), getImage (),
             getWordFromCamera (), mbPictureTaken));
@@ -308,4 +322,10 @@ public class BusinessLogic extends ViewModel
         new BusinessLogicUIState (getColor (), getLanguage (), null, null,
             mbPictureTaken));
   }
+
+  public Translator getTranslator()
+  {
+    return mcTranslator;
+  }
+
 }

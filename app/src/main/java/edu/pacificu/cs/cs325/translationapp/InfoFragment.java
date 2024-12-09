@@ -57,8 +57,8 @@ public class InfoFragment extends Fragment
   private Observer<BusinessLogicUIState> mcObserver;
   private BusinessLogic mcLogic;
   private FragmentInfoBinding mcBinding;
-  private TranslatorOptions mcOptions;
-  private Translator mcTranslator;
+  //private TranslatorOptions mcOptions;
+  //private Translator mcTranslator;
   private UserDAO mcUserDAO;
   private boolean bSearched;
 
@@ -129,60 +129,11 @@ public class InfoFragment extends Fragment
 
     if (mcLogic.getWordFromCamera () != null)
     {
-      mcBinding.tvSearch.setText (mcLogic.getWordFromCamera ());
-      Log.d (LOG_TAG, "Text RECEIVED");
-      mcRunner.execute (() -> {
-        String cTempString;
-        Word cTempWord;
-        cTempString = mcBinding.tvSearch.getText ().toString ();
-        Log.d (LOG_TAG, cTempString);
-        cTempWord = mcLogic.getWord (cTempString);
-        Log.d (LOG_TAG, cTempWord.getMcEnglishWord ());
-
-
-        getActivity ().runOnUiThread (() -> {
-          mcBinding.tvWordInfo.setText (cTempWord.toString ());
-          Log.d (LOG_TAG, "btnSearch Pressed");
-        });
-
-
-        mcObserver = new Observer<BusinessLogicUIState> ()
-        {
-          @Override
-          public void onChanged (BusinessLogicUIState businessLogicUIState)
-          {
-            // update changes here
-            int colorInt = mcLogic.getMcUiState ().getValue ().getColor ();
-            mcBinding.btnSearch.setBackgroundColor (colorInt);
-            mcBinding.btnAdd.setBackgroundColor (colorInt);
-            mcBinding.btnSpeak.setBackgroundColor (colorInt);
-
-            mcOptions = new TranslatorOptions.Builder ().setTargetLanguage (
-                mcLogic.getLanguage ()).setSourceLanguage ("en").build ();
-            mcTranslator = Translation.getClient (mcOptions);
-
-            mcBinding.btnSpeak.setOnClickListener (v -> {
-              String cUpdatedURL;
-              String cCurrentLanguage = mcLogic.getLanguage ();
-
-              if (cCurrentLanguage.equals (FRENCH))
-              {
-                cUpdatedURL = FRENCH_URL.replace ("*",
-                    mcBinding.tvWordTranslate.getText ().toString ());
-                openURL (cUpdatedURL);
-              }
-              else if (cCurrentLanguage.equals (SPANISH))
-              {
-                cUpdatedURL = SPANISH_URL.replace ("*",
-                    mcBinding.tvWordTranslate.getText ().toString ());
-                openURL (cUpdatedURL);
-              }
-            });
-          }
-        };
-
-        Task<String> cResult = mcTranslator.translate (
-                cTempString)
+      mcRunner.execute (()->
+      {
+        Word tempWord = mcLogic.getWord (mcLogic.getWordFromCamera ());
+        Task<String> cResult = mcLogic.getTranslator ().translate (
+                tempWord.getMcEnglishWord ())
             .addOnSuccessListener (new OnSuccessListener<String> ()
             {
               @Override
@@ -202,12 +153,19 @@ public class InfoFragment extends Fragment
                 Log.d (LOG_TAG, "translation unsuccessful");
                 getActivity ().runOnUiThread (() -> {
                   mcBinding.tvWordTranslate.setText (
-                      cTempWord.getMcEnglishWord ());
+                      tempWord.getMcEnglishWord ());
                 });
               }
             });
+        getActivity ().runOnUiThread (()->
+        {
+          mcBinding.tvSearch.setText (mcLogic.getWordFromCamera ());
+          mcBinding.tvWordInfo.setText (tempWord.toString ());
+        });
+
       });
 
+//      mcBinding.tvWordInfo.setText()
     }
     else
     {
@@ -228,7 +186,36 @@ public class InfoFragment extends Fragment
       Log.d (LOG_TAG, "No PICTURE");
     }
 
+    mcObserver = new Observer<BusinessLogicUIState> ()
+    {
+      @Override
+      public void onChanged (BusinessLogicUIState businessLogicUIState)
+      {
+        // update changes here
+        int colorInt = mcLogic.getMcUiState ().getValue ().getColor ();
+        mcBinding.btnSearch.setBackgroundColor (colorInt);
+        mcBinding.btnAdd.setBackgroundColor (colorInt);
+        mcBinding.btnSpeak.setBackgroundColor (colorInt);
 
+        mcBinding.btnSpeak.setOnClickListener (v -> {
+          String cUpdatedURL;
+          String cCurrentLanguage = mcLogic.getLanguage ();
+
+          if (cCurrentLanguage.equals (FRENCH))
+          {
+            cUpdatedURL = FRENCH_URL.replace ("*",
+                mcBinding.tvWordTranslate.getText ().toString ());
+            openURL (cUpdatedURL);
+          }
+          else if (cCurrentLanguage.equals (SPANISH))
+          {
+            cUpdatedURL = SPANISH_URL.replace ("*",
+                mcBinding.tvWordTranslate.getText ().toString ());
+            openURL (cUpdatedURL);
+          }
+        });
+      }
+    };
     mcBinding.btnAdd.setOnClickListener (v -> {
 
       mcRunner.execute (() -> {
@@ -260,7 +247,7 @@ public class InfoFragment extends Fragment
           mcBinding.tvWordInfo.setText (cTempWord.toString ());
           Log.d (LOG_TAG, "btnSearch Pressed");
         });
-        Task<String> cResult = mcTranslator.translate (
+        Task<String> cResult = mcLogic.getTranslator ().translate (
                 cTempWord.getMcEnglishWord ())
             .addOnSuccessListener (new OnSuccessListener<String> ()
             {
@@ -286,7 +273,7 @@ public class InfoFragment extends Fragment
               }
             });
       });
-      mcLogic.resetImg ();
+
 
     });
 
