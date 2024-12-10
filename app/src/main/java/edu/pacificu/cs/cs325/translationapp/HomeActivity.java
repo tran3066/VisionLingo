@@ -154,12 +154,6 @@ public class HomeActivity extends AppCompatActivity
 
     mcBinding.btnNewUser.setOnClickListener ((view -> {
       newUser ();
-
-      mcRunner.execute (() -> {
-        if (mcCurrentUser != null) {
-          mcUserDAO.insert(mcCurrentUser);
-        }
-      });
     }));
   }
 
@@ -203,16 +197,25 @@ public class HomeActivity extends AppCompatActivity
         mcLogic.createUser (mcUsername, mcPassword);
         mcCurrentUser = mcLogic.getUser ();
 
-        Log.d (LOG_TAG, "New user created");
-        Log.d (LOG_TAG, "Launch User Preferences");
+        mcRunner.execute (() -> {
+            if (mcCurrentUser != null) {
+              mcUserDAO.insert(mcCurrentUser);
+              runOnUiThread (() ->
+              {
+                Log.d (LOG_TAG, "New user created");
+                Log.d (LOG_TAG, "Launch User Preferences");
 
 
-        mcIntent.setAction (Intent.ACTION_SEND);
-        mcIntent.putExtra ("Username", mcCurrentUser.getMcUsername ());
-        mcIntent.putExtra ("Password", mcCurrentUser.getMcPassword ());
-        mcIntent.setType ("New User");
-        mcActivityLauncher.launch (mcIntent);
-        Log.d (LOG_TAG, "User Preferences Activity started");
+                mcIntent.setAction (Intent.ACTION_SEND);
+                mcIntent.putExtra ("Username", mcCurrentUser.getMcUsername ());
+                mcIntent.putExtra ("Password", mcCurrentUser.getMcPassword ());
+                mcIntent.setType ("New User");
+                mcActivityLauncher.launch (mcIntent);
+                Log.d (LOG_TAG, "User Preferences Activity started");
+              });
+            }
+        });
+
         });
       }
    });
