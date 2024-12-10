@@ -132,9 +132,6 @@ public class HomeActivity extends AppCompatActivity
             .allowMainThreadQueries ().build ();
         mcImageDAO = mcImageDB.imageDao ();
 
-        // mcImageDAO.deleteAll ();
-        // mcUserDAO.deleteAll ();
-
         mcUsersFromDB = (ArrayList<User>) mcUserDAO.getAll ();
       }
       catch (Exception cException)
@@ -159,9 +156,7 @@ public class HomeActivity extends AppCompatActivity
       newUser ();
 
       mcRunner.execute (() -> {
-        if (mcCurrentUser != null) {
-          mcUserDAO.insert(mcCurrentUser);
-        }
+        mcUserDAO.insert (mcCurrentUser);
       });
     }));
   }
@@ -185,40 +180,37 @@ public class HomeActivity extends AppCompatActivity
       return;
     }
 
-   mcRunner.execute (() -> {
-      boolean bFound = false;
+    mcRunner.execute (() -> {
       for (User cCheck : mcUsersFromDB)
       {
         if (mcUsername.equals (cCheck.getMcUsername ()))
         {
-          bFound = true;
           runOnUiThread (() -> {
             Toast.makeText (this,
                 "Username taken: Please login or Choose a new Username",
                 Toast.LENGTH_SHORT).show ();
           });
-         return;
+          bUserFound = true;
+          return;
         }
       }
-      if (!bFound)
-      {
-        runOnUiThread (() -> {
-        mcLogic.createUser (mcUsername, mcPassword);
-        mcCurrentUser = mcLogic.getUser ();
+    });
 
-        Log.d (LOG_TAG, "New user created");
-        Log.d (LOG_TAG, "Launch User Preferences");
+    if (!bUserFound)
+    {
+      mcLogic.createUser (mcUsername, mcPassword);
+      mcCurrentUser = mcLogic.getUser ();
 
+      Log.d (LOG_TAG, "New user created");
+      Log.d (LOG_TAG, "Launch User Preferences");
 
-        mcIntent.setAction (Intent.ACTION_SEND);
-        mcIntent.putExtra ("Username", mcCurrentUser.getMcUsername ());
-        mcIntent.putExtra ("Password", mcCurrentUser.getMcPassword ());
-        mcIntent.setType ("New User");
-        mcActivityLauncher.launch (mcIntent);
-        Log.d (LOG_TAG, "User Preferences Activity started");
-        });
-      }
-   });
+      mcIntent.setAction (Intent.ACTION_SEND);
+      mcIntent.putExtra ("Username", mcCurrentUser.getMcUsername ());
+      mcIntent.putExtra ("Password", mcCurrentUser.getMcPassword ());
+      mcIntent.setType ("New User");
+      mcActivityLauncher.launch (mcIntent);
+      Log.d (LOG_TAG, "User Preferences Activity started");
+    }
   }
 
   /**
@@ -339,7 +331,6 @@ public class HomeActivity extends AppCompatActivity
             getApplicationContext (), DictionaryDB.class, "Dictionary-DB")
         .allowMainThreadQueries ().build ();
     mcDictionaryDAO = mcDictionaryDB.dictionaryDao ();
-    // mcDictionaryDAO.deleteAll ();
 
     mcRunner.execute (() -> {
       if (mcDictionaryDAO.getSize () == 0
