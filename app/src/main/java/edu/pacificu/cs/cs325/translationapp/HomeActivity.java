@@ -175,7 +175,6 @@ public class HomeActivity extends AppCompatActivity
       });
       return;
     }
-    //why
 
    mcRunner.execute (() -> {
       boolean bFound = false;
