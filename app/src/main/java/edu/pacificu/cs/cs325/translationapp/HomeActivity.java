@@ -132,6 +132,9 @@ public class HomeActivity extends AppCompatActivity
             .allowMainThreadQueries ().build ();
         mcImageDAO = mcImageDB.imageDao ();
 
+        // mcImageDAO.deleteAll ();
+        // mcUserDAO.deleteAll ();
+
         mcUsersFromDB = (ArrayList<User>) mcUserDAO.getAll ();
       }
       catch (Exception cException)
@@ -336,6 +339,7 @@ public class HomeActivity extends AppCompatActivity
             getApplicationContext (), DictionaryDB.class, "Dictionary-DB")
         .allowMainThreadQueries ().build ();
     mcDictionaryDAO = mcDictionaryDB.dictionaryDao ();
+    // mcDictionaryDAO.deleteAll ();
 
     mcRunner.execute (() -> {
       if (mcDictionaryDAO.getSize () == 0
